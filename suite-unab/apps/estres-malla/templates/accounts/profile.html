@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Mi perfil{% endblock %}
+{% block page_title %}Mi perfil{% endblock %}
+
+{% block content %}
+<!--
+  Faltaba este archivo en el repo original: accounts/urls.py define la ruta
+  "profile/" -> accounts.views.profile_view, pero la plantilla nunca se
+  subió (hoy no hay ningún link a ella en la UI, pero la URL existe y
+  rompería con TemplateDoesNotExist si alguien la visitara directamente).
+-->
+<div class="card" style="max-width:480px">
+  <div class="card-title"><i class="ti ti-user-circle"></i> Mi perfil</div>
+  <div class="sg" style="grid-template-columns:1fr;gap:10px">
+    <div class="sr"><span class="sl2" style="width:110px">Usuario</span><span>{{ user.username }}</span></div>
+    <div class="sr"><span class="sl2" style="width:110px">Nombre</span><span>{{ user.get_full_name|default:"—" }}</span></div>
+    <div class="sr"><span class="sl2" style="width:110px">Rol</span><span>{{ user.get_rol_display }}</span></div>
+    <div class="sr"><span class="sl2" style="width:110px">Institución</span><span>{{ user.organization.nombre|default:"—" }}</span></div>
+    <div class="sr"><span class="sl2" style="width:110px">Correo</span><span>{{ user.email|default:"—" }}</span></div>
+  </div>
+</div>
+{% endblock %}

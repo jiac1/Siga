@@ -1,0 +1,19 @@
+/* Suite UNAB — Design tokens
+   Paleta tomada de la app "Malla curricular" ya existente, para que toda
+   la Suite se sienta parte de la misma identidad visual desde el día 1. */
+:root{
+  --su-navy:#102338;
+  --su-navy-2:#1d3e63;
+  --su-red:#d8232a;
+  --su-bg:#eaeef3;
+  --su-surface:#ffffff;
+  --su-surface-2:#f6f8fb;
+  --su-ink:#0d1a2c;
+  --su-ink-soft:#566276;
+  --su-ink-faint:#8794a6;
+  --su-line:#dde3ec;
+  --su-shadow:0 1px 2px rgba(16,35,56,.06),0 6px 18px rgba(16,35,56,.07);
+  --su-shadow-lg:0 14px 44px rgba(16,35,56,.20);
+  --su-font:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+  --su-bar-height:52px;
+}

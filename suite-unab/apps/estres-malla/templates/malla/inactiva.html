@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Institución inactiva{% endblock %}
+{% block page_title %}Institución inactiva{% endblock %}
+
+{% block content %}
+<!--
+  Faltaba este archivo en el repo original: org_required() (malla/views.py)
+  lo renderiza cuando la organización del usuario tiene activa=False, pero
+  la plantilla nunca se subió. Sin ella, cualquier institución desactivada
+  (por ejemplo, una universidad cliente cuya suscripción venció) rompía con
+  un TemplateDoesNotExist en vez de mostrar un mensaje claro.
+-->
+<div class="card" style="text-align:center;padding:48px 24px;max-width:520px;margin:40px auto">
+  <i class="ti ti-building-off" style="font-size:42px;color:var(--t3);display:block;margin-bottom:14px"></i>
+  <p style="font-size:15px;font-weight:600;margin-bottom:8px">
+    La institución {{ request.user.organization.nombre }} está inactiva
+  </p>
+  <p style="font-size:13px;color:var(--t2);line-height:1.6">
+    El acceso de tu institución a MallaIQ no está habilitado en este momento.
+    Contacta al administrador de la plataforma para reactivar la cuenta.
+  </p>
+  <a href="{% url 'accounts:logout' %}" class="btn btn-secondary" style="margin-top:20px">
+    <i class="ti ti-logout"></i> Cerrar sesión
+  </a>
+</div>
+{% endblock %}

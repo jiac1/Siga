@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suite UNAB</title>
+<link rel="stylesheet" href="shared/tokens.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--su-font); background:var(--su-bg); color:var(--su-ink); min-height:100vh}
+  header.top{
+    background:linear-gradient(160deg,var(--su-navy) 0%,var(--su-navy-2) 100%);
+    color:#fff; padding:28px clamp(16px,4vw,40px) 32px; border-bottom:3px solid var(--su-red);
+  }
+  .top-inner{max-width:1180px; margin:0 auto}
+  .brand{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--su-red)}
+  .brand span{font-weight:700; font-size:20px}
+  h1{font-size:clamp(22px,3vw,30px); font-weight:700; letter-spacing:-.02em; margin-bottom:6px}
+  .lede{color:#bcd0e8; font-size:14px; max-width:56ch}
+  .user-row{display:flex; justify-content:space-between; align-items:center; max-width:1180px; margin:0 auto}
+  .user-row .who{font-size:13px; color:#9db6d4}
+  .user-row a{color:#e8eef7; font-size:12.5px; font-weight:600; text-decoration:none; border:1px solid rgba(255,255,255,.3); padding:6px 12px; border-radius:6px}
+
+  main{max-width:1180px; margin:0 auto; padding:32px clamp(16px,4vw,40px) 60px}
+  .section-title{font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--su-ink-soft); margin-bottom:16px}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px}
+  .card{
+    background:var(--su-surface); border-radius:12px; box-shadow:var(--su-shadow);
+    padding:20px; display:flex; flex-direction:column; gap:10px; text-decoration:none; color:inherit;
+    border:1px solid var(--su-line); transition:transform .12s, box-shadow .12s;
+  }
+  .card.enabled:hover{transform:translateY(-2px); box-shadow:var(--su-shadow-lg)}
+  .card.disabled{opacity:.55; cursor:default}
+  .icon{
+    width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    font-size:19px; font-weight:700; color:#fff; background:var(--su-navy);
+  }
+  .card h3{font-size:15px; font-weight:700}
+  .card p{font-size:12.5px; color:var(--su-ink-soft); line-height:1.45}
+  .badge{
+    align-self:flex-start; font-size:10.5px; font-weight:700; text-transform:uppercase;
+    letter-spacing:.05em; padding:3px 8px; border-radius:5px;
+  }
+  .badge.live{background:#e5f3ea; color:#1e7a42}
+  .badge.soon{background:#f1f2f4; color:var(--su-ink-faint)}
+  .badge.vision{background:#ecebfa; color:#4c4fae}
+</style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="user-row">
+        <div class="brand"><span class="dot"></span><span>Suite UNAB</span></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="who" id="who"></span>
+          <a href="#" id="logout">Salir</a>
+        </div>
+      </div>
+      <h1>Tus aplicaciones académicas, en un solo lugar</h1>
+      <p class="lede">Panel único de acceso a las herramientas de apoyo académico de Ingeniería Civil Informática — UNAB.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-title">Aplicaciones</div>
+    <div class="grid">
+
+      <a class="card enabled" href="apps/malla/index.html">
+        <div class="icon">M</div>
+        <span class="badge live">Disponible</span>
+        <h3>Malla curricular</h3>
+        <p>Consulta interactiva de la malla curricular de tu carrera, con requisitos y avance.</p>
+      </a>
+
+      <a class="card enabled" href="apps/convalidacion/index.html">
+        <div class="icon" style="background:var(--su-red)">C</div>
+        <span class="badge live">Disponible</span>
+        <h3>Convalidación con IA</h3>
+        <p>Analiza mallas de otras universidades y determina automáticamente qué ramos son convalidables.</p>
+      </a>
+
+      <a class="card enabled" href="apps/horarios/index.html">
+        <div class="icon" style="background:#5b7495">H</div>
+        <span class="badge live">Disponible</span>
+        <h3>Generador de horarios</h3>
+        <p>Arma combinaciones de horario compatibles a partir de la oferta de ramos.</p>
+      </a>
+
+      <a class="card enabled" href="apps/siga/index.html">
+        <div class="icon" style="background:#8794a6">S</div>
+        <span class="badge vision">Visión del producto</span>
+        <h3>SIGA</h3>
+        <p>Landing de presentación de la Suite completa (6 módulos, con datos de ejemplo). No es una herramienta funcional — es el pitch del producto.</p>
+      </a>
+
+      <a class="card enabled" href="http://localhost:8792/" title="Requiere el servidor Django corriendo en local (ver README)">
+        <div class="icon" style="background:#1d3e63">MC</div>
+        <span class="badge live">Disponible (servidor aparte)</span>
+        <h3>Mapa de calor</h3>
+        <p>Distribución de ocupación de salas a partir de un archivo de programación. Corre en su propio servidor Python.</p>
+      </a>
+
+      <a class="card enabled" href="http://localhost:8793/" title="Requiere el servidor Django corriendo en local (ver README)">
+        <div class="icon" style="background:#2f5233">EM</div>
+        <span class="badge live">Disponible (servidor aparte)</span>
+        <h3>Estrés de Malla</h3>
+        <p>Detecta cuellos de botella en la malla según tasas de reprobación por asignatura. Multi-institución, con cuentas y roles propios.</p>
+      </a>
+
+    </div>
+  </main>
+
+  <script src="shared/auth.js"></script>
+  <script>
+    SuiteAuth.requireLogin();
+    const user = SuiteAuth.getUser();
+    if (user) document.getElementById("who").textContent = user.nombre;
+    document.getElementById("logout").addEventListener("click", (e) => {
+      e.preventDefault();
+      SuiteAuth.logout();
+    });
+  </script>
+</body>
+</html>

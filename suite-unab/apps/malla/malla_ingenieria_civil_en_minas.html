@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malla · Ingeniería Civil en Minas · UNAB</title>
+<style>
+  :root{
+    --bg:#eaeef3; --surface:#ffffff; --surface-2:#f6f8fb;
+    --ink:#0d1a2c; --ink-soft:#566276; --ink-faint:#8794a6; --line:#dde3ec;
+    --navy:#102338; --navy-2:#1d3e63; --red:#d8232a;
+    --a-matematicas:#2563eb;      --t-matematicas:#e7edfd;
+    --a-ciencias:#0891b2;         --t-ciencias:#e0f3f8;
+    --a-geologia:#4d7c0f;         --t-geologia:#eef4e2;
+    --a-mineria:#dc2626;          --t-mineria:#fce8e8;
+    --a-metalurgia:#ea580c;       --t-metalurgia:#fdecdf;
+    --a-digital:#7c3aed;          --t-digital:#efe8fd;
+    --a-gestion:#16a34a;          --t-gestion:#e4f6ea;
+    --a-integracion:#92400e;      --t-integracion:#f6eae2;
+    --a-ingles:#ca8a04;           --t-ingles:#f9f1da;
+    --a-formaciongeneral:#475569; --t-formaciongeneral:#eef1f5;
+    --shadow:0 1px 2px rgba(16,35,56,.06),0 6px 18px rgba(16,35,56,.07);
+    --shadow-lg:0 12px 40px rgba(16,35,56,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--bg);
+    line-height:1.45; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* ---------- Header ---------- */
+  header.top{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%);
+    color:#fff; padding:15px clamp(16px,4vw,40px) 0;
+    border-bottom:3px solid var(--red);
+  }
+  .top-inner{max-width:1480px;margin:0 auto}
+  .eyebrow{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:#9db6d4;font-weight:600;display:flex;gap:10px;align-items:center
+  }
+  .eyebrow .dun{
+    background:rgba(255,255,255,.12);padding:2px 8px;border-radius:4px;
+    letter-spacing:.06em;color:#cfe0f2;white-space:nowrap;flex:none
+  }
+  h1{
+    font-size:clamp(19px,2.5vw,26px);font-weight:700;letter-spacing:-.02em;
+    margin:5px 0 2px;line-height:1.08
+  }
+  .grado{color:#bcd0e8;font-size:13px;font-weight:400}
+  .stats{display:flex;flex-wrap:wrap;gap:0;margin:11px 0 0}
+  .stat{
+    padding:5px 18px 9px 0;margin-right:18px;
+    border-right:1px solid rgba(255,255,255,.14)
+  }
+  .stat:last-child{border-right:none}
+  .stat b{display:block;font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .stat span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9db6d4}
+
+  /* ---------- Legend / filter ---------- */
+  .legend-wrap{
+    position:sticky;top:0;z-index:30;background:rgba(234,238,243,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)
+  }
+  .legend{
+    max-width:1560px;margin:0 auto;padding:8px clamp(16px,4vw,40px);
+    display:flex;flex-wrap:wrap;gap:6px;align-items:center
+  }
+  .legend .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;margin-right:4px}
+  .chip{
+    border:1px solid var(--line);background:var(--surface);
+    padding:3px 9px 3px 7px;border-radius:20px;font-size:11px;font-weight:600;
+    color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+    transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
+  }
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .chip:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .chip[aria-pressed="true"]{color:var(--ink);box-shadow:var(--shadow);
+    border-color:transparent}
+  .chip.reset{color:var(--ink-soft)}
+  body.filtering .chip:not([aria-pressed="true"]):not(.reset){opacity:.5}
+
+  /* ---------- Malla ---------- */
+  .board-scroll{overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+  .board{
+    position:relative;
+    --label-w:28px; --lane-h:66px;
+    max-width:1560px;margin:0 auto;padding:18px clamp(16px,4vw,40px) 8px;
+    display:grid;
+    grid-template-columns:var(--label-w) repeat(10,minmax(138px,1fr));
+    grid-template-rows:auto; grid-auto-rows:var(--lane-h);
+    column-gap:9px; row-gap:6px;
+    align-items:stretch
+  }
+  /* arrow overlay sits above cards but ignores pointer events */
+  .arrows{position:absolute;top:0;left:0;z-index:5;pointer-events:none;overflow:visible}
+  .arrows path.edge{fill:none;stroke:var(--ink-soft);stroke-width:3;opacity:.5;
+    stroke-linecap:round;stroke-linejoin:round;
+    transition:opacity .18s ease,stroke .18s ease,stroke-width .18s ease}
+  .arrows polygon.head{fill:var(--ink-soft);opacity:.42;transition:opacity .18s ease,fill .18s ease}
+  body.no-arrows .arrows{display:none}
+  body.focusing .arrows path.edge{opacity:.06}
+  body.focusing .arrows polygon.head{opacity:.06}
+  .arrows path.edge.on{opacity:1;stroke-width:4.2}
+  .arrows polygon.head.on{opacity:1}
+
+  /* column (semester) headers */
+  .col-head{
+    grid-row:1;align-self:stretch;
+    padding:8px 11px;border-radius:8px;
+    background:var(--surface);border:1px solid var(--line);
+    display:flex;align-items:baseline;justify-content:space-between;z-index:2
+  }
+  .col-head .n{font-size:13px;font-weight:700;color:var(--ink)}
+  .col-head .n small{display:block;font-size:9px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .col-head .cr{font-size:10.5px;color:var(--ink-soft);font-weight:600}
+
+  /* area band tint behind a department's lanes */
+  .band{grid-column:1 / -1;background:var(--bt);border-radius:10px;z-index:0;
+    opacity:.55;margin:-3px -6px;pointer-events:none}
+  /* rotated area label in the left gutter */
+  .band-label{grid-column:1;writing-mode:vertical-rl;transform:rotate(180deg);
+    display:flex;align-items:center;justify-content:center;
+    font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bc);z-index:2;text-align:center;line-height:1.05;padding:2px 0}
+
+  .card{
+    --c:var(--ink-soft);--t:var(--surface-2);
+    position:relative;text-align:left;cursor:pointer;z-index:2;
+    background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    border-bottom:3px solid var(--c);
+    padding:6px 8px 5px;overflow:hidden;font-family:inherit;color:var(--ink);
+    transition:transform .13s ease,box-shadow .13s ease,border-color .13s ease,opacity .18s ease;
+    display:flex;flex-direction:column;justify-content:space-between;gap:3px
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line);border-bottom-color:var(--c)}
+  .card:focus-visible{outline:2.5px solid var(--c);outline-offset:2px}
+  .card .name{font-size:11.5px;font-weight:600;line-height:1.13;color:var(--ink);
+    letter-spacing:-.005em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card .meta{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .card .code{font-size:9.5px;letter-spacing:.03em;color:var(--c);font-weight:700;font-family:ui-monospace,Menlo,monospace}
+  .card .cr{font-size:9.5px;font-weight:700;color:var(--ink-soft);flex:none}
+  body.filtering .card.dim{opacity:.26;filter:saturate(.4)}
+  body.filtering .card.dim:hover{transform:none;box-shadow:none}
+  /* prereq-chain focus states */
+  body.focusing .card{opacity:.22;filter:saturate(.45)}
+  body.focusing .card.chain{opacity:1;filter:none}
+  body.focusing .card.dep{opacity:1;filter:none}
+  .card.chain{box-shadow:var(--shadow);border-color:var(--c)}
+  .card.root{outline:2px solid var(--c);outline-offset:2px}
+  .card.dep{border-style:dashed;border-color:var(--c)}
+
+  /* ---------- Detail drawer ---------- */
+  .backdrop{position:fixed;inset:0;background:rgba(13,26,44,.42);opacity:0;
+    pointer-events:none;transition:opacity .25s ease;z-index:50}
+  .backdrop.show{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(460px,92vw);background:var(--surface);
+    z-index:60;box-shadow:var(--shadow-lg);transform:translateX(100%);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
+  }
+  .drawer.show{transform:translateX(0)}
+  .drawer-head{padding:22px 24px 18px;border-bottom:1px solid var(--line);position:relative}
+  .drawer-head .bar{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c,var(--navy))}
+  .drawer .tag{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    font-weight:700;color:var(--c);background:var(--t);padding:3px 9px;border-radius:20px}
+  .drawer .code{font-size:12px;font-weight:700;color:var(--ink-faint);margin-top:12px;letter-spacing:.04em}
+  .drawer h2{font-size:21px;font-weight:700;letter-spacing:-.02em;margin:3px 0 0;line-height:1.18}
+  .drawer .facts{display:flex;gap:18px;margin-top:14px}
+  .drawer .facts div{font-size:12px;color:var(--ink-soft)}
+  .drawer .facts b{display:block;font-size:17px;color:var(--ink);font-weight:700}
+  .closeb{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;
+    border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:17px;
+    color:var(--ink-soft);line-height:1;display:flex;align-items:center;justify-content:center}
+  .closeb:hover{background:var(--surface-2);color:var(--ink)}
+  .drawer-body{padding:20px 24px 32px;overflow-y:auto;flex:1}
+  .sec-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+    color:var(--ink-faint);margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  .sec+.sec{margin-top:24px}
+  .contenidos{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  ul.ae{list-style:none;display:flex;flex-direction:column;gap:9px}
+  ul.ae li{position:relative;padding-left:22px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+  ul.ae li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;
+    border-radius:50%;background:var(--c)}
+  .empty{font-size:13px;color:var(--ink-faint);font-style:italic}
+  .chips-row{display:flex;flex-wrap:wrap;gap:7px}
+  .prq-chip{display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);border-radius:8px;
+    padding:6px 10px;font-family:inherit;font-size:12.5px;color:var(--ink);text-align:left;
+    transition:border-color .12s ease,box-shadow .12s ease,transform .12s ease}
+  .prq-chip:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+  .prq-chip .pc-dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .prq-chip .pc-code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink-faint);font-weight:700}
+  .prq-chip .pc-name{font-weight:600}
+  .prq-chip .pc-sem{font-size:10.5px;color:var(--ink-faint);font-weight:600}
+
+  footer.foot{max-width:1480px;margin:0 auto;padding:8px clamp(16px,4vw,40px) 40px;
+    color:var(--ink-faint);font-size:12px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+  footer.foot .sep{color:var(--line)}
+
+  @media (max-width:560px){
+    .stat{padding-right:16px;margin-right:16px}.stat b{font-size:20px}
+    .drawer-head{padding:20px 20px 16px}.drawer-body{padding:18px 20px 28px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+  /* page-load stagger */
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .board{animation:fade .35s ease both}
+
+  /* ===== progreso / tracker ===== */
+  .progress-wrap{background:var(--surface);border-bottom:1px solid var(--line)}
+  .progress-inner{max-width:1560px;margin:0 auto;padding:9px clamp(16px,4vw,40px);
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .prog-stats{display:flex;gap:18px}
+  .prog-stat{font-size:12px;color:var(--ink-soft)}
+  .prog-stat b{font-size:16px;color:var(--ink);font-weight:700;margin-right:3px}
+  .prog-bar{position:relative;flex:1;min-width:180px;height:12px;border-radius:7px;
+    background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+  .prog-fill{height:100%;width:0;border-radius:7px;
+    background:linear-gradient(90deg,#16a34a,#22c55e);transition:width .4s cubic-bezier(.4,0,.2,1)}
+  .prog-pct{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    font-size:10px;font-weight:700;color:var(--ink-soft);mix-blend-mode:luminosity}
+  .prog-reset{appearance:none;border:1px solid var(--line);background:var(--surface);
+    color:var(--ink-soft);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;
+    padding:7px 13px;border-radius:8px;transition:background .15s,color .15s}
+  .prog-reset:hover{background:var(--surface-2);color:var(--ink)}
+
+  /* check de aprobación en la tarjeta */
+  .chk{position:absolute;top:6px;right:6px;width:19px;height:19px;border-radius:50%;
+    border:2px solid var(--line);background:var(--surface);cursor:pointer;z-index:4;
+    display:flex;align-items:center;justify-content:center;padding:0;
+    transition:border-color .15s,background .15s,transform .12s}
+  .chk::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;
+    transform:rotate(-45deg) translate(0,-1px);opacity:0;transition:opacity .12s}
+  .chk:hover{border-color:#16a34a;transform:scale(1.12)}
+  .card .name{padding-right:18px}
+
+  /* estados */
+  .card.done{background:#f0fbf3;border-color:#bbe8c8}
+  .card.done .chk{background:#16a34a;border-color:#16a34a}
+  .card.done .chk::after{opacity:1}
+  .card.done .name{color:#15693a}
+  .card.avail{background:#e8f1ff;box-shadow:0 0 0 2px var(--c) inset, var(--shadow)}
+  .card.avail::after{content:"cursable";position:absolute;bottom:5px;right:8px;
+    font-size:8.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c);opacity:.9}
+  .card.avail .cr{visibility:hidden}
+  body.show-locked .card.locked{opacity:.42;filter:saturate(.5)}
+  .dw-aprob{margin-top:16px;width:100%;appearance:none;cursor:pointer;font-family:inherit;
+    font-size:13.5px;font-weight:700;padding:11px;border-radius:9px;border:1.5px solid var(--c);
+    background:var(--surface);color:var(--c);transition:background .15s,color .15s}
+  .dw-aprob:hover{background:var(--t)}
+  .dw-aprob.is-done{background:#16a34a;border-color:#16a34a;color:#fff}
+  .dw-aprob.is-done:hover{background:#15803d}
+</style>
+<link rel="stylesheet" href="../../shared/tokens.css">
+<link rel="stylesheet" href="../../shared/suite-bar.css">
+</head>
+<body>
+<script>window.SUITE_APP_DEPTH = 2;</script>
+<script src="../../shared/auth.js"></script>
+<script>SuiteAuth.requireLogin();</script>
+<script src="../../shared/suite-bar.js" data-app="Malla curricular"></script>
+  <header class="top">
+    <div class="top-inner">
+      <div class="eyebrow">
+        <span>Universidad Andrés Bello · Facultad de Ingeniería</span>
+        <span class="dun">Plan 11303</span>
+      </div>
+      <h1>Ingeniería Civil en Minas</h1>
+      <div class="grado">Plan de estudios · Régimen semestral</div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-inner">
+      <div class="prog-stats">
+        <div class="prog-stat"><b id="prog-aprob">0</b><span id="prog-aprob-l">/ 49 asignaturas</span></div>
+        <div class="prog-stat"><b id="prog-cred">0</b><span>/ 666 créditos UNAB</span></div>
+      </div>
+      <div class="prog-bar" role="progressbar" aria-label="Avance de carrera">
+        <div class="prog-fill" id="prog-fill"></div>
+        <span class="prog-pct" id="prog-pct">0%</span>
+      </div>
+      <button class="prog-reset" id="prog-reset" title="Desmarcar todas">↺ Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="legend-wrap">
+    <div class="legend" id="legend">
+      <span class="lbl">Áreas</span>
+    </div>
+  </div>
+
+  <div class="board-scroll">
+    <div class="board" id="board"></div>
+  </div>
+
+  <footer class="foot" id="foot"></footer>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dw-name" aria-hidden="true">
+    <div class="drawer-head">
+      <div class="bar" id="dw-bar"></div>
+      <button class="closeb" id="dw-close" aria-label="Cerrar detalle">&#10005;</button>
+      <span class="tag" id="dw-tag"></span>
+      <div class="code mono" id="dw-code"></div>
+      <h2 id="dw-name"></h2>
+      <div class="facts">
+        <div>Semestre<b id="dw-sem"></b></div>
+        <div>Créditos<b id="dw-cr"></b></div>
+        <div>Área<b id="dw-area" style="font-size:14px"></b></div>
+      </div>
+      <button class="dw-aprob" id="dw-aprob"></button>
+    </div>
+    <div class="drawer-body">
+      <div class="sec" id="dw-prq-sec">
+        <p class="sec-title">Prerrequisitos</p>
+        <div id="dw-prq" class="chips-row"></div>
+      </div>
+      <div class="sec" id="dw-dep-sec">
+        <p class="sec-title">Habilita</p>
+        <div id="dw-dep" class="chips-row"></div>
+      </div>
+      <div class="sec" id="dw-cont-sec">
+        <p class="sec-title">Contenidos</p>
+        <p class="contenidos" id="dw-cont"></p>
+      </div>
+      <div class="sec" id="dw-ae-sec">
+        <p class="sec-title">Aprendizajes esperados</p>
+        <div id="dw-ae"></div>
+      </div>
+    </div>
+  </aside>
+
+<script>const CURSOS = [{"codigo": "FMMP012", "nombre": "Introducción a las Matemáticas", "semestre": 1, "creditos": 16, "area": "matematicas", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. En este curso se introduce el lenguaje y elementos básicos que permiten tener un punto de partida común para los cursos posteriores. Se refuerza la operatoria en los conjuntos numéricos, resolución de ecuaciones de primer y segundo grado, se trabaja lenguaje matemático en los diferentes puntos a tratar, se introduce el concepto de función, polinomio y se entregan las nociones básicas de trigonometría. ESPERADOS Resolver operaciones con números reales. UNIDAD I: CONJUNTOS NUMÉRICOS (20%) Números enteros y operatoria. Números racionales y operatoria. Números reales y operatoria. Representación decimal. Potencias y raíces. Logaritmos. Solución de problemas en los ámbitos numéricos estudiados. UNIDAD II: ECUACIONES Y Resolver ecuaciones e inecuaciones en DESIGUALDADES (15%) ejercicios matemáticos. Ecuaciones lineales. Ecuaciones cuadráticas. Resolución de problemas que involucran ecuaciones lineales y cuadráticas. Resolución de desigualdades. Valor absoluto. Inecuaciones con valor absoluto. Resolución de problemas que involucran desigualdades. Utilizar las leyes de lógica proposicional y UNIDAD III: LÓGICA Y CONJUNTOS (10%) conjuntos en problemas matemáticos. Lógica proposicional, definición de proposición, tautología, contradicción y contingencia, uso de conectivos en tablas de verdad y proposiciones compuestas. Leyes lógicas, simplificaciones y clasificación de proposiciones compuestas. Cuantificadores, ejemplos de proposiciones con cuantificadores. Conjuntos, definición y conceptos básicos (unión, intersección, diferencia, complemento), propiedades. Diagramas de Venn y aplicación a problemas de encuestas. Resolver ejercicios básicos con polinomios. UNIDAD IV: POLINOMIOS (15%) Expresiones algebraicas Definición de polinomio. Operaciones básicas en los polinomios. Teorema del resto. Raíces de un polinomio. Factorización de polinomios. Fracciones parciales. UNIDAD V: FUNCIONES (25%) Aplicar funciones en la modelación de Funciones reales de variable problemas matemáticos. real. Dominio, recorrido, conjunto de llegada. Representación gráfica de funciones reales. Clasificación de variables. Obtención del gráfico de una función a partir del gráfico de otra función mediante traslaciones, simetrías y homotecias. Funciones pares, impares, periódicas. Funciones crecientes y decrecientes. Álgebra de Funciones. Composición de funciones. Funciones biyectivas e inversas. Ceros y signo de una función. Función lineal. Función cuadrática. Función polinomial. Función racional. Funciones exponencial y logarítmica. Aplicaciones del concepto de función. Utilizar funciones trigonométricas en UNIDAD VI: TRIGONOMETRÍA (15%) problemas contextualizados. Teorema de Pitágoras. Relaciones trigonométricas en el triángulo rectángulo. Teoremas del seno y del coseno. Identidades básicas. Funciones trigonométricas y sus inversas. Resolución de problemas aplicados. BIBLIOGRAFÍA OBLIGATORIA ­ Stewart, J. (1998). Cálculo de una variable. Editorial Thomson. ­ Wisniewski, P. M., & Gutiérrez Banegas, A.L. (2003). Introducción a las matemáticas universitarias; Mc Graw Hill. ­ Zill, D.G. (1999). Algebra y trigonometría. (2ª. edición). Colombia: Ed. Mc Graw Hill.", "aprendizajes": ["Resolver operaciones con números reales.", "Resolver ecuaciones e inecuaciones en ejercicios matemáticos.", "Utilizar las leyes de lógica proposicional conjuntos en problemas matemáticos.", "Resolver ejercicios básicos con polinomios.", "Aplicar funciones en la modelación de problemas matemáticos.", "Utilizar funciones trigonométricas en problemas contextualizados."], "requisitos": [], "lane": 0, "eje": "matematicas"}, {"codigo": "CFIS310", "nombre": "Física General", "semestre": 1, "creditos": 18, "area": "ciencias", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. Este es un curso introductorio de física en el cual se sientan las bases de esta ciencia, así como sus estructuras conceptuales básicas de tal forma que este curso recorre diferentes tópicos para que el estudiante pueda aplicar principios físicos fundamentales contribuyendo al desarrollo del conocimiento y razonamiento científico. ESPERADOS Analizar las causas y la descripción del UNIDAD I: DESCRIPCIÓN DEL movimiento de una partícula en una dimensión MOVIMIENTO DE UNA PARTÍCULA con aceleración constante para realizar las Consistencia y conversión de conversiones de unidad en SI en problemas unidades. asociados a las leyes de Newton. Descripción del movimiento y vectores: posición, velocidad y aceleración. Análisis gráfico de la cinemática de una partícula. Pendiente y noción de rapidez de cambio. Área encerrada por una curva y concepto de cambio Concepto de Fuerza y Leyes de Newton en 1D. Diagramas de Cuerpo Libre aplicado a sistemas mecánicos simples. Trabajo y Conservación de la Energía mecánica Aplicar leyes de la Termodinámica UNIDAD II: ELEMENTOS DE evaluando las variables termodinámicas en el TERMODINÁMICA equilibrio para describir el comportamiento Calor y temperatura. térmico de un sistema. Escalas Termométricas Equilibrio térmico. Dilatación térmica. Flujo de calor. Gráfico Presión vs Volumen: Trabajo Termodinámico Primer principio de la Termodinámica. Ciclos termodinámicos y Eficiencia Térmica. Aplicar las leyes de la electrostática a UNIDAD III: ELECTRICIDAD sistemas de cargas eléctricas, en reposo y en Carga eléctrica y su conservación movimiento en circuitos de resistores Campo y Potencial electroestático sometidos a corriente eléctrica constante para Fuerza y Energía potencial describir sus comportamientos utilizando electroestática. estrategias simplificadas. Corriente eléctrica, resistividad Gráfico Corriente vs Voltaje: resistencia eléctrica, ley de Ohm y Potencia Circuitos básicos con resistencias. Utilizar propiedades de los fenómenos UNIDAD IV: ONDAS Y SU PROPAGACIÓN ondulatorio para caracteriza la propagación de Ondas en una cuerda y la luz en el vacío y las ondas mecánicas en caracterización de una onda. cuerdas. Reflexión y refracción La Luz como rayo, lentes y espejos esféricos y formación de imágenes. BIBLIOGRAFÍA OBLIGATORIA Hewitt P. G. (2008). Física Conceptual. Adison Wesley. Serway, R. A., Jewett, J. W., Hernández, A. E. G., & López, E. F. (2005). Física para ciencias e ingeniería. (Vol. ). Thomson. Serway, R. A., Jewett, J. W., Hernández, A. E. G., & López, E. F. (2005). Física para ciencias e ingeniería. (Vol. ). Thomson.", "aprendizajes": ["Analizar las causas y la descripción del movimiento de una partícula en una dimensión con aceleración constante para realizar las conversiones de unidad en SI en problemas asociados a las leyes de Newton.", "Aplicar leyes de la Termodinámica evaluando las variables termodinámicas en el equilibrio para describir el comportamiento térmico de un sistema.", "Aplicar las leyes de la electrostática a sistemas de cargas eléctricas, en reposo y en movimiento en circuitos de resistores sometidos a corriente eléctrica constante para describir sus comportamientos utilizando estrategias simplificadas.", "Utilizar propiedades de los fenómenos ondulatorio para caracteriza la propagación de la luz en el vacío y las ondas mecánicas en cuerdas."], "requisitos": [], "lane": 1, "eje": "ciencias"}, {"codigo": "TDFI101", "nombre": "Introducción a la Ingeniería", "semestre": 1, "creditos": 16, "area": "digital", "contenidos": "Al finalizar la asignatura, los estudiantes serán capaces de: Describir el rol de la Ingeniería en la sociedad y los procesos de la organización y el impacto de la Ingeniería en la mejora continua de estos. Identificar y dar solución a problemáticas y necesidades de alto impacto que agreguen valor a los usuarios de instituciones privadas y/ públicas. Generar el prototipo de un producto innovador de base tecnológica. Transmitir propuestas de valor y modelos de negocio y seleccionar Herramientas tecnológicas a utilizar. ESPERADOS Distinguir los desafíos actuales de la UNIDAD I: FUNDAMENTOS TÉCNICOS DE INGENIERÍA sociedad u organizaciones estableciendo los Origen etimológico y práctico de la profesión. fundamentos de un proyecto de ingeniería para Evolución de la ingeniería y diversificación de la comprensión del valor estratégico de la disciplinas. profesión. Desarrollo sostenible y código de ética de ingenieros. Conceptos claves de los proyectos de ingeniería. El método ingenieril y los proyectos interdisciplinarios. Apresto ingenieril y modelos de negocios, herramientas y estrategias (SMART). Analizar el contexto de la situación actual, obtenida del levantamiento de información, para UNIDAD II: IDENTIFICANDO PROBLEMÁTICAS la definición del alcance y propuesta de solución. Identificación de problemáticas: técnicas y herramientas. Fundamentación: obtención de Información. Generación de alternativas de solución. Diseños preliminares de las propuestas. Elementos del entorno: desarrollo sustentable y tecnologías emergentes. Crear una propuesta de valor ingenieril, Evaluación y selección de la mejor solución. presentando soluciones y/ mejoras mediante estrategias de comunicación, para abordar un UNIDAD III: AGREGANDO VALOR desafío organizacional. Técnicas y herramientas. Responsabilidad social empresarial. . Diseño de un proceso creativo. Diseño centrado en el usuario y la usabilidad. Prototipado y validación de un producto mínimo viable. BIBLIOGRAFÍA OBLIGATORIA Kirk D. Hagen. (2013). “Introducción a la Ingeniería: enfoque a la resolución de problemas”. ISBN: 9786074422238 (libro electrónico). Talledo, M. (2013). Guía de los Fundamentos para la Dirección de Proyectos (Cuarta Edición ed.). Pennsylvania: Project Manager Institute, Inc. ISBN: 9781933890722 Norton, P. (2014). Introducción a la computación (6a. ed.). Disponible en https://ebookcentral proquest-com.recursosbiblioteca.unab.cl Jones, G. R., & George, J. M. (2014). Administración contemporánea (8a. ed.). Disponible en https://ebookcentral-proquest-com.recursosbiblioteca.unab.cl", "aprendizajes": ["Distinguir los desafíos actuales de la sociedad u organizaciones estableciendo los fundamentos de un proyecto de ingeniería para la comprensión del valor estratégico de la profesión.", "Analizar el contexto de la situación actual, obtenida del levantamiento de información, para la definición del alcance y propuesta de solución.", "- Crear una propuesta de valor ingenieril, presentando soluciones y/o mejoras mediante estrategias de comunicación, para abordar un desafío organizacional. 1."], "requisitos": [], "lane": 7, "eje": "digital"}, {"codigo": "TDFI102", "nombre": "Introducción a la Programación", "semestre": 1, "creditos": 18, "area": "digital", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. Al finalizar la asignatura el estudiante será capaz de aplicar el pensamiento computacional para resolver problemas mediante la programación, combinando el modelado de datos y el diseño de algoritmos con la construcción y depuración de programas. ESPERADOS Explicar conceptos básicos de la UNIDAD I: FUNDAMENTOS DE computación y la programación tales como PROGRAMACIÓN EN PYTHON variable, operador, condicional, ciclo y función Esquema general de un computador. para describir la solución computacional de un Ejecución de programas en un problema. computador en lenguajes interpretados y compilados. El concepto de algoritmo y programa. Representación de un algoritmo. Representación de la información en un computador y el concepto de Tipo de Dato. El concepto de variable. Operadores y Expresiones. Operaciones de Entrada y Salida. Control de Flujo – técnicas de resolución de problemas y diseño. Técnicas de prueba y depuración de programas. UNIDAD II: ORGANIZACIÓN DE Aplicar técnicas de modelado de datos y PROGRAMAS USANDO FUNCIONES creación de algoritmos para diseñar la solución computacional de un problema. El concepto de modularidad. Técnicas de descomposición funcional. Uso de bibliotecas de funciones en Python. Creación de Funciones. El concepto de variable global y variable local. UNIDAD III: ORGANIZACIÓN DE PROGRAMAS USANDO CLASES Desarrollar programas utilizando el El concepto de clase y objeto. lenguaje de programación Python y un entorno La clase String. de desarrollo para implementar la solución La clase Lista. computacional a un problema. La clase Archivo. Modelamiento usando Clases. Definición de Clases en Python. BIBLIOGRAFÍA OBLIGATORIA Downey, A. (2013). Think Python. Green Tea Press. Accesado el de diciembre de 2019 enhttps://greenteapress.com/wp/think-python 2e/ Lutz, M. (2013). Learning python: Powerful object-oriented programming. O'Reilly Media, Inc. Python software foundation, Python v3 Documentation, Accesado el de diciembre de 2019 en https://docs.python.org/ /.", "aprendizajes": ["Explicar conceptos básicos de la computación y la programación tales como variable, operador, condicional, ciclo y función para describir la solución computacional de un problema.", "Aplicar técnicas de modelado de datos creación de algoritmos para diseñar la solución computacional de un problema.", "Desarrollar programas utilizando el lenguaje de programación Python y un entorno de desarrollo para implementar la solución computacional a un problema."], "requisitos": [], "lane": 8, "eje": "digital"}, {"codigo": "FMMP112", "nombre": "Cálculo Diferencial", "semestre": 2, "creditos": 16, "area": "matematicas", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. La asignatura de Cálculo Diferencial constituye una instancia de aprendizaje, indagación, reflexión, desarrollo de destrezas y habilidades científicas, que focaliza su estudio en el análisis y aplicación de los conceptos de límite y continuidad, derivadas y matrices. Estos conceptos son la base para comprender los tópicos a tratar en las disciplinas de profundización en el plan de estudios de la carrera específica. ESPERADOS Analizar límites y continuidad de UNIDAD I: LÍMITE Y CONTINUIDAD (30%): funciones. Idea intuitiva de límite utilizando tablas y gráficas. Definición formal de límite. Límites laterales. Unicidad del límite. Álgebra de límites. Límites al infinito y de valor infinito. Continuidad en un punto y en un conjunto. Álgebra de funciones continuas. Teorema del límite comprendido. Límites indeterminados. Resolución de indeterminaciones. Teorema del Valor Intermedio. Existencia de extremos absolutos de una función continua definida en un intervalo cerrado. Aplicar derivadas en la resolución de problemas matemáticos. UNIDAD II: DERIVADAS (40%): Definición de derivada en un punto y en un intervalo. Interpretación geométrica. La función derivada. Derivadas elementales. Álgebra de derivadas. Regla de la Cadena. Derivadas de orden Superior. Derivación implícita. Derivada de la función inversa. Curvas definidas paramétricamente. Derivadas paramétricas. La derivada como razón de cambio. Teorema de Rolle. Teorema del Valor Medio. Estudio de Curvas. Problemas de optimización. Regla de L´Hopital. Utilizar matrices en resolución de UNIDAD III: MATRICES (30%): sistemas de ecuaciones lineales. Definición. Matrices especiales. Operaciones básicas y propiedades. Matriz Inversa. Resolución de ecuaciones matriciales. Definición de Matrices elementales. Eliminación Gaussiana. Sistemas Lineales. Cálculo de inversas. Determinantes. BIBLIOGRAFÍA OBLIGATORIA Larson Hoteler, E. (2004). Cálculo. (Volúmenes y ). Mc-Graw Hill. Leithol, L. (1998). Cálculo. Harla. Stein, S. K., & Barcellos, A. (2000). Cálculo y Geometría Analítica. Mc-Graw Hill.", "aprendizajes": ["Analizar límites y continuidad de funciones.", "Aplicar derivadas en la resolución de problemas matemáticos.", "Utilizar matrices en resolución de sistemas de ecuaciones lineales."], "requisitos": ["FMMP012"], "lane": 0, "eje": "matematicas"}, {"codigo": "CFIS328", "nombre": "Física Experimental", "semestre": 2, "creditos": 16, "area": "ciencias", "contenidos": "Al finalizar la asignatura, los estudiantes serán capaces de utilizar métodos de obtención y tratamiento de datos que les permita establecer relaciones entre variables relevantes involucradas en un fenómeno físico, integrando experiencia experimental, interpretación de resultados y revisión teórica de los hallazgos en colaboración con pares. UNIDAD I: MEDICIÓN Y LEYES FÍSICAS — Estimaciones de Fermi; medición, errores y su tratamiento; muchos datos, distribución gaussiana y análisis estadístico; variables físicas y diagramas de dispersión; ajuste de datos, rectificación, leyes físicas y noción de función. UNIDAD II: HERRAMIENTAS MATEMÁTICAS Y PROBLEMAS DE LA FÍSICA — Sistemas de referencia, vectores, trayectoria, posición y velocidad media y cambios de sistema de referencia; pendiente, rapidez de cambio y noción física de la derivada; información y áreas bajo la curva en gráficos. UNIDAD III: MODELOS MATEMÁTICOS EN LA FÍSICA — Modelos de dependencia lineal y cuadráticos; modelos de interacción a distancia; modelos periódicos; modelos exponenciales y logarítmicos.", "aprendizajes": ["Discutir tanto la validez como el rango de validez de los resultados obtenidos, para una muestra de datos en un procedimiento experimental.", "Relacionar adecuadamente las variables causales involucradas en un experimento, para la formulación de leyes empíricas y la determinación de constantes experimentales.", "Seleccionar modelos matemáticos sencillos, para la descripción de fenómenos recurrentes en Ciencias Físicas."], "requisitos": ["CFIS310", "FMMP012"], "lane": 1, "eje": "ciencias"}, {"codigo": "ICMI121", "nombre": "Geología I", "semestre": 2, "creditos": 11, "area": "geologia", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 3, "eje": "geologia"}, {"codigo": "TDFI103", "nombre": "Base de Datos", "semestre": 2, "creditos": 15, "area": "digital", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. Al finalizar la asignatura, los estudiantes serán capaces de gestionar la información por medio de herramientas de bases de datos, realizando modelos de datos eficientes, escalables y con reglas claras, con el objetivo que las empresas cuenten con información de calidad, precisa, oportuna, confiable. ESPERADOS Modelar información para el diseño UNIDAD I: LOS SISTEMAS DE BASES DE eficiente de una base de datos relacional. DATOS Y SUS MODELOS Introducción a las bases de datos Características de la metodología de bases de datos -Ventajas de utilizar una metodología de bases de datos -Modelos de Datos Tipo de Arquitecturas de un DBMSs Aplicar herramientas tecnológicas para la UNIDAD II: EL MODELO RELACIONAL construcción de una base de datos. Modelos conceptuales para diseño de base de datos Conceptos modelo relacional Tipo de relaciones, entidades y modelos Tipo de notación diagramas Entidad Relación (E/R) Modelado de Restricciones Restricciones del modelo relacional Diseño de bases de datos relacionales Dependencias funcionales y normalización Integrar la base de datos con una UNIDAD III: TÉCNICAS DE PROGRAMACIÓN herramienta de consulta para la gestión de la SQL Y GESTIÓN DE LA INFORMACIÓN información. Definición de datos y tipo de datos SQL Manejo de Restricciones y Esquemas Consultas básica y complejas SQL Creación y manipulación de Tablas y Vistas Implementación de Operadores Relacionales Gestión de la información BIBLIOGRAFÍA OBLIGATORIA Date, C. J. (2001). Introducción a los sistemas de bases de datos. Pearson Educación. Elmasri, R. A. N., Elmasri, S. B. A., & Navathe, S. B. (2014). Fundamentos de sistemas de bases de datos. Addison Wesley. Silberschatz, A., Korth, H. F., Sudarshan, S., Pérez, F. S., Santiago, A. I., & Sánchez, A. V. (2006). Fundamentos de bases de datos. McGraw-Hill.", "aprendizajes": ["Modelar información para el diseño eficiente de una base de datos relacional.", "Aplicar herramientas tecnológicas para la construcción de una base de datos.", "Integrar la base de datos con una herramienta de consulta para la gestión de la información."], "requisitos": ["TDFI102"], "lane": 7, "eje": "digital"}, {"codigo": "CEGHC11", "nombre": "Habilidades Comunicativas", "semestre": 2, "creditos": 8, "area": "formaciongeneral", "contenidos": "Curso impartido bajo la modalidad de taller que tiene como objetivo desarrollar en el estudiante habilidades comunicativas orales y escritas, a fin de optimizar su comunicación tanto profesional como en la vida diaria. El estudiante desarrollará las habilidades de tal manera que podrá comprender todo discurso tanto oral como escrito y a la vez producir sus propios discursos de manera coherente, lógica, fluida y con el tono y el estilo adecuado a cualquier circunstancia. Su formación contempla el desarrollo del Resultado de Aprendizaje de Formación General “Desarrollar el pensamiento crítico a través de la argumentación, exponiendo a través de un lenguaje oral y escrito adecuado al ámbito académico y profesional, y utilizando un método basado en criterios, hechos y evidencias”. Lo anterior se enmarca en el programa de Educación general de la UNAB que tiene por objetivo, dotar a los estudiantes de habilidades de formación transferibles a cualquier área disciplinar. ESPERADOS AE. Redactar textos de forma coherente y clara, UNIDAD I: PRODUCCIÓN DE TEXTOS. usando las normas lingüísticas y sintácticas, Los objetivos de la comunicación, y los gramaticales y ortográficas del idioma. lectores a los que va dirigido. Conocimientos básicos de la comunicación lingüística. Autocorrección sintáctica, ortográfica y gramatical. AE. Exponer un tema con propiedad lingüística y UNIDAD II: LA COMUNICACIÓN VERBAL Y NO comunicativa, haciendo uso de tics. VERBAL. Funciones de la comunicación no verbal en la intervención humana. La importancia de la palabra en relación a la identidad del ser. Somos lo que hablamos y cómo hablamos. Pensar antes de hablar. Factores de la comunicación oral como el discurso corporal, y otros componentes paralingüísticos. Técnicas básicas de Tics. AE. Expresar de manera oral y escrita, con solidez UNIDAD III: LA ARGUMENTACIÓN Y LA argumentativa ideas posturas, ciñéndose a la EXPRESIÓN ORAL Y ESCRITA. estructura del modelo A.R.E. (Afirmaciones+ Organización y estructura de una Razones+ Evidencias). presentación oral. Argumentativa. Manejo del raciocinio y la velocidad de pensamiento. Recursos para una buena comunicación oral., que la disertación sea fluida, interesante y capte la atención del auditorio. Estructura básica de la argumentación. modelo ARE. BIBLIOGRAFÍA OBLIGATORIA Araya, Eric. (2013), Abece De Redacción. Editorial Océano. Castelló, Monserrat (Coord.). (2007). Escribir y comunicar en contextos científicos y académicos. Barcelona: Editorial Graó. Solé, Isabel. (2005). Estrategias de lectura. Barcelona: Edit. GRAÓ.", "aprendizajes": ["AE.1 Redactar textos de forma coherente y clara, usando las normas lingüísticas y sintácticas, gramaticales y ortográficas del idioma. AE.2 Exponer un tema con propiedad lingüística comunicativa, haciendo uso de tics. AE.3 Expresar de manera oral y escrita, con solidez argumentativa ideas o posturas, ciñéndose a estructura del modelo A.R.E. (Afirmaciones+ Razones+ Evidencias)."], "requisitos": [], "lane": 15, "eje": "formaciongeneral"}, {"codigo": "FMMP212", "nombre": "Cálculo Integral", "semestre": 3, "creditos": 16, "area": "matematicas", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. DECRIPCIÓN DE LA ASIGNATURA: En este curso se estudian los elementos principales del cálculo integral. Se introducen los conceptos básicos de sucesiones y series, y se utilizan para representar funciones como series de potencias. Se estudian las ecuaciones de rectas y planos en R3. Se trata continuidad y derivadas de funciones de varias variables, y se utilizan para el cálculo de extremos de funciones. ESPERADOS Calcular integrales con métodos de UNIDAD I: INTEGRALES sustitución, integración por partes y Primitivas e integración indefinida. fracciones parciales. Teorema Fundamental del Cálculo. Integral definida. Cálculo de integrales. Teorema del cambio de variable. Fórmulas generales de integración. Sustituciones simples y trigonométricas. Integración usando fracciones parciales. Integración por partes. Aplicar la integral al cálculo de áreas, UNIDAD II: APLICACIÓN DE LA INTEGRAL volúmenes, longitudes y superficies de Cálculo de áreas. sólidos. Cálculo de volúmenes de revolución. Cálculo de longitudes de curvas. Área de superficie de revolución. Otras aplicaciones. Calcular integrales impropias de primera UNIDAD II: INTEGRALES IMPROPIAS y segunda especie. Integrales impropias de primera especie. Integrales impropias de segunda especie. Utilizar series de potencias para UNIDAD IV: SERIES representar funciones. Definición de sucesión y convergencia. Límite de sucesiones. Definición de series: sumas parciales, series geométricas y telescópicas. Series de términos no negativos: criterio de comparación al límite, criterio del cociente, criterio de la raíz, criterio de la integral. Series alternantes: criterio de Leibnitz. Series de potencias: intervalo y radio de convergencia. Series de Taylor y MacLaurin. Representación de funciones como serie de potencias. Calcular en el espacio euclidiano UNIDAD V: EL ESPACIO EUCLIDIANO Rn ecuaciones de planos y rectas. R^{n} como espacio vectorial sobre R. Producto interno, norma y distancia en R^{n}. Producto vectorial Interpretaciones geométricas en R^{ } del producto interno y del producto vectorial Aplicaciones geométricas: componentes de un vector, ecuaciones de planos y rectas. Aplicar derivadas parciales en la UNIDAD VI: DERIVADAS PARCIALES optimización de funciones. Funciones escalares y vectoriales de varias variables. Límite y continuidad de funciones de varias variables. Ejemplos y contraejemplos. Derivadas parciales. Derivadas de orden superior. Regla de la cadena. Aplicaciones de la derivada. Plano tangente a una superficie. Tangente a una curva. Plano normal a una curva. Máximos y mínimos. Criterio del hessiano. Método de multiplicadores de Lagrange. BIBLIOGRAFÍA OBLIGATORIA Larson, R. (2015). Cálculo y Geometría Analítica. Mc Graw Hill. Leithold, L. (1998)). El Cálculo. Harla. Stewart, J. (1998). Cálculo de una variable Thompson.", "aprendizajes": ["Calcular integrales con métodos de sustitución, integración por partes y fracciones parciales.", "Aplicar la integral al cálculo de áreas, volúmenes, longitudes y superficies de sólidos.", "Calcular integrales impropias de primera segunda especie.", "Utilizar series de potencias para representar funciones.", "Calcular en el espacio euclidiano ecuaciones de planos y rectas.", "Aplicar derivadas parciales en la optimización de funciones."], "requisitos": ["FMMP112"], "lane": 0, "eje": "matematicas"}, {"codigo": "CFIS332", "nombre": "Mecánica", "semestre": 3, "creditos": 18, "area": "ciencias", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. Al finalizar la asignatura, los estudiantes serán capaces de: aplicar las leyes fundamentales de la mecánica clásica bajo la formulación newtoniana, que abarcan conceptos de movimiento, fuerza, trabajo y energía, brindándole al estudiante herramientas para análisis y comprensión de fenómenos relacionados con el movimiento de partículas, sistemas de partículas, y su versión continua en la forma de sólido rígido. ESPERADOS Analizar cualitativa y cuantitativamente el UNIDAD I: CINEMÁTICA movimiento de una partícula utilizando Cinemática de una partícula en coordenadas curvilíneas a para resolver coordenadas polares, cilíndricas y/ problemas asociados a la cinemática de la esféricas partícula. Movimiento acelerado con aceleración constante en y dimensiones. Movimiento con aceleración variable. Movimiento circular y su relación con la posición, velocidad y aceleración angular. Aplicar los principios de Newton para UNIDAD II: DINÁMICA Y LEYES DEL determinar las ecuaciones de movimiento y la MOVIMIENTO aceleración de una partícula sólido rígido. Ecuaciones de movimiento en coordenadas cartesianas, cilíndricas y esféricas. Movimiento armónico simple y oscilaciones amortiguadas. Producto cruz entre vectores Definición de momento de inercia para un sólido rígido Torque Neto y ecuaciones del movimiento en rotación. Aplicar los conceptos de trabajo, fuerza, UNIDAD III: TRABAJO Y ENERGÍA potencia y energía mecánica para resolver Trabajo mecánico problemas de interacciones entre sistemas Teorema de trabajo y la energía físicos considerando las condiciones de Fuerzas conservativas y no conservación de la energía mecánica. conservativas Energía cinética traslacional y rotacional Energía potencial Conservación de la energía mecánica Aplicar las condiciones de conservación UNIDAD IV: COLISIONES para el análisis del intercambio de momentum Movimiento relativo y sistema de entre partículas y/ sólidos rígidos en un referencia centro de masas. sistema cerrado. Momentum lineal y su conservación Impulso y Momentum lineal Colisiones centrales en y dimensiones. Colisiones no centrales. Momentum Angular de un sólido rígido y su conservación BIBLIOGRAFÍA OBLIGATORIA Alonso M., & Finn E. (1976). Física. Fondo Educativo Interamericano. Sears, F., Zemansky, D., Young D., & Freedman, R. (2004). Física Universitaria. (11ª edición) Pearson. Serway, R. A., Jewett, J. W., Hernández, A. E. G., & López, E. F. (2005). Física para ciencias e ingeniería (Vol. ). Thomson.", "aprendizajes": ["Analizar cualitativa y cuantitativamente el movimiento de una partícula utilizando coordenadas curvilíneas a para resolver problemas asociados a la cinemática de la partícula.", "Aplicar los principios de Newton para determinar las ecuaciones de movimiento y la aceleración de una partícula o sólido rígido.", "Aplicar los conceptos de trabajo, fuerza, potencia y energía mecánica para resolver problemas de interacciones entre sistemas físicos considerando las condiciones de conservación de la energía mecánica.", "Aplicar las condiciones de conservación para el análisis del intercambio de momentum entre partículas y/o sólidos rígidos en un sistema cerrado."], "requisitos": ["CFIS328", "FMMP112"], "lane": 1, "eje": "ciencias"}, {"codigo": "QUIM090", "nombre": "Química y Ambiente", "semestre": 3, "creditos": 10, "area": "ciencias", "contenidos": "La asignatura Química y Ambiente contribuye al desarrollo de las ciencias básicas, permitiendo al estudiante examinar los principios básicos de la química y su interrelación con otras ciencias naturales, familiarizándose con conceptos que posibiliten explicar las transformaciones químicas de la materia: estequiometría, gases, soluciones, energía y equilibrio químico. UNIDAD I: ESTEQUIOMETRÍA — Ecuaciones químicas: escritura y balanceo; pesos atómicos y moleculares, escala de masas atómicas; el mol; reactivo limitante y rendimiento de una reacción. UNIDAD II: GASES Y ATMÓSFERA — Características generales de los gases; presión de gases y el manómetro; leyes de los gases; la atmósfera y el aire; cambio climático, contaminación y su control; contaminantes y reguladores. UNIDAD III: ENERGÍA Y SOCIEDAD — Fundamentos y transferencia de energía; fuentes de energía y energías renovables; problemas ambientales y calentamiento global; huella de carbono. UNIDAD IV: QUÍMICA EN SOLUCIÓN — Nomenclatura; composición de soluciones; unidades de concentración (% m/m, % m/v, ppm, M, m); diluciones; electrólitos fuertes y débiles; reacciones de precipitación y solubilidad; tratamiento de contaminantes y RILES. UNIDAD V: EQUILIBRIO QUÍMICO — Constantes de equilibrio Kc y Kp; concentraciones en el equilibrio y principio de Le Chatelier; equilibrio ácido-base; disociación del agua; concepto y escalas de pH; lluvia ácida.", "aprendizajes": ["Realizar cálculos estequiométricos en función del concepto de mol y del número de Avogadro.", "Relacionar las características y propiedades de los gases y las variables que inciden en su comportamiento.", "Calcular cantidades de energía intercambiada en una reacción química (variación de entalpía ΔH), la variación de entropía (ΔS) y el concepto de espontaneidad asociado a la variación de energía libre de Gibbs (ΔG).", "Asociar el concepto, propiedades y aspectos fundamentales de las disoluciones en reacciones acuosas y no acuosas.", "Realizar cálculos de equilibrio químico para diferentes sistemas (gaseosos, soluciones de electrolitos fuertes y débiles)."], "requisitos": [], "lane": 2, "eje": "ciencias"}, {"codigo": "ICMI211", "nombre": "Geología II", "semestre": 3, "creditos": 11, "area": "geologia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI121"], "lane": 3, "eje": "geologia"}, {"codigo": "TDFI104", "nombre": "Compliance & Accountability", "semestre": 3, "creditos": 10, "area": "digital", "contenidos": "Al finalizar el curso, los estudiantes conocerán conceptos normativos y sus principales definiciones, con el objetivo que comprendan que el contexto corporativo normativo externo, debe ser considerado como un insumo al diseñar un plan de transformación digital. ESPERADOS Interpretar las normativas del Derecho UNIDAD I: INTRODUCCIÓN Y PRINCIPIOS DEL Societario, Laboral, tributario y civil para aplicarla DERECHO dentro de una organización. Tipos de ordenamientos jurídicos nacionales. Principios del Derecho. Identificación de legislación y normativas aplicables. Derecho societario y creación de empresas. Analizar las consecuencias jurídicas del Sistema tributario actuar personal y organizacional, para evitar Ley de impuestos a la renta consecuencias que impacten negativamente en la Otros impuestos y correcciones monetarias organización. Teoría de los Contratos Derecho Laboral Describir los conceptos de Gobierno Corporativo, Responsabilidad Social Empresarial y UNIDAD II: RESPONSABILIDAD DE LAS EMPRESAS Compliance, para ser aplicados en el ámbito Información confidencial, personal sensible medioambiental, laboral, tributario, penal, entre Responsabilidad Empresarial (Jurídica y Social) otros contextos. Compliance y Accountabilty Compliance Medio Ambiental, Laboral, Tributario, Penal General y Ciberseguridad Compliance Penal por Ley de Responsabilidad Penal de la Persona Jurídica Nº20. . BIBLIOGRAFÍA OBLIGATORIA Squella, A. (2014). Introducción al Derecho. Thomson Reuters. Gamboa, F., & Fernández, M. (2013). Tratado de Derecho Internacional Público. Thomson Reuters.", "aprendizajes": ["Interpretar las normativas del Derecho Societario, Laboral, tributario y civil para aplicarla dentro de una organización.", "Analizar las consecuencias jurídicas del actuar personal y organizacional, para evitar consecuencias que impacten negativamente en la organización.", "Describir los conceptos de Gobierno Corporativo, Responsabilidad Social Empresarial Compliance, para ser aplicados en el ámbito medioambiental, laboral, tributario, penal, entre otros contextos."], "requisitos": ["TDFI101"], "lane": 7, "eje": "digital"}, {"codigo": "FMSP316", "nombre": "Métodos Cuantitativos", "semestre": 4, "creditos": 20, "area": "matematicas", "contenidos": ": Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones Esta asignatura tiene dos objetivos principales: Por un lado, entrega al estudiante los conceptos estadísticos que le permitan interpretar de manera crítica información relevante para su futuro quehacer profesional, y por otro, capacitarlo en el uso de software para el procesamiento y análisis de datos cuantitativos. Al finalizar la asignatura, los estudiantes serán capaces de manejar información en forma científica en sus propios proyectos. ESPERADOS Modelar fenómenos y procesos aleatorios UNIDAD I: PROBABILIDAD con formalidad matemática y apoyo de software, Probabilidad con aplicación al cálculo de probabilidades y la Probabilidad condicional y teorema toma de decisiones. de Bayes, independencia Variables aleatorias discretas y continuas, distribuciones de uso frecuente en modelamiento Esperanza, varianza Distribución conjunta, marginales, independencia de variables aleatorias Ley de los grandes números, Teorema central del límite Aplicar metodología estadística a datos de UNIDAD II: ESTADÍSTICA INFERENCIAL una muestra con el fin de realizar inferencia Estimación de parámetros respecto del comportamiento de los parámetros Intervalo de confianza y prueba de de la distribución de probabilidad subyacente a la hipótesis (paramétrica y no población. paramétrica): i. Sobre la media con varianza conocida y desconocida ii. Sobre la varianza iii. Sobre la proporción Prueba de bondad de ajuste Implementar el modelo de regresión lineal UNIDAD III: ECONOMETRÍA multivariada por medio de recursos Regresión lineal múltiple computacionales tales como python y/ R, Selección de modelos levantando los supuestos clásicos si es pertinente, Heterocedasticidad con el objetivo de pronosticar el comportamiento Autocorrelación empírico de variables relevantes en diversos Multiconlinealidad procesos. BIBLIOGRAFÍA OBLIGATORIA Devore, J. L. (2008). Probabilidad y estadística para ingenierías y ciencias. Cengage Learning Editores. Gujarati, D. N., y Porter, D. C. (2011). Econometría básica. (5ª ed). McGraw-Hill Education. Walpole, R. E., Myers, R. H., Myers, S. L., y Ye, K. (2007). Probabilidad y estadística para ingeniería y ciencias. Norma, , .", "aprendizajes": ["Modelar fenómenos y procesos aleatorios con formalidad matemática y apoyo de software, con aplicación al cálculo de probabilidades y la toma de decisiones.", "Aplicar metodología estadística a datos de una muestra con el fin de realizar inferencia respecto del comportamiento de los parámetros de la distribución de probabilidad subyacente a la población.", "Implementar el modelo de regresión lineal multivariada por medio de recursos computacionales tales como python y/o R, levantando los supuestos clásicos si es pertinente, con el objetivo de pronosticar el comportamiento empírico de variables relevantes en diversos procesos."], "requisitos": ["FMMP212"], "lane": 0, "eje": "matematicas"}, {"codigo": "ICMI222", "nombre": "Evaluación de Yacimientos", "semestre": 4, "creditos": 12, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI211"], "lane": 4, "eje": "mineria"}, {"codigo": "ICMI223", "nombre": "Minería y Energía para Rajo Abierto y Subterránea", "semestre": 4, "creditos": 10, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["CFIS332", "FMMP212"], "lane": 5, "eje": "mineria"}, {"codigo": "ICMI221", "nombre": "Integrador I: Práctica I", "semestre": 4, "creditos": 14, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["CFIS332", "FMMP212", "TDFI104", "QUIM090", "ICMI211"], "lane": 12, "eje": "integracion"}, {"codigo": "ING119", "nombre": "Inglés I", "semestre": 4, "creditos": 12, "area": "ingles", "contenidos": "Desarrollar habilidades comunicación en inglés, para desenvolverse en situaciones cotidianas, laborales y académicas. Curso de carácter introductorio, que sienta las bases para la adquisición de las competencias lingüísticas del nivel A1 del Marco Común Europeo de las Lenguas. Al finalizar el curso, el estudiante será capaz de comunicarse efectiva y naturalmente, en forma oral y escrita, en ámbitos de la vida diaria, desde el contexto personal hasta los entornos más cercanos, refiriéndose al presente y futuro, usando una escritura, pronunciación y entonación adecuadas. ESPERADOS AE : Comunicar efectivamente UNIDAD I: “MEET A ROCK STAR” información personal utilizando Be: Affirmative. estructuras básicas, ya sea en forma oral Be: Yes/No Questions. escrita. Be: Contractions. AE : Identificar el significado general y UNIDAD II: “AGAINST THE LAW” detalles relevantes de una interacción, ya sea en forma oral escrita. Be: Short Answers. This/That/These/Those. Crime. AE : Consolidar de unidades UNIDAD III: ENRICHMENT UNIT ” previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral Music. escrita. Missing Money. Can I help? Be: Tag questions. UNIDAD IV: “AT THE RESTAURANT” AE : Expresar opiniones respecto a comidas y alimentación, ya sea en forma Talk about Food. oral escrita. Nouns: Singular/Plural. Nouns: There Is/There Are. Nouns: Articles. AE : Expresar gustos y preferencias UNIDAD V: “ON A BUSINESS TRIP” personales en el contexto de viajes utilizando estructuras básicas, ya sea en Present Progressive: forma oral escrita. Affirmative. Present Progressive: Yes/ No. Questions. Present Progressive: Short. Answers. AE : Consolidar de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral UNIDAD VI: “ENRICHMENT UNIT escrita. Weather. Americans are eating less Meat. Bellhop. Nouns: review. AE : Obtener información acerca de planes presentes y futuros utilizando estructuras básicas, ya sea en forma oral UNIDAD VII: “GOING OUT” escrita. Present Progressive: Negative. Present Progressive: Wh Questions. AE : Describir personas usando adjetivos y estructuras básicas, ya sea de forma oral Verbs. escrita. UNIDAD VIII: “ABOUT PEOPLE” Be: Negative. Present Progressive: Spelling. Changes. AE : Expresar gustos y preferencias en el Adjectives. contexto de compras utilizando estructuras básicas, ya sea de forma oral UNIDAD IX: “FOR SALE” escrita. Nouns: Possessive. Present Progressive: Contractions. AE : Consolidar de unidades Shopping. previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral UNIDAD X: “ENRICHMENT UNIT ” escrita. Call-in. New Picasso Exhibition. Italian Restaurant. Present progressive: Tag AE : Comunicar efectivamente ideas Questions. sobre viajes y medios de transporte, utilizando estructuras básicas, ya sea en UNIDAD XI: “ON THE MOVE” forma oral y escrita. Pronouns: Subject. Pronouns: Object. Pronouns: Possessive. Transport. AE : Expresar ordenes, solicitudes, instrucciones y sugerencias sobre salud y vida sana, utilizando estructuras básicas, UNIDAD XII: “HEALTH AND FITNESS” ya sea de forma oral y escrita. Recognize and understand imperatives to express commands, requests, instructions, and suggestions. Talk about ways to keep fit and express preferences. AE : Conversar acerca de ocupaciones y trabajos utilizando estructuras básicas, ya sea de forma oral y escrita. UNIDAD XIII: “OCCUPATIONS” Recognize and understand how to use the Present Simple to talk about daily routines. Use the Present Simple to talk about what they do or where they work. BIBLIOGRAFÍA OBLIGATORIA English Discoveries, Basic , Edusoft (1990-2018) (estudiantes acceden a en plataforma online)", "aprendizajes": ["Comunicar efectivamente información personal utilizando estructuras básicas, ya sea en forma oral o escrita.", "Identificar el significado general y detalles relevantes de una interacción, ya sea en forma oral o escrita.", "Consolidar contenidos de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral o escrita.", "Expresar opiniones respecto a comidas alimentación, ya sea en forma oral o escrita.", "Expresar gustos y preferencias personales en el contexto de viajes utilizando estructuras básicas, ya sea en forma oral o escrita.", "Consolidar contenidos de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral o escrita.", "Obtener información acerca de planes presentes y futuros utilizando estructuras básicas, ya sea en forma oral o escrita.", "Describir personas usando adjetivos estructuras básicas, ya sea de forma oral o escrita.", "Expresar gustos y preferencias en el contexto de compras utilizando estructuras básicas, ya sea de forma oral o escrita.", "Consolidar contenidos de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral o escrita.", "Comunicar efectivamente ideas sobre viajes y medios de transporte, utilizando estructuras básicas, ya sea en forma oral y escrita.", "Expresar ordenes, solicitudes, instrucciones y sugerencias sobre salud y vida sana, utilizando estructuras básicas, ya sea de forma oral y escrita.", "Conversar acerca de ocupaciones y trabajos utilizando estructuras básicas, ya sea de forma oral y escrita."], "requisitos": [], "lane": 14, "eje": "ingles"}, {"codigo": "FMMP312", "nombre": "Sistemas y Ecuaciones Diferenciales Lineales", "semestre": 5, "creditos": 16, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP212"], "lane": 0, "eje": "matematicas"}, {"codigo": "ICMI311", "nombre": "Mecánica de Rocas", "semestre": 5, "creditos": 15, "area": "geologia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI211", "CFIS332"], "lane": 3, "eje": "geologia"}, {"codigo": "ICMI313", "nombre": "Operaciones Unitarias I: Perforación y Tronadura", "semestre": 5, "creditos": 13, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI222"], "lane": 4, "eje": "mineria"}, {"codigo": "ICMI312", "nombre": "Conminución", "semestre": 5, "creditos": 10, "area": "metalurgia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI211"], "lane": 6, "eje": "metalurgia"}, {"codigo": "ING129", "nombre": "Inglés II", "semestre": 5, "creditos": 12, "area": "ingles", "contenidos": ": Desarrollar habilidades comunicativas en el idioma inglés, para desenvolverse en situaciones cotidianas, laborales y académicas. Curso de carácter progresivo, que sienta las bases para la adquisición de las competencias lingüísticas del nivel A2 del Marco Común Europeo de las Lenguas Al finalizar el curso, el estudiante será capaz de comunicarse efectiva y naturalmente, en forma oral y escrita, en ámbitos de la vida diaria, desde el contexto personal hasta los entornos más cercanos, refiriéndose al presente y pasado, usando una escritura, pronunciación y entonación adecuadas. AE : Expresar gustos y preferencias personales UNIDAD I: “BUYING AND SELLING” en el contexto de compras utilizando Be-Past: Statements. estructuras básicas, ya sea en forma oral Be-Past: Questions. escrita. Shopping. UNIDAD II: “HEALTHY EATING” AE : Identificar el significado general y detalles Nouns: Non-Count and relevantes de una interacción, ya sea en forma Quantifiers. oral escrita. Nouns: Count Nouns and Quantifiers. In the Kitchen. UNIDAD III: “ENRICHMENT UNIT ” AE : Consolidar de unidades previas Friends. en distintos contextos utilizando estructuras Camp Maple. básicas, ya sea de forma oral escrita. Wrong Number. Be-Past: Review. UNIDAD IV: “GETTING HELP” AE : Obtener información acerca de Present Simple: direcciones e indicaciones utilizando Statements. estructuras básicas, ya sea en forma oral Present Simple: Yes/No. escrita. Questions. Present Simple: Wh Questions. Directions. AE : Expresar gustos y preferencias personales UNIDAD V: “SPORTS” en el contexto de deportes utilizando estructuras básicas, ya sea en forma oral Comparison of Adjectives: escrita. Equality. Comparison of Adjectives: Comparatives. Comparison of Adjectives: Superlatives. Sports. AE : Consolidar de unidades previas UNIDAD VI: “ENRICHMENT UNIT ” en distintos contextos utilizando estructuras Drama. básicas, ya sea de forma oral escrita. Zippy office help. We’re closed. Comparison of adjectives review. AE : Expresar gustos y preferencias en el UNIDAD VII: “ENJOY YOUR MEAL!” contexto de comidas utilizando estructuras Nouns: Count and Non básicas, ya sea de forma oral escrita. Count Nouns. Nutrition. In the Restaurant. AE : Describir personas usando adjetivos y UNIDAD VIII: “INTERESTING PEOPLE” estructuras básicas, ya sea de forma oral Movie Star. escrita. Past Simple: Regular Verbs. Past Simple: Irregular Verbs. Past Simple: Questions. UNIDAD IX: “FAMILY LIFE” AE : Describir a miembros de la familia Present Simple: Tag utilizando estructuras básicas, ya sea de forma Questions. oral escrita. Modals: Can. Relationships. AE : Consolidar de unidades UNIDAD X: “ENRICHMENT UNIT ” previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral Ad. escrita. Max’s Dream Vacation The Package Past Simple: Review AE : Comunicar efectivamente ideas sobre UNIDAD XI: “A BAD DAY” experiencias laborales, utilizando estructuras básicas, ya sea en forma oral y escrita. Modals: Have To. Modals: May. Work. AE : Describir distintos tipos de casas UNIDAD XII: “HOUSING” utilizando vocabulario y estructuras básicas, ya sea de forma oral y escrita. Student Housing. Tiny Homes. Unusual Homes. AE : Conversar acerca de pasatiempos y tiempo libre utilizando estructuras básicas, ya UNIDAD XIII: “HOBBIES” sea de forma oral y escrita. Plans for the Weekend. What Do You Do in Your Spare Time? Why It's Important to Have a Hobby. BIBLIOGRAFÍA OBLIGATORIA English Discoveries, Basic , Edusoft (1990-2018) (estudiantes acceden a en plataforma online)", "aprendizajes": [], "requisitos": ["ING119"], "lane": 14, "eje": "ingles"}, {"codigo": "ICMI322", "nombre": "Operaciones Unitarias II: Carguío y Transporte", "semestre": 6, "creditos": 18, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI313"], "lane": 4, "eje": "mineria"}, {"codigo": "ICMI321", "nombre": "Concentración de Minerales", "semestre": 6, "creditos": 15, "area": "metalurgia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI312"], "lane": 6, "eje": "metalurgia"}, {"codigo": "TDFI105", "nombre": "Minería de Datos", "semestre": 6, "creditos": 12, "area": "digital", "contenidos": "Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones de las organizaciones. Al finalizar la asignatura, los estudiantes serán capaces de aplicar el razonamiento científico para generar modelos y verificar hipótesis aplicando técnicas de minería de datos. ESPERADOS Elaborar modelos e hipótesis verificables UNIDAD I: EL MÉTODO CIENTÍFICO EN LA INGENIERÍA mediante el análisis de datos para resolver Formulación de una investigación. problemas en diversos contextos. Tipos de investigación: cuantitativa y cualitativa. La investigación cuantitativa: Planteamiento del problema. Formulación de Hipótesis. Recolección de datos. Análisis de datos usando estadística (pruebas de hipótesis y modelos de regresión). Fundamentación de conclusiones. Limitaciones de la investigación y posibilidad de generalizar los resultados. UNIDAD II: PREPARACIÓN DE LA INFORMACIÓN Fuentes de información en organizaciones: Bases de Datos, Data Warehouse y OLAP Manejo de datos ruidosos y faltantes Aplicar técnicas de aprendizaje supervisado Reducción de la dimensionalidad y no supervisado para analizar datos y modelar Análisis de las componentes principales problemas. UNIDAD III: ANÁLISIS UTILIZANDO APRENDIZAJE SUPERVISADO Conceptos básicos Árboles de decisión Aplicar métricas para evaluar la calidad del Redes neuronales modelo elaborado en un problema de ingeniería Clasificación Bayesiana determinado. Máquina de soporte vectorial K-vecinos más cercanos UNIDAD IV: ANÁLISIS UTILIZANDO APRENDIZAJE NO SUPERVISADO Conceptos básicos K-means Clustering jerárquico Métricas de distancia Estandarización Métricas: AUC, Entropía, Purity, Accuracy. BIBLIOGRAFÍA OBLIGATORIA Foster P.& Fawcett, T. (2013). Data Science for Business: What you need to know about data mining and data-analytic thinking, edition. O'Reilly Media. Hernández Sampieri, Roberto, Fernández Collado, Carlos, Baptista Lucio, Pilar. (2003) Metodología de la investigación. Tercera Edición, Editorial McGraw Hill, ISBN 9789701036327", "aprendizajes": ["Elaborar modelos e hipótesis verificables mediante el análisis de datos para resolver problemas en diversos contextos.", "Aplicar técnicas de aprendizaje supervisado y no supervisado para analizar datos y modelar problemas.", "Aplicar métricas para evaluar la calidad del modelo elaborado en un problema de ingeniería determinado."], "requisitos": ["FMSP316", "TDFI103"], "lane": 7, "eje": "digital"}, {"codigo": "ACAD101", "nombre": "Taller de Innovación y Emprendimiento I", "semestre": 6, "creditos": 10, "area": "gestion", "contenidos": "Evaluar soluciones sostenibles de problemas de suministro energético, a través del uso de tecnologías y de fuentes de energía tradicionales renovables y sistemas de almacenamiento energético Al finalizar la asignatura, los estudiantes serán capaces de reconocer las características personales asociadas al emprendimiento y la innovación para crear redes de contacto y conformar equipos multidisciplinarios colaborativos. IV. V. Aplicar el pensamiento crítico con UNIDAD I: PENSAMIENTO CRÍTICO estricta lógica, formal y material, para ¿Qué es el Pensamiento Crítico? analizar en profundidad y con rigurosidad Elementos del Pensamiento. los fenómenos del entorno. Estándares Intelectuales. Elaborar juicios y razonamientos UNIDAD II: ARGUMENTACIÓN propios, basándose en el análisis de los Argumentos que sustentan la argumentos que sustentan la información, información para vincularse con su entorno de manera Diferencia entre argumento y efectiva. opinión. Componentes de un argumento. (Modelos de Argumentación: ARE). Falacias más comunes. Temáticas específicas de actualidad a las que aplicar el Pensamiento Crítico. UNIDAD III: CEPS Aplicar las habilidades emprendedoras Competencias Emprendedoras Personales personales (CEPs), para afrontar con éxito (CEPs). un proyecto emprendedor. Mapa y Análisis de la Red de contactos como herramienta de Networking. Diseñar un plan de networking, UNIDAD IV: INNOVACIÓN considerando la importancia del mapa y Concepto de Innovación análisis de la red de contactos como Liderazgo al interior de los equipos de herramienta para el emprendimiento, para trabajo. configurar equipos de trabajo. Trabajo en equipo. BIBLIOGRAFÍA OBLIGATORIA Goleman, (2012). Liderazgo. El poder de la inteligencia emocional. Barcelona: Ediciones B. HARRIS. Ibarra, H., & Hunter, M. (2007). Cómo los líderes crean y utilizan sus redes. (Vol. ). Harvard Business Review. Selman, J. (2008). Liderazgo. Pearson Educación.", "aprendizajes": ["Aplicar el pensamiento crítico con estricta lógica, formal y material, para analizar en profundidad y con rigurosidad los fenómenos del entorno.", "Elaborar juicios y razonamientos propios, basándose en el análisis de los argumentos que sustentan la información, para vincularse con su entorno de manera efectiva.", "Aplicar las habilidades emprendedoras personales (CEPs), para afrontar con éxito un proyecto emprendedor.", "Diseñar un plan de networking, considerando la importancia del mapa y análisis de la red de contactos como herramienta para el emprendimiento, para configurar equipos de trabajo."], "requisitos": ["TDFI101"], "lane": 9, "eje": "gestion"}, {"codigo": "ING239", "nombre": "Inglés III", "semestre": 6, "creditos": 12, "area": "ingles", "contenidos": ": Desarrollar habilidades comunicativas en el idioma inglés, para desenvolverse en situaciones cotidianas, laborales y académicas. Curso de carácter progresivo, que refuerza y consolida las bases para la adquisición de las competencias lingüísticas del nivel A2 del Marco Común Europeo de las Lenguas. Al finalizar el curso, el estudiante será capaz de comunicarse efectiva y naturalmente, en forma oral y escrita, en ámbitos de la vida diaria, desde el contexto personal hasta los entornos más cercanos, refiriéndose al presente, futuro y pasado, usando una escritura, pronunciación y entonación adecuadas. ESPERADOS AE : Expresar gustos y preferencias UNIDAD I: “GETTING A JOB” personales en el contexto de empleos y Modals: Be Able To. educación utilizando estructuras básicas, ya Gerunds: As Object. sea en forma oral escrita. Gerunds: After Prepositions. Education. AE : Identificar el significado general y UNIDAD II: “BUSINESS MATTERS” detalles relevantes de una interacción, ya sea en forma oral escrita. Modals: Must / Had To. Modals: Must Not/ Don’t Have To. Work and Business. AE : Consolidar de unidades UNIDAD III: “ENRICHMENT UNIT ” previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral Sales. escrita. Nicole Hunts Tells all. Return a Sweater. Modals: Review. UNIDAD IV: “PLANNING A VACATION” AE : Dar información acerca de planes y viajes utilizando estructuras básicas, ya sea Modals: Should. en forma oral escrita. Infinitives and Gerunds: After Verbs. Travel. AE : Expresar gustos y preferencias UNIDAD V: “EATING OUT” personales en el contexto de comida utilizando estructuras simples y progresivas, Past Progressive: Progressive ya sea en forma oral escrita. vs. Simple. Adverbs: Comparisons. Talking About Food. AE : Consolidar de unidades previas en distintos contextos utilizando UNIDAD VI: “ENRICHMENT UNIT ” estructuras básicas, ya sea de forma oral Weather. escrita. Wisconsin. Glass of Water. Gerunds: review. AE : Expresar gustos y preferencias en el UNIDAD VII: “TRAVELING ABROAD” contexto de viajes y planes utilizando Future: Will vs. Going To. estructuras básicas, ya sea de forma oral Future: Simple Present. escrita. Future: Present Progressive. Travel. AE : Describir situaciones pasadas usando UNIDAD VIII: “EMOTIONS” adjetivos y estructuras simples y progresivas, ya sea de forma oral escrita. Past Progressive: Statements. Past Progressive: Questions and Answers. Adjectives. AE : Comunicar efectivamente ideas sobre UNIDAD IX: “MAKING EXCUSES” excusas e invitaciones, utilizando estructuras básicas, ya sea en forma oral y escrita. Infinitives: After Adjectives. Infinitives: After Objects. Gerunds: As Subject. Health. AE : Consolidar de unidades UNIDAD X: “ENRICHMENT UNIT ” previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral Music. escrita. Artemis Theater Presents. Work Late. Past Progressive: Review. AE : Expresar gustos y preferencias en el UNIDAD XI: “TICKETS, PLEASE!” contexto de entretenimiento utilizando estructuras básicas, ya sea de forma oral Adverbs: Frequency. escrita. Gerunds: Gerund or infinitive. Impersonal statements: Empty subject. Entertainment. AE : Describir distintas formas de ahorrar UNIDAD XII: “SAVING ENERGY” energía utilizando vocabulario y estructuras Introduction: Saving Energy. básicas, ya sea de forma oral y escrita. How to save energy. Renewable energy. AE : Conversar acerca del aprendizaje de UNIDAD XIII: “KNOWING A SECOND un segundo idioma utilizando estructuras LANGUAGE” básicas, ya sea de forma oral y escrita. Introduction: Knowing a Second Language. The Benefits of Language Learning. Tips for Learning English. BIBLIOGRAFÍA OBLIGATORIA English Discoveries, Basic , Edusoft (1990-2018) (estudiantes acceden a en plataforma online).", "aprendizajes": ["Expresar gustos y preferencias personales en el contexto de empleos y educación utilizando estructuras básicas, ya sea en forma oral o escrita.", "Identificar el significado general y detalles relevantes de una interacción, ya sea en forma oral o escrita.", "Consolidar contenidos de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral o escrita.", "Dar información acerca de planes y viajes utilizando estructuras básicas, ya sea en forma oral o escrita.", "Expresar gustos y preferencias personales en el contexto de comida utilizando estructuras simples y progresivas, ya sea en forma oral escrita.", "Consolidar contenidos de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral o escrita.", "Expresar gustos y preferencias en el contexto de viajes y planes utilizando estructuras básicas, ya sea de forma oral o escrita.", "Describir situaciones pasadas usando adjetivos y estructuras simples y progresivas, ya sea de forma oral o escrita.", "Comunicar efectivamente ideas sobre excusas e invitaciones, utilizando estructuras básicas, ya sea en forma oral y escrita.", "Consolidar contenidos de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral o escrita.", "Expresar gustos y preferencias en el contexto de entretenimiento utilizando estructuras básicas, ya sea de forma oral o escrita.", "Describir distintas formas de ahorrar energía utilizando vocabulario y estructuras básicas, ya sea de forma oral y escrita.", "Conversar acerca del aprendizaje de un segundo idioma utilizando estructuras básicas, ya sea de forma oral y escrita."], "requisitos": ["ING129"], "lane": 14, "eje": "ingles"}, {"codigo": "ICMI412", "nombre": "Métodos de Explotación y Diseño Minero", "semestre": 7, "creditos": 21, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI322"], "lane": 4, "eje": "mineria"}, {"codigo": "ICMI411", "nombre": "Pirometalurgia", "semestre": 7, "creditos": 13, "area": "metalurgia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI321"], "lane": 6, "eje": "metalurgia"}, {"codigo": "TDFI106", "nombre": "Gestión de la Transformación Digital", "semestre": 7, "creditos": 12, "area": "digital", "contenidos": "Al finalizar la asignatura, los estudiantes serán capaces de diseñar un plan de transformación digital con foco en la mejora del valor organizacional y el cumplimiento de normativas externas, gestionar el cambio en la cultura organizacional, así como monitorear exitosamente su ejecución. ESPERADOS AE . Diseñar planes de transformación digital, de UNIDAD I: DISEÑO DEL PLAN DE TRANSFORMACIÓN acuerdo a diferentes estrategias, para la DIGITAL evaluación del impacto en los distintos procesos Plan estratégico de la organización. Arquitectura empresarial Simular la implementación de un plan de UNIDAD II: IMPLEMENTACIÓN DEL PLAN transformación digital para establecer su impacto DETRANSFORMACIÓN DIGITAL en la organización. Gestión de riesgos Modelos de negocio Tecnologías exponenciales Sistemas de información gerencial Analizar técnicas de gestión del cambio, para UNIDAD III: GESTIÓN DEL CAMBIO ORGANIZACIONAL la implementación de un plan de transformación DURANTE LA TRANSFORMACIÓN DIGITAL digital. Frameworks de transformación Modelos de madurez BIBLIOGRAFÍA OBLIGATORIA Daft, R. L., (2015). Teoría y diseño organizacional. ISBN: 9786075197647.", "aprendizajes": ["Diseñar planes de transformación digital, de acuerdo a diferentes estrategias, para la evaluación del impacto en los distintos procesos de la organización.", "Simular la implementación de un plan de transformación digital para establecer su impacto en la organización.", "Analizar técnicas de gestión del cambio, para la implementación de un plan de transformación digital."], "requisitos": ["TDFI104"], "lane": 7, "eje": "digital"}, {"codigo": "ACAD102", "nombre": "Taller de Innovación y Emprendimiento II", "semestre": 7, "creditos": 10, "area": "gestion", "contenidos": "Evaluar soluciones sostenibles de problemas de suministro energético, a través del uso de tecnologías y de fuentes de energía tradicionales renovables y sistemas de almacenamiento energético. Al finalizar la asignatura, les estudiantes serán capaces de: Reconocer características personales asociadas al emprendimiento y la innovación para identificar oportunidades y formular propuestas de valor, gestionando el riesgo. IV. V. Analizar problemáticas y necesidades UNIDAD I: INNOVACIÓN junto a oportunidades de alto impacto que Concepto de innovación y proyectos agreguen valor en los procesos para la de innovación. generación de productos y/ servicios que Innovación y Valor: Oportunidades de Innovación. desarrollan las organizaciones privadas y/ Marco de Referencia y Estrategia. públicas para sus usuarios y/ clientes. Describir las etapas del proceso UNIDAD II: TÉCNICAS DE PENSAMIENTO creativo para el diseño de productos y/ LATERAL servicios centrados en el usuario. El Proceso Creativo. Técnicas de Investigación de Usuario. Diseño centrado en el usuario y usabilidad. UNIDAD III: PROTOTIPADO Metodologías de prototipado y Generar productos innovadores de validación Lean. base tecnológica usando metodologías de Identificación de desafíos de desarrollo para proveer soluciones de innovación: trabajo con opportunity impacto a problemáticas de usuarios navigator. públicos y/ privados. Prototipos de validación y de experiencia. El proceso de validación. UNIDAD IV: CONSTRUCCIÓN DE Diseñar propuestas de valor PROPUESTAS DE VALOR coherentes para transmitirlas de forma Concepto de Propuesta de Valor. efectiva a usuarios y/ clientes. Diseño de propuestas de valor. Transmisión del valor. BIBLIOGRAFÍA OBLIGATORIA Bank, C., Cao, J., & Zuberi, W. (2014). The Guide to Minimum Viable Products: A Master Collection of Frameworks, Expert Opinions, and Examples. Kindle Edition. Osterwalder, A., Pigneur, Y., Bernarda, G., & Smith, A. (2014). Value Proposition Design. (1a Edición). John Wiley & Sons Inc. Verganti, R. (2009). Design Driven Innovation. Harvard Business School Press.", "aprendizajes": ["Analizar problemáticas y necesidades junto a oportunidades de alto impacto que agreguen valor en los procesos para la generación de productos y/o servicios que desarrollan las organizaciones privadas y/o públicas para sus usuarios y/o clientes.", "Describir las etapas del proceso creativo para el diseño de productos y/o servicios centrados en el usuario.", "Generar productos innovadores de base tecnológica usando metodologías de desarrollo para proveer soluciones de impacto a problemáticas de usuarios públicos y/o privados.", "Diseñar propuestas de valor coherentes para transmitirlas de forma efectiva a usuarios y/o clientes."], "requisitos": ["ACAD101"], "lane": 9, "eje": "gestion"}, {"codigo": "ING249", "nombre": "Inglés IV", "semestre": 7, "creditos": 12, "area": "ingles", "contenidos": ": Desarrollar habilidades comunicativas en el idioma inglés, para desenvolverse en situaciones cotidianas, laborales y académicas. Curso de carácter progresivo, que sienta las bases para la adquisición de las competencias lingüísticas del nivel B1 del Marco Común Europeo de las Lenguas. Al finalizar el curso, el estudiante será capaz de comunicarse efectiva y naturalmente, en forma oral y escrita, en ámbitos de la vida diaria, desde el contexto personal hasta los entornos más cercanos, refiriéndose al presente, futuro y pasado, usando una escritura, pronunciación y entonación adecuadas. ESPERADOS AE : Expresar gustos y preferencias UNIDAD I: “EDUCATION” personales en el contexto de educación College for Kids? utilizando estructuras básicas, ya sea en Math test. forma oral escrita. Present Perfect: Statements Q and A. Education . AE : Dar información acerca de UNIDAD II: “AWAY FROM HOME” actividades recientes utilizando Study Exchange. estructuras de nivel intermedio, ya sea en Enjoying Your Stay. forma oral escrita. Present Perfect: Progressive. Study Abroad. AE : Consolidar de unidades UNIDAD III: “ENRICHMENT UNIT ” previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral Friends. escrita. School Notice Board. Couldn't Wake Up. Present Perfect: Review. UNIDAD IV. “CELEBRATIONS” AE : Dar información acerca de celebraciones utilizando estructuras de Call-In. nivel intermedio, ya sea en forma oral The First Thanksgiving. Passive Voice: With or Without escrita. Agent. Celebrations. AE : Dar información acerca del clima UNIDAD V: “BAD WEATHER” utilizando estructuras de nivel intermedio, ya sea en forma oral escrita. Weather Warning. Relative Clauses: Object Clauses. Relative Clauses: Subject Clauses. Relative Clauses: With or. Without Relative Pronouns. AE : Consolidar de unidades UNIDAD VI: “ENRICHMENT UNIT ” previas en distintos contextos utilizando Ad. estructuras básicas, ya sea de forma oral To the Party. escrita. Mick Startlight Concert. Relative Clauses: Review. AE : Expresar gustos y preferencias en el UNIDAD VII: “ARTS AND ENTERTAINMENT” contexto de arte y entretenimiento utilizando estructuras básicas, ya sea de Music. forma oral escrita. Picasso Exhibit. Passive Voice: Indirect Form. Entertainment . AE : Describir experiencias laborales UNIDAD VIII: “AT WORK” usando vocabulario y estructuras de nivel intermedio, ya sea de forma oral escrita. The Job Interview. Overtime. Present Perfect: Contrast With Other Tenses. Work . AE : Comunicar efectivamente ideas UNIDAD IX: “SENDING A PACKAGE” sobre envíos y correspondencia, utilizando estructuras básicas, ya sea en forma oral y Sending a Package. escrita. Airmail to Tokyo. Passive Voice: Modals. Postal Services. AE : Consolidar de unidades UNIDAD X: “ENRICHMENT UNIT ” previas en distintos contextos utilizando Quiz. estructuras básicas, ya sea de forma oral Fashion Fads. escrita. Is That You? Passive Voice: Review. AE : Expresar gustos y preferencias en el UNIDAD XI: “EMERGENCY” contexto de emergencias utilizando estructuras básicas, ya sea de forma oral Marge Has a Baby. escrita. Clauses: Noun Clauses. Clauses: Adverbial Clauses. Clauses: Review. UNIDAD XII: “BANKING” AE : Describir actividades bancarias utilizando vocabulario y estructuras Introduction: Banking. básicas, ya sea de forma oral y escrita. Opening a Bank Account. E-mails of Inquiry and Response. Banking Trends. UNIDAD XIII: “GADGETS” AE : Conversar acerca de dispositivos tecnológicos utilizando estructuras y Introduction: Gadgets and vocabulario apropiado al nivel, ya sea de Technology. forma oral y escrita. All About Apps. Choosing a Device. Technology Podcast. BIBLIOGRAFÍA OBLIGATORIA English Discoveries, Intermediate , Edusoft (1990-2018) (estudiantes acceden a en plataforma online).", "aprendizajes": ["Expresar gustos y preferencias personales en el contexto de educación utilizando estructuras básicas, ya sea en forma oral o escrita.", "Dar información acerca de actividades recientes utilizando estructuras de nivel intermedio, ya sea en forma oral o escrita.", "Consolidar contenidos de unidades", "Dar información acerca de celebraciones utilizando estructuras de nivel intermedio, ya sea en forma oral o escrita.", "Dar información acerca del clima", "Consolidar contenidos de unidades previas en distintos contextos utilizando estructuras básicas, ya sea de forma oral o escrita.", "Expresar gustos y preferencias en el", "Describir experiencias laborales", "Comunicar efectivamente ideas", "Consolidar contenidos de unidades", "Expresar gustos y preferencias en el", "Describir actividades bancarias utilizando vocabulario y estructuras básicas, ya sea de forma oral y escrita.", "Conversar acerca de dispositivos tecnológicos utilizando estructuras y vocabulario apropiado al nivel, ya sea de forma oral y escrita."], "requisitos": ["ING239"], "lane": 14, "eje": "ingles"}, {"codigo": "ICMI422", "nombre": "Planificación Minera", "semestre": 8, "creditos": 24, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI412"], "lane": 4, "eje": "mineria"}, {"codigo": "ICMI421", "nombre": "Hidrometalurgia", "semestre": 8, "creditos": 18, "area": "metalurgia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI321"], "lane": 6, "eje": "metalurgia"}, {"codigo": "ACAD103", "nombre": "Taller de Innovación y Emprendimiento III", "semestre": 8, "creditos": 10, "area": "gestion", "contenidos": "Evaluar soluciones sostenibles de problemas de suministro energético, a través del uso de tecnologías y de fuentes de energía tradicionales renovables y sistemas de almacenamiento energético. Al finalizar la asignatura, los estudiantes serán capaces de planificar y desarrollar proyectos de innovación que exploten oportunidades contingentes a través de productos tecnológicos y modelos de negocios consistentes con el entorno económico y social en el que aspiran realizarse. IV. V. Aplicar los conceptos de innovación, UNIDAD I: INNOVACIÓN Y VALOR valor económico y ventaja competitiva, ECONÓMICO entendiendo las relaciones y distinciones entre éstos, para abordar proyectos de Repaso Concepto de Innovación. La Innovación como fuente de ingeniería y emprendimiento. Ventaja Competitiva y Valor Económico. Innovación en la Empresa: Estrategia y Gestión de la Innovación. El Emprendimiento como fuente de Innovación. Tecnología e Innovación. Caso de Éxito: Charla con Emprendedor nacional invitado. Describir los procesos de UNIDAD II: LA STARTUP Y SU financiamiento e inversión de proyectos, FINANCIAMIENTO entendiendo la lógica de negocios asociada, Concepto de Startup y su diferencia para llevar a cabo proyectos de innovación con un emprendimiento tradicional. y emprendimientos innovadores. Ciclo de vida y financiamiento de una Startup. Financiamiento privado y público de la innovación. Valuación de una Startup. El equipo emprendedor: Competencias Personales y de Equipo. Utilizar conceptos y metodologías de UNIDAD III: METODOLOGÍA LEAN STARTUP Lean Startup para planificar, validar y El modelo Lean Startup y ejecutar proyectos de innovación. Emprendimiento basado en hipótesis. Metodología de Desarrollo de Clientes (Customer Development). Propuesta de Valor, Producto y Solución. Estimación del Mercado: TAM-SAM SOM. Validación Técnica: Product-Market Fit. Validación Comercial: Modelo de Ingresos y Pricing. UNIDAD IV: EMPRENDIMIENTO Y NEGOCIOS Construir un modelo de negocios, comprendiendo sus aspectos Modelo de Negocios de una Startup: fundamentales, para explotar una Lean Canvas. oportunidad de negocios innovadora Marketing para Startups: Adopción de reduciendo el riesgo inherente al proceso. la Innovación, Tracción, Marketing Digital y Growth Hacking. Métricas de Negocios Emprendedores. Economía Digital, Modelos de negocios multi-mercado y Monitorear en sí mismos y en otros las plataformas digitales. competencias personales de Presentaciones de Negocios. emprendimiento, para liderar procesos de innovación de manera independiente al interior de una organización. BIBLIOGRAFÍA OBLIGATORIA − Ahmed, P. K., Shepherd, C. D., y Ramos Garza, L. (2012). Administración de la innovación. Pearson. − Koontz, H., Weihrich, H., y Cannice, M. (2012). Administración una perspectiva global y empresarial. McGraw-Hill Educación. − Osterwalder, A., & Pigneur, Y. (2010). Business model generation: a handbook for visionaries, game changers, and challengers. John Wiley & Sons.", "aprendizajes": ["Aplicar los conceptos de innovación, valor económico y ventaja competitiva, entendiendo las relaciones y distinciones entre éstos, para abordar proyectos de ingeniería y emprendimiento.", "Describir los procesos de financiamiento e inversión de proyectos, entendiendo la lógica de negocios asociada, para llevar a cabo proyectos de innovación y emprendimientos innovadores.", "Utilizar conceptos y metodologías de Lean Startup para planificar, validar y ejecutar proyectos de innovación.", "Construir un modelo de negocios, comprendiendo sus aspectos fundamentales, para explotar una oportunidad de negocios innovadora reduciendo el riesgo inherente al proceso.", "Monitorear en sí mismos y en otros las competencias personales de emprendimiento, para liderar procesos de innovación de manera independiente o al interior de una organización."], "requisitos": ["ACAD102"], "lane": 9, "eje": "gestion"}, {"codigo": "ICMI423", "nombre": "Integrador II: Seminario de Licenciatura en Ciencias de la Ingeniería", "semestre": 8, "creditos": 6, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI411", "ICMI412"], "lane": 12, "eje": "integracion"}, {"codigo": "CEGRS14", "nombre": "Responsabilidad Social", "semestre": 8, "creditos": 6, "area": "formaciongeneral", "contenidos": "El curso de Responsabilidad Social tiene el propósito de desarrollar habilidades, con el objetivo de ampliar el conocimiento, reforzar el compromiso y motivar acciones positivas, es decir, habilidades que dan cuenta de “saber”, “saber hacer” y “saber ser”. Su formación contempla el desarrollo del Resultado de Aprendizaje de Formación General “Relacionar la formación académica con el propio entorno desde un principio de responsabilidad social, considerando la dimensión ética de prácticas y/ discursos cotidianos, y en el ejercicio profesional.” Lo anterior se enmarca en el programa de Educación general de la UNAB que tiene por objetivo, dotar a los estudiantes de habilidades de formación transferibles a cualquier área disciplinar. Los cursos de Responsabilidad Social favorecen la inclusión social, la inserción exitosa del estudiante en el mundo laboral y, finalmente, un desarrollo humano sustentable; patentando con ello el sello UNAB que identifica al estudiante de nuestra Universidad. La Dimensión de Responsabilidad Social recoge el desarrollo de las otras habilidades como las comunicativas, las de razonamiento científico, las de tecnologías de la información y de pensamiento crítico. Todo esto, dentro del marco del programa de Educación General de la Universidad, que busca desarrollar en los estudiantes habilidades transversales aplicables a cualquier especialidad y a su específico perfil de egreso. ESPERADOS Identificar problemas de carácter social, UNIDAD I: CONCEPTOS DE RESPONSABILIDAD SOCIAL distinguiendo que todas las acciones y ¿Qué es Responsabilidad Social? decisiones tienen un impacto positivo Conceptos claves y ejes fundamentales negativo en su vida, condición de estudiante y de la RS. futuro profesional. Principios y marcos legislativos de la RS. Parámetros de sustentabilidad. UNIDAD II: VALORES Y CONDUCTAS COHERENTES CON LA RESPONSABILIDAD SOCIAL. Aplicar buenas prácticas sociales Autocuidado y Responsabilidad social. demostrando un comportamiento de ciudadano Buenas prácticas sociales y activo a favor del desarrollo humano. comportamiento ciudadano activo. Actitud ética, comprometida y corresponsable. Contribución para un desarrollo justo y sustentable a la solución de problemas sociales. UNIDAD III: DISEÑO Y EJECUCIÓN DE PROYECTO Y/O ACCIONES DE RESPONSABILIDAD SOCIAL APLICABLES EN Diseñar soluciones y acciones colaborativas SU ENTORNO CERCANO. y creativas para afrontar desafíos cotidianos, Planificación y diseño de un proyecto de con conductas, actitudes y acciones socialmente RS en corresponsabilidad. responsables. Ejecución y puesta en práctica en escenario real de un proyecto y/ acción. Evaluación de un proyecto de RS. BIBLIOGRAFÍA OBLIGATORIA Vallaeys François, “DEFINIR LA RESPONSABILIDAD SOCIAL: una urgencia filosófica”, Revista, Observatorio Regional de Responsabilidad Social para América Latina y el Caribe (IESALC-UNESCO) Bogotá, Colombia. Enero 2012. Jonas Hans “EL PRINCIPIO RESPONSABILIDAD”, Revista BioEtnikos, Centro Universitario Sao Camilo, Barcelona, 2009. Ricoeur Paul, capítulo IV “El Yo, el tú y la institución” “EDUCACIÓN Y POLÍTICA: de la historia personal a la comunión de libertades”, Primera Edición Buenos Aires: Prometeo Libros: Universidad Católica Argentina, 2009#114p.", "aprendizajes": ["Identificar problemas de carácter social, distinguiendo que todas las acciones y decisiones tienen un impacto positivo o negativo en su vida, condición de estudiante y futuro profesional.", "Aplicar buenas prácticas sociales demostrando un comportamiento de ciudadano activo a favor del desarrollo humano.", "Diseñar soluciones y acciones colaborativas y creativas para afrontar desafíos cotidianos, con conductas, actitudes y acciones socialmente responsables."], "requisitos": [], "lane": 15, "eje": "formaciongeneral"}, {"codigo": "ICMI511", "nombre": "Ventilación", "semestre": 9, "creditos": 11, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI412"], "lane": 4, "eje": "mineria"}, {"codigo": "ICMI515", "nombre": "Medio Ambiente y Legislación Minera", "semestre": 9, "creditos": 9, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI322", "ICMI421"], "lane": 5, "eje": "mineria"}, {"codigo": "ICMI513", "nombre": "Economía, Dirección y Comercialización", "semestre": 9, "creditos": 12, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI412"], "lane": 9, "eje": "gestion"}, {"codigo": "ICMI512", "nombre": "Portafolio de Proyectos", "semestre": 9, "creditos": 9, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI412", "ICMI421"], "lane": 12, "eje": "integracion"}, {"codigo": "ICMI514", "nombre": "Práctica II", "semestre": 9, "creditos": 26, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI221"], "lane": 13, "eje": "integracion"}, {"codigo": "ICMI525", "nombre": "Seguridad y Salud Ocupacional", "semestre": 10, "creditos": 4, "area": "mineria", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI515"], "lane": 4, "eje": "mineria"}, {"codigo": "ICMI521", "nombre": "Tópico de Especialidad I: Control de Procesos Geo-minero-metalúrgicos", "semestre": 10, "creditos": 6, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI422", "TDFI106"], "lane": 9, "eje": "gestion"}, {"codigo": "ICMI522", "nombre": "Tópico de Especialidad II: Economía Circular", "semestre": 10, "creditos": 7, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI515"], "lane": 10, "eje": "gestion"}, {"codigo": "ICMI524", "nombre": "Tópico de Especialidad III: Evaluación de Proyectos + Excelencia Operacional", "semestre": 10, "creditos": 5, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI513", "ICMI515"], "lane": 11, "eje": "gestion"}, {"codigo": "ICMI523", "nombre": "Integrador III: Proyecto de Título", "semestre": 10, "creditos": 45, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICMI512"], "lane": 12, "eje": "integracion"}];</script>
+<script>
+const AREAS = {
+  matematicas:     {label:"Matemáticas",                     short:"Matemáticas"},
+  ciencias:        {label:"Ciencias Básicas",                short:"Cs. Básicas"},
+  geologia:        {label:"Geología y Geomecánica",          short:"Geología"},
+  mineria:         {label:"Operaciones y Diseño Minero",     short:"Minería"},
+  metalurgia:      {label:"Metalurgia y Procesamiento",      short:"Metalurgia"},
+  digital:         {label:"Datos y Transformación Digital",  short:"Datos / TD"},
+  gestion:         {label:"Gestión, Innovación y Proyectos", short:"Gestión"},
+  integracion:     {label:"Integración y Título",            short:"Integración"},
+  ingles:          {label:"Inglés",                          short:"Inglés"},
+  formaciongeneral:{label:"Formación General",               short:"F. General"},
+};
+const cvar = a => ({c:`var(--a-${a})`, t:`var(--t-${a})`});
+
+// ----- prereq graph -----
+const byCode = Object.fromEntries(CURSOS.map(c=>[c.codigo,c]));
+const PRE = Object.fromEntries(CURSOS.map(c=>[c.codigo,(c.requisitos||[]).filter(p=>byCode[p])]));
+const DEP = Object.fromEntries(CURSOS.map(c=>[c.codigo,[]]));
+CURSOS.forEach(c=>PRE[c.codigo].forEach(p=>DEP[p].push(c.codigo)));
+function ancestors(code){const seen=new Set(),st=[...PRE[code]];while(st.length){const x=st.pop();if(seen.has(x))continue;seen.add(x);PRE[x].forEach(y=>st.push(y));}return seen;}
+const cardEl={}; let drawerOpen=false; let currentCode=null;
+
+// ----- stats -----
+const totCr = CURSOS.reduce((s,c)=>s+c.creditos,0);
+const sems = [...new Set(CURSOS.map(c=>c.semestre))].sort((a,b)=>a-b);
+document.getElementById('stats').innerHTML = [
+  [sems.length,'Semestres'],[CURSOS.length,'Asignaturas'],[totCr,'Créditos UNAB'],[sems.length/2,'Años']
+].map(([b,s])=>`<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('');
+
+// ----- legend -----
+const legend = document.getElementById('legend');
+let activeArea = null;
+Object.entries(AREAS).forEach(([k,v])=>{
+  const n = CURSOS.filter(c=>c.area===k).length;
+  const b = document.createElement('button');
+  b.className='chip'; b.setAttribute('aria-pressed','false'); b.dataset.area=k;
+  b.innerHTML = `<span class="dot" style="background:var(--a-${k})"></span>${v.label} <span style="color:var(--ink-faint);font-weight:600">${n}</span>`;
+  b.onclick=()=>toggleArea(k);
+  legend.appendChild(b);
+});
+const reset = document.createElement('button');
+reset.className='chip reset'; reset.textContent='Mostrar todas';
+reset.style.display='none'; reset.onclick=()=>toggleArea(null);
+legend.appendChild(reset);
+
+const arrToggle=document.createElement('button');
+arrToggle.className='chip'; arrToggle.style.marginLeft='auto';
+arrToggle.setAttribute('aria-pressed','true');
+arrToggle.innerHTML='&#8627; Prerrequisitos';
+arrToggle.onclick=()=>{const on=document.body.classList.toggle('no-arrows');
+  arrToggle.setAttribute('aria-pressed',String(!on));};
+legend.appendChild(arrToggle);
+
+function toggleArea(k){
+  activeArea = (k===activeArea)?null:k;
+  document.body.classList.toggle('filtering', !!activeArea);
+  reset.style.display = activeArea?'inline-flex':'none';
+  legend.querySelectorAll('.chip[data-area]').forEach(ch=>{
+    ch.setAttribute('aria-pressed', String(ch.dataset.area===activeArea));
+  });
+  document.querySelectorAll('.card').forEach(card=>{
+    card.classList.toggle('dim', !!activeArea && card.dataset.area!==activeArea);
+  });
+}
+
+// ----- board (lane grid) -----
+const board = document.getElementById('board');
+const laneArea=[]; CURSOS.forEach(c=>{laneArea[c.lane]=c.area;});
+const nLanes=laneArea.length;
+board.style.setProperty('grid-template-rows','auto');
+// semester header cells (row 1)
+sems.forEach(s=>{
+  const cr=CURSOS.filter(c=>c.semestre===s).reduce((a,c)=>a+c.creditos,0);
+  const h=document.createElement('div'); h.className='col-head';
+  h.style.gridColumn=String(s+1); h.style.gridRow='1';
+  h.innerHTML=`<span class="n"><small>Sem</small>${roman(s)}</span><span class="cr">${cr} cr</span>`;
+  board.appendChild(h);
+});
+// area bands (tint + rotated label) over their lane rows
+const bands=[];
+laneArea.forEach((a,i)=>{
+  const last=bands[bands.length-1];
+  if(last && last.area===a && last.end===i-1) last.end=i;
+  else bands.push({area:a,start:i,end:i});
+});
+bands.forEach(b=>{
+  const r1=b.start+2, r2=b.end+3;
+  const tint=document.createElement('div'); tint.className='band';
+  tint.style.gridRow=`${r1} / ${r2}`; tint.style.setProperty('--bt',`var(--t-${b.area})`);
+  board.appendChild(tint);
+  const lab=document.createElement('div'); lab.className='band-label';
+  lab.style.gridRow=`${r1} / ${r2}`; lab.style.setProperty('--bc',`var(--a-${b.area})`);
+  lab.textContent=AREAS[b.area].short;
+  board.appendChild(lab);
+});
+// course cards positioned by lane & semester
+CURSOS.forEach(c=>{
+  const card=makeCard(c);
+  card.style.gridColumn=String(c.semestre+1);
+  card.style.gridRow=String(c.lane+2);
+  board.appendChild(card);
+});
+
+function makeCard(c){
+  const {c:cc,t:tt} = cvar(c.area);
+  const b = document.createElement('button');
+  b.className='card'; b.dataset.area=c.area; b.dataset.code=c.codigo;
+  b.style.setProperty('--c',cc); b.style.setProperty('--t',tt);
+  b.setAttribute('aria-label',`${c.nombre}, ${c.codigo}, ${c.creditos} créditos`);
+  b.title=c.nombre;
+  b.innerHTML = `
+    <span class="chk" role="checkbox" aria-checked="false" aria-label="Marcar ${esc(c.codigo)} como aprobada"></span>
+    <div class="name">${esc(c.nombre)}</div>
+    <div class="meta"><span class="code">${c.codigo}</span><span class="cr">${c.creditos} cr</span></div>`;
+  b.onclick=()=>openDrawer(c,b);
+  b.querySelector('.chk').addEventListener('click',e=>{e.stopPropagation();toggleAprobada(c.codigo);});
+  b.addEventListener('pointerenter',()=>{if(!drawerOpen)highlightChain(c.codigo);});
+  b.addEventListener('pointerleave',()=>{if(!drawerOpen)clearHighlight();});
+  b.addEventListener('focus',()=>{if(!drawerOpen)highlightChain(c.codigo);});
+  b.addEventListener('blur',()=>{if(!drawerOpen)clearHighlight();});
+  cardEl[c.codigo]=b;
+  return b;
+}
+
+// ----- arrows -----
+const SVGNS='http://www.w3.org/2000/svg';
+const svg=document.createElementNS(SVGNS,'svg'); svg.setAttribute('class','arrows');
+board.appendChild(svg);
+const EDGES=[];
+CURSOS.forEach(c=>PRE[c.codigo].forEach(p=>{
+  const path=document.createElementNS(SVGNS,'path'); path.setAttribute('class','edge');
+  const head=document.createElementNS(SVGNS,'polygon'); head.setAttribute('class','head');
+  svg.appendChild(path); svg.appendChild(head);
+  EDGES.push({from:p,to:c.codigo,path,head});
+}));
+function layoutArrows(){
+  const br=board.getBoundingClientRect();
+  const W=board.offsetWidth,H=board.offsetHeight;
+  svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  EDGES.forEach(e=>{
+    const a=cardEl[e.from],b=cardEl[e.to]; if(!a||!b)return;
+    const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();
+    const sx=ra.right-br.left, sy=ra.top-br.top+ra.height/2;
+    const ex=rb.left-br.left,  ey=rb.top-br.top+rb.height/2;
+    const dx=Math.max(26,(ex-sx)*0.45);
+    e.path.setAttribute('d',`M ${sx} ${sy} C ${sx+dx} ${sy}, ${ex-dx} ${ey}, ${ex-11} ${ey}`);
+    const hx=ex-11;
+    e.head.setAttribute('points',`${hx-10},${ey-7.5} ${hx+2},${ey} ${hx-10},${ey+7.5}`);
+  });
+}
+window.addEventListener('resize',layoutArrows);
+if(window.ResizeObserver) new ResizeObserver(layoutArrows).observe(board);
+requestAnimationFrame(()=>requestAnimationFrame(layoutArrows));
+setTimeout(layoutArrows,350);
+
+function highlightChain(code){
+  const chain=new Set([code,...ancestors(code)]);
+  const deps=new Set(DEP[code]);
+  const col=`var(--a-${byCode[code].area})`;
+  document.body.classList.add('focusing');
+  Object.entries(cardEl).forEach(([cd,el])=>{
+    el.classList.toggle('chain', chain.has(cd)&&cd!==code);
+    el.classList.toggle('root', cd===code);
+    el.classList.toggle('dep', deps.has(cd));
+  });
+  EDGES.forEach(e=>{
+    const on=(chain.has(e.from)&&chain.has(e.to))||(e.from===code&&deps.has(e.to));
+    e.path.classList.toggle('on',on); e.head.classList.toggle('on',on);
+    e.path.style.stroke=on?col:''; e.head.style.fill=on?col:'';
+  });
+}
+function clearHighlight(){
+  document.body.classList.remove('focusing');
+  Object.values(cardEl).forEach(el=>el.classList.remove('chain','root','dep'));
+  EDGES.forEach(e=>{e.path.classList.remove('on');e.head.classList.remove('on');e.path.style.stroke='';e.head.style.fill='';});
+}
+function chipHTML(code){const c=byCode[code];
+  return `<button class="prq-chip" data-code="${code}" style="--c:var(--a-${c.area})">`+
+    `<span class="pc-dot" style="background:var(--a-${c.area})"></span>`+
+    `<span><span class="pc-code">${code}</span> <span class="pc-name">${esc(c.nombre)}</span> <span class="pc-sem">· S${c.semestre}</span></span></button>`;
+}
+
+// ----- drawer -----
+const drawer=document.getElementById('drawer'),backdrop=document.getElementById('backdrop');
+let lastFocus=null;
+function openDrawer(c,trigger){
+  lastFocus=trigger; drawerOpen=true; currentCode=c.codigo; clearHighlight();
+  const {c:cc,t:tt}=cvar(c.area);
+  drawer.style.setProperty('--c',cc); drawer.style.setProperty('--t',tt);
+  document.getElementById('dw-bar').style.background=cc;
+  document.getElementById('dw-tag').textContent=AREAS[c.area].label;
+  document.getElementById('dw-code').textContent=c.codigo;
+  document.getElementById('dw-name').textContent=c.nombre;
+  document.getElementById('dw-sem').textContent=roman(c.semestre);
+  document.getElementById('dw-cr').textContent=c.creditos;
+  document.getElementById('dw-area').textContent=AREAS[c.area].short;
+  const prqBox=document.getElementById('dw-prq'), depBox=document.getElementById('dw-dep');
+  prqBox.innerHTML = PRE[c.codigo].length
+    ? PRE[c.codigo].map(chipHTML).join('')
+    : '<p class="empty">Sin prerrequisitos · ingreso directo.</p>';
+  depBox.innerHTML = DEP[c.codigo].length
+    ? DEP[c.codigo].map(chipHTML).join('')
+    : '<p class="empty">No es prerrequisito de otra asignatura.</p>';
+  drawer.querySelectorAll('.prq-chip').forEach(ch=>ch.onclick=()=>{
+    const code=ch.dataset.code; openDrawer(byCode[code], cardEl[code]);
+    document.getElementById('drawer').scrollTop=0;
+  });
+  const hasCont=!!(c.contenidos&&c.contenidos.trim());
+  document.getElementById('dw-cont-sec').style.display=hasCont?'':'none';
+  document.getElementById('dw-cont').textContent=c.contenidos||'';
+  updateDrawerAprob(c.codigo);
+  const aeBox=document.getElementById('dw-ae');
+  const hasAE=!!(c.aprendizajes && c.aprendizajes.length);
+  document.getElementById('dw-ae-sec').style.display=hasAE?'':'none';
+  aeBox.innerHTML=hasAE?'<ul class="ae">'+c.aprendizajes.map(a=>`<li>${esc(a)}</li>`).join('')+'</ul>':'';
+  backdrop.classList.add('show'); drawer.classList.add('show');
+  drawer.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  document.getElementById('dw-close').focus();
+}
+function closeDrawer(){
+  backdrop.classList.remove('show'); drawer.classList.remove('show');
+  drawer.setAttribute('aria-hidden','true'); document.body.style.overflow='';
+  drawerOpen=false; clearHighlight();
+  if(lastFocus) lastFocus.focus();
+}
+document.getElementById('dw-close').onclick=closeDrawer;
+backdrop.onclick=closeDrawer;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('show'))closeDrawer();});
+
+// ----- footer -----
+document.getElementById('foot').innerHTML =
+  `<span><b style="color:var(--ink-soft)">${CURSOS.length}</b> asignaturas</span><span class="sep">·</span>`+
+  `<span><b style="color:var(--ink-soft)">${totCr}</b> créditos UNAB</span><span class="sep">·</span>`+
+  `<span>10 semestres · 5 años</span><span class="sep">·</span>`+
+  `<span>Fuente: Malla UNAB 11303 · Catálogo 2022</span><span class="sep">·</span>`+
+  `<span>Pasa el cursor por una asignatura para ver su cadena de prerrequisitos · clic para el detalle</span>`;
+
+// ----- tracker de aprobación -----
+let STORE_KEY='malla_aprob_UNAB11303_ICMI';
+// Suite UNAB: separar el progreso por usuario logueado, para que no se
+// mezcle si varias personas usan el mismo navegador (antes era una sola
+// clave fija por carrera para cualquier visitante).
+try{const _u=window.SuiteAuth&&SuiteAuth.getUser&&SuiteAuth.getUser();if(_u&&_u.nombre) STORE_KEY+='_'+encodeURIComponent(_u.nombre);}catch(_e){}
+let aprobadas=new Set();
+try{ const s=localStorage.getItem(STORE_KEY); if(s) aprobadas=new Set(JSON.parse(s)); }catch(e){}
+function saveAprob(){ try{ localStorage.setItem(STORE_KEY,JSON.stringify([...aprobadas])); }catch(e){} }
+function toggleAprobada(code){
+  if(aprobadas.has(code)) aprobadas.delete(code); else aprobadas.add(code);
+  saveAprob(); refreshStates();
+}
+function isAvailable(code){
+  if(aprobadas.has(code)) return false;
+  return PRE[code].every(p=>aprobadas.has(p));
+}
+function refreshStates(){
+  CURSOS.forEach(c=>{
+    const el=cardEl[c.codigo]; if(!el) return;
+    const done=aprobadas.has(c.codigo), avail=!done && isAvailable(c.codigo);
+    el.classList.toggle('done',done);
+    el.classList.toggle('avail',avail);
+    el.classList.toggle('locked',!done && !avail);
+    const chk=el.querySelector('.chk'); if(chk) chk.setAttribute('aria-checked',String(done));
+  });
+  updateProgress();
+  if(drawerOpen && currentCode) updateDrawerAprob(currentCode);
+}
+function updateProgress(){
+  const nA=aprobadas.size;
+  const crA=CURSOS.filter(c=>aprobadas.has(c.codigo)).reduce((a,c)=>a+c.creditos,0);
+  const pct=totCr?Math.round(crA/totCr*100):0;
+  document.getElementById('prog-aprob').textContent=nA;
+  document.getElementById('prog-aprob-l').textContent=`/ ${CURSOS.length} asignaturas`;
+  document.getElementById('prog-cred').textContent=crA;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+function updateDrawerAprob(code){
+  const btn=document.getElementById('dw-aprob');
+  const done=aprobadas.has(code);
+  btn.classList.toggle('is-done',done);
+  btn.textContent=done?'✓ Aprobada — quitar':'Marcar como aprobada';
+  btn.onclick=()=>toggleAprobada(code);
+}
+document.getElementById('prog-reset').onclick=()=>{
+  if(!aprobadas.size) return;
+  if(confirm('¿Desmarcar todas las asignaturas aprobadas?')){ aprobadas.clear(); saveAprob(); refreshStates(); }
+};
+refreshStates();
+
+// ----- utils -----
+function roman(n){return ["","I","II","III","IV","V","VI","VII","VIII","IX","X"][n]||n;}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+</script>
+</body>
+</html>
