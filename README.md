@@ -84,6 +84,22 @@ detener-suite.bat
 
 ---
 
+## 🧪 Tests Unitarios y CI
+
+La plataforma cuenta con una suite de pruebas unitarias automatizadas (ejecutadas nativamente con Node.js):
+
+```bash
+npm test
+```
+
+Valida:
+- **Algoritmos de grafos:** `ancestors()`, `descendants()` y `isAvailable()`.
+- **Lógica de oferta académica:** `isOffered()` según Plan Común y paridad semestral.
+- **Integridad de las 10 carreras de la UNAB:** Verificación estricta de que los planes de estudio son *Grafos Dirigidos Acíclicos* (DAG) sin ciclos infinitos.
+- **Pipeline de CI:** GitHub Actions (`.github/workflows/ci.yml`) para validación automática en cada Pull Request.
+
+---
+
 ## 📚 Documentación adicional
 - Revisa [`docs/Suite_UNAB_Proyecto_actualizado.docx`](docs/Suite_UNAB_Proyecto_actualizado.docx) para el alcance, marco teórico y objetivos de la tesis.
 - Revisa [`docs/FORMATOS_DE_ARCHIVOS.md`](docs/FORMATOS_DE_ARCHIVOS.md) para conocer las columnas requeridas en los archivos Excel (`.xlsx`) de entrada.
