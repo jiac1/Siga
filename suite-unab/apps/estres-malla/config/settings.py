@@ -56,10 +56,12 @@ DATABASES = {
     )
 }
 
+FORCE_SCRIPT_NAME = config("FORCE_SCRIPT_NAME", default=None)
+
 AUTH_USER_MODEL     = "accounts.User"
-LOGIN_URL           = "/accounts/login/"
-LOGIN_REDIRECT_URL  = "/dashboard/"
-LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_URL           = f"{FORCE_SCRIPT_NAME}/accounts/login/" if FORCE_SCRIPT_NAME else "/accounts/login/"
+LOGIN_REDIRECT_URL  = f"{FORCE_SCRIPT_NAME}/" if FORCE_SCRIPT_NAME else "/dashboard/"
+LOGOUT_REDIRECT_URL = f"{FORCE_SCRIPT_NAME}/accounts/login/" if FORCE_SCRIPT_NAME else "/accounts/login/"
 
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
@@ -72,13 +74,22 @@ TIME_ZONE     = "America/Santiago"
 USE_I18N      = True
 USE_TZ        = True
 
-STATIC_URL   = "/static/"
+STATIC_URL   = f"{FORCE_SCRIPT_NAME}/static/" if FORCE_SCRIPT_NAME else "/static/"
 STATIC_ROOT  = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL  = "/media/"
+MEDIA_URL  = f"{FORCE_SCRIPT_NAME}/media/" if FORCE_SCRIPT_NAME else "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8791",
+    "http://127.0.0.1:8791",
+    "http://localhost:8793",
+    "http://127.0.0.1:8793",
+]
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
