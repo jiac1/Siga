@@ -57,5 +57,6 @@ ehthumbs.db
 
 # Logs and databases
 *.log
+logs/
 # db.sqlite3 is kept for local quick demo if needed, but uncomment below if migrating to fresh db:
 # *.sqlite3

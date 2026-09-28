@@ -247,18 +247,16 @@
 <body>
 <div id="suite-bar">
   <div class="suite-bar-left">
-    <!-- En local, la Suite estática corre aparte (p.ej. localhost:8791).
-         En AWS, esto pasa a ser una ruta relativa dentro del mismo dominio. -->
-    <a class="suite-bar-brand" href="http://localhost:8791/index.html"><span class="dot"></span>Suite UNAB</a>
+    <a class="suite-bar-brand" href="/index.html"><span class="dot"></span>Suite UNAB</a>
     <span class="suite-bar-sep">/</span>
     <span class="suite-bar-app">Mapa de Calor</span>
   </div>
   <div class="suite-bar-right">
-    <a class="suite-bar-link" href="http://localhost:8791/index.html">Inicio</a>
+    <a class="suite-bar-link" href="/index.html">Inicio</a>
   </div>
 </div>
 <nav>
-  <a href="/" class="nav-brand">🔥 <span>Heatmap</span> Salas</a>
+  <a href="{% url 'home' %}" class="nav-brand">🔥 <span>Heatmap</span> Salas</a>
   {% block nav_extra %}{% endblock %}
 </nav>
 
