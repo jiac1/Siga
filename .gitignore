@@ -57,6 +57,31 @@ ehthumbs.db
 
 # Logs and databases
 *.log
-logs/
 # db.sqlite3 is kept for local quick demo if needed, but uncomment below if migrating to fresh db:
 # *.sqlite3
+
+# Datos locales de ejecución (no versionar)
+*.sqlite3
+**/media/
+**/staticfiles/*
+!**/staticfiles/.gitkeep
+**/django_sessions/
+
+# Infraestructura
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+
+# Build / herramientas
+node_modules/
+docs/_build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Artefactos generados por Python/Django en servicios
+services/*/staticfiles/
+*.egg-info/

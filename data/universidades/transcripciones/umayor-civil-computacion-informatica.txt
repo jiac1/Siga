@@ -1,0 +1,21 @@
+# universidad: Universidad Mayor
+# sigla: UMAYOR
+# carrera: Ingeniería Civil en Computación e Informática
+# area: informatica
+# plan: vigente (archivo 2023-12)
+# duracion: 11
+# fuente: https://www.umayor.cl/um/bundles/umayor/descargables/mallas/ingenieria-civil-informatica.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: La malla podría ser modificada según la fuente.
+1 | Proyecto Cornerstone | Pensamiento Computacional | Introducción a la Administración de Proyectos | Álgebra | Química Aplicada a la Ingeniería
+2 | Creatividad e Innovación | Programación Aplicada en Análisis de Datos | Estadística | Cálculo | Física | ~Electivo 1
+3 | Modelos de Negocios | Aplicaciones Computacionales en Ingeniería | Inferencia | Cálculo Integral | Álgebra Lineal | ~Electivo 2
+4 | Proyecto de Innovación Tecnológica | Programación Aplicada en Microcontroladores | Cálculo Multivariable | Ecuaciones Diferenciales | Mecánica | ~Electivo 3
+5 | Arquitectura de Computadores | Ingeniería de Software | Estructura de Datos | Análisis Numérico | Microeconomía | Estadística Multivariada
+6 | Base de Datos I | Sistemas Operativos | Arquitectura de Desarrollo (Móvil y Web) | Lenguajes de Programación | Interacción Humano Computador | ~Electivo 4
+7 | Base de Datos II | Seguridad de la Información | Calidad de Software | Inteligencia Artificial | Redes de Computadores | Práctica Inicial | ~Certificación 1
+8 | Proyecto Capstone Intermedio | Ingeniería Financiera | Computación Paralela y Distribuida | Machine Learning | ~Certificación 2 | ~Electivo 5
+9 | Deep Learning | Inteligencia de Negocios | Evaluación Económica y Financiera de Proyectos | Desarrollo Seguro de Software | Práctica Profesional | ~Certificación 3
+10 | Proyecto de Ingeniería | Planificación Estratégica | Gestión de Proyectos de TI | Legislación y Normatividad Informática | Gestión de Riesgos de Seguridad de la Información | Innovación y Transferencia Tecnológica
+11 | Proyecto de Título

@@ -1,0 +1,575 @@
+{
+ "slug": "usach-civil-industrial",
+ "universidad": "Universidad de Santiago de Chile",
+ "sigla": "USACH",
+ "carrera": "Ingeniería Civil Industrial",
+ "area": "industrial",
+ "plan": "Resolución N° 6668 año 2019, modificada por Resolución N° 6124 año 2022",
+ "regimen": "semestral",
+ "duracion": 11,
+ "unidad_creditos": null,
+ "fuente": {
+  "url": "https://admision.usach.cl/sites/default/files/2025-11/16003_ING%20CIVIL%20INDUSTRIAL.pdf",
+  "consultado": "2026-10-21",
+  "metodo": "lectura visual del PDF oficial (folleto admisión, noviembre 2025)",
+  "notas": "Código DEMRE 16003. Requisito de titulación: dos prácticas profesionales. Malla sujeta a cambios."
+ },
+ "estadisticas": {
+  "asignaturas": 55,
+  "convalidables": 50,
+  "genericas": 5,
+  "inciertas": 0
+ },
+ "semestres": [
+  {
+   "numero": 1,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s1-1",
+     "nombre": "Cálculo I para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s1-2",
+     "nombre": "Álgebra I para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s1-3",
+     "nombre": "Física I para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s1-4",
+     "nombre": "Introducción a la Ingeniería Industrial",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s1-5",
+     "nombre": "Introducción al Diseño en la Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 2,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s2-1",
+     "nombre": "Cálculo II para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s2-2",
+     "nombre": "Álgebra II para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s2-3",
+     "nombre": "Física II para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s2-4",
+     "nombre": "Química General y Termodinámica",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s2-5",
+     "nombre": "Fundamentos de Programación para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 3,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s3-1",
+     "nombre": "Cálculo III para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s3-2",
+     "nombre": "Ecuaciones Diferenciales para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s3-3",
+     "nombre": "Física Moderna",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s3-4",
+     "nombre": "Programación",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s3-5",
+     "nombre": "Fundamentos de Economía para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s3-6",
+     "nombre": "Inglés I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 4,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s4-1",
+     "nombre": "Análisis Estadístico para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s4-2",
+     "nombre": "Métodos Numéricos para Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s4-3",
+     "nombre": "Ingeniería de Sistemas",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s4-4",
+     "nombre": "Diseño Digital Computacional",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s4-5",
+     "nombre": "Taller de Diseño en Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s4-6",
+     "nombre": "Inglés II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 5,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s5-1",
+     "nombre": "Estadística Aplicada",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s5-2",
+     "nombre": "Operaciones y Procesos Industriales",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s5-3",
+     "nombre": "Administración",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s5-4",
+     "nombre": "Microeconomía",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s5-5",
+     "nombre": "Taller de Gestión y Liderazgo",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s5-6",
+     "nombre": "Inglés III",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 6,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s6-1",
+     "nombre": "Macroeconomía",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s6-2",
+     "nombre": "Contabilidad y Costos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s6-3",
+     "nombre": "Investigación de Operaciones",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s6-4",
+     "nombre": "Tecnologías para la Gestión",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s6-5",
+     "nombre": "Introducción a la Innovación",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s6-6",
+     "nombre": "Inglés IV",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 7,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s7-1",
+     "nombre": "Diseño de Productos y Sistemas Productivos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s7-2",
+     "nombre": "Marketing Estratégico",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s7-3",
+     "nombre": "Modelos Estocásticos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s7-4",
+     "nombre": "Finanzas",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s7-5",
+     "nombre": "Gestión del Emprendimiento",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 8,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s8-1",
+     "nombre": "Sistemas de Información",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s8-2",
+     "nombre": "Análisis de Decisiones",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s8-3",
+     "nombre": "Modelamiento de Sistemas Complejos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s8-4",
+     "nombre": "Inteligencia de Negocios",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s8-5",
+     "nombre": "Evaluación de Proyectos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 9,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s9-1",
+     "nombre": "Tópico de Especialidad I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s9-2",
+     "nombre": "Gestión de Personas",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s9-3",
+     "nombre": "Gestión de Producción de Bienes y Servicios",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s9-4",
+     "nombre": "Gestión Estratégica",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s9-5",
+     "nombre": "Electivo I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 10,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s10-1",
+     "nombre": "Tópico de Especialidad II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s10-2",
+     "nombre": "Proyecto de Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s10-3",
+     "nombre": "Gestión de Cadena de Suministro",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s10-4",
+     "nombre": "Tópico de Especialidad III",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "usach-civil-industrial-s10-5",
+     "nombre": "Electivo II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 11,
+   "asignaturas": [
+    {
+     "id": "usach-civil-industrial-s11-1",
+     "nombre": "Trabajo de Titulación",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  }
+ ]
+}

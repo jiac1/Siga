@@ -1,0 +1,22 @@
+# universidad: Universidad de Chile
+# sigla: UCHILE
+# carrera: Ingeniería Civil Industrial
+# area: industrial
+# plan: Malla 2021 (FCFM)
+# duracion: 11
+# creditos: UD (unidades docentes FCFM)
+# fuente: https://ingenieria.uchile.cl/dam/jcr:cdc0ae92-f9b3-46fb-8aff-4d49fe4c6440/MallaCivilIndustrial2021.jpg
+# consultado: 2026-10-21
+# metodo: lectura visual de la imagen oficial publicada en ingenieria.uchile.cl/carreras/4973
+# notas: Plan Común FCFM semestres I-IV idéntico a las demás ingenierías civiles de la FCFM.
+1 | Introducción al Cálculo [MA1001] {6} | Introducción al Álgebra [MA1101] {6} | Introducción a la Física Clásica [FI1000] {6} | Herramientas Computacionales para Ingeniería y Ciencias [CC1000] {3} | Desafíos de Innovación en Ingeniería y Ciencias [CD1100] {6} | Aplicaciones de la Biología a la Ingeniería y Ciencias [BT1211] {3}
+2 | Cálculo Diferencial e Integral [MA1002] {6} | Álgebra Lineal [MA1102] {6} | Introducción a la Física Moderna [FI1100] {6} | Introducción a la Programación [CC1002] {6} | Proyecto de Innovación en Ingeniería y Ciencias [CD1201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+3 | Cálculo en Varias Variables [MA2001] {6} | Ecuaciones Diferenciales Ordinarias [MA2601] {6} | Mecánica [FI2001] {6} | Métodos Experimentales [FI2003] {6} | Química [IQ2211] {6}
+4 | Cálculo Avanzado y Aplicaciones [MA2002] {6} | Economía [IN2201] {6} | Electromagnetismo [FI2002] {6} | Termodinámica / Termodinámica Química [FI2004/IQ2212] {6} | Módulo Interdisciplinario [CD2201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+5 | Modelamiento y Optimización [IN3171] {6} | Probabilidades [IN3141] {6} | Taller de Liderazgo e Innovación Social [IN3101] {6} | ~Electivo {6} | ~Formación Integral EH/FG {3} | ~Formación Integral EH/FG {3}
+6 | Decisiones bajo Incertidumbre [IN3272] {6} | Teoría de Juegos y Estrategia [IN3221] {6} | Estadística [IN3242] {6} | Evaluación de Proyectos [IN3301] {6} | ~Electivo {6}
+7 | Taller de Concepción y Diseño de Proyectos [IN4102] {6} | Macroeconomía [IN4123] {6} | Análisis de Datos e Inferencia Causal [IN4143] {6} | Ingeniería de la Información [IN4151] {6} | ~Electivo {6} | Práctica Profesional I [IN4191] {7}
+8 | Gestión de Operaciones [IN4273] {6} | Marketing [IN4261] {6} | Finanzas [IN4232] {6} | ~Electivo {6} | ~Electivo {6} | Examen de Suficiencia en Inglés I [EI1090]
+9 | ~Especialización {6} | ~Especialización {6} | Dirección Estratégica [IN5112] {6} | Comportamiento Organizacional [IN5111] {6} | ~Electivo de Especialidad {6}
+10 | ~Especialización {6} | ~Especialización {6} | ~Electivo de Especialidad {6} | ~Electivo de Especialidad {6} | ~Electivo de Especialidad {6}
+11 | Proyecto de Título [IN6193] {15} | Práctica Profesional Extendida [IN6192] {15} | Examen de Suficiencia en Inglés II [EI2090]

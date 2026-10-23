@@ -1,0 +1,21 @@
+# universidad: Universidad de los Andes
+# sigla: UANDES
+# carrera: Ingeniería Civil Industrial
+# area: industrial
+# plan: vigente 2025 (sin año en documento)
+# duracion: 11
+# fuente: https://admision.uandes.cl/docs/default-source/carreras/documentos-area-ingenieria-y-administracion/ingenieria-civil-industrial/malla-ingenieria-civil-industrial.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (texto en contornos)
+# notas: Menciones: Gestión de Operaciones, Ingeniería Financiera, Data Science. Plan común compartido con Civil en Ciencias de la Computación.
+1 | Introducción al Cálculo | Introducción al Álgebra y Geometría | Fundamentos de Química | Programación | Bases para el Estudio de Ingeniería | Taller de Proyectos de Ingeniería | ~Teología I | ~Antropología Filosófica
+2 | Álgebra Lineal | Cálculo I | Introducción a la Mecánica | Fundamentos de Economía | ~Teología II | ~Optativo Arte y Literatura / Historia y Pensamiento Contemporáneo | Inglés ALTE 3
+3 | Ecuaciones Diferenciales | Cálculo II | Mecánica y Ondas | Teoría de Probabilidades | ~Optativo Teológico | ~Minor
+4 | Estadística Aplicada | Electricidad y Magnetismo | Termodinámica | Estática | Ética | ~Minor
+5 | Optimización | Microeconomía | Contabilidad y Estados Financieros | HI: Pensamiento Algorítmico Aplicado | ~Filosofía de las Ciencias | ~Minor
+6 | Modelos Estocásticos | Programación Matemática | Macroeconomía | Métodos Estadísticos | HI: Métodos Numéricos | Pre-Professional Practice
+7 | Simulación | Econometría | Finanzas I | HI: Taller de Inteligencia Artificial | Pensamiento de Diseño Aplicado a Ingeniería
+8 | Diseño y Evaluación de Proyectos Industriales | Gestión de Operaciones | Finanzas II | Series de Tiempo | ~Optativo Arte y Literatura / Historia y Pensamiento Contemporáneo
+9 | Organización Industrial | Marketing | Logistics | ~Curso Mención 1 | ~Electivo Especialidad
+10 | Gestión Estratégica | Gestión de Personas y Desarrollo Organizacional | Proyecto de Título I | ~Curso Mención 2 | ~Electivo de Especialidad | Seminario Ética Profesional | Professional Practice
+11 | ~Electivo de Especialidad | ~Curso Mención 3 | Proyecto de Título II

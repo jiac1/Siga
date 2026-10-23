@@ -1,0 +1,10 @@
+# Servicio core de Suite UNAB (identidad, licencias, catálogo, convalidaciones)
+Django>=5.2,<6.0
+djangorestframework>=3.16
+drf-spectacular>=0.28
+PyJWT>=2.8
+python-decouple>=3.8
+dj-database-url>=2.1
+psycopg[binary]>=3.2
+whitenoise>=6.7
+gunicorn>=23.0

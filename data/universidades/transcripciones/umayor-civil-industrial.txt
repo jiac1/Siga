@@ -1,0 +1,21 @@
+# universidad: Universidad Mayor
+# sigla: UMAYOR
+# carrera: Ingeniería Civil Industrial
+# area: industrial
+# plan: vigente (archivo 2021-04)
+# duracion: 11
+# fuente: https://www.umayor.cl/um/bundles/carreras/descargables/mallas/ingenieria-civil-industrial.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: La malla podría ser modificada según la fuente.
+1 | Computación para Ingeniería | Métodos Experimentales | Química Aplicada a la Ingeniería | Álgebra y Geometría Analítica | Cálculo Diferencial | Competencias Académicas Universitarias
+2 | Programación | Álgebra Lineal | Cálculo Integral | Física | Administración Moderna | Escritura y Lectura Académica
+3 | Ecuaciones Diferenciales y Análisis Numérico | Cálculo Multivariable | Mecánica Clásica | Microeconomía | Comportamiento Organizacional | Comunicación Eficaz
+4 | Termodinámica Aplicada | Electricidad y Magnetismo | Probabilidades y Estadística | Macroeconomía | Ingeniería Económica | Ética y Responsabilidad Social
+5 | Procesos Fisicoquímicos | Mecánica de Fluidos | Investigación de Operaciones I | Tecnologías de Energías Renovables | Inferencia Estadística | Ondas y Óptica
+6 | Resistencia y Ciencias de los Materiales | Procesos de Transferencia | Investigación de Operaciones II | Base de Datos | Econometría | Contabilidad de Costos | Inglés I
+7 | Organización Industrial | Gestión de Operaciones I | Evaluación Económica de Proyectos | Taller de Investigación para la Ingeniería | Práctica Profesional I | Marketing Industrial | Inglés II
+8 | Desarrollo de Productos | Gestión de Operaciones II | Gestión de Proyectos | Sistema de Gestión Empresarial | Ingeniería de Eficiencia Energética | Gestión Financiera | Inglés III
+9 | Simulación | Métodos de Optimización | Proyecto Ingeniería I | Práctica Profesional II | Administración Estratégica | Juego de Negocios | Inglés IV
+10 | Gestión Logística | Control de Calidad | Proyecto Ingeniería II | Integrado Aplicado | Innovación y Emprendimiento | ~Electivo de Cultura y Sociedad
+11 | Seminario de Integración

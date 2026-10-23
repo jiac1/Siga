@@ -1,0 +1,20 @@
+# universidad: Universidad del Desarrollo
+# sigla: UDD
+# carrera: Ingeniería Civil en Obras Civiles
+# area: civil
+# plan: UDD Futuro (vigente; reemplaza al plan 2017)
+# duracion: 10
+# fuente: https://www.udd.cl/mallas/ingenieriacivilobrasciviles.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: Sede Santiago. Práctica Profesional I al finalizar el VI semestre; Examen de Licenciatura y Práctica II al finalizar el 8°. Se corrige errata "Estrcturas" -> "Estructuras".
+1 | Taller de Edificación | Desafío de Ingeniería Estructural | Álgebra | Introducción al Cálculo | Comunicación Oral / Comunicación Escrita | ~Introducción a la Vida Universitaria
+2 | Taller de Dibujo | Taller de Análisis de Datos para la Ingeniería Estructural | Geometría | Cálculo Diferencial | Lectura Crítica / Pensamiento Crítico | ~Taller de Habilidades para la Autogestión
+3 | Taller de Topografía | Construcción Sustentable | Estática | Física | Cálculo Integral | ~Herramientas Tecnológicas para la Vida Universitaria
+4 | Taller de Gestión de la Construcción | Análisis del Impacto Ambiental | Mecánica de Sólidos | Álgebra Lineal | Cálculo Multivariable | ~Semana i
+5 | Taller de Materiales de Ingeniería | Dirección de Proyectos | Análisis Estructural | Probabilidades y Estadística | Ecuaciones Diferenciales | ~Camino al Egreso
+6 | Concrete Technology (Inglés) | Planificación y Control de Proyectos | Herramientas Computacionales para el Costeo de Proyectos | Herramientas Computacionales para la Ingeniería Estructural | Diseño Estructural | Análisis de Datos
+7 | Taller de Tecnologías de Información en Construcción | Análisis y Estimación de Costos | Dirección de Obras de Construcción | Structural Dynamics (Inglés) | Geotechnics (Inglés) | Mecánica de Fluidos | ~Taller de Liderazgo
+8 | Taller de BIM para la Toma de Decisiones | Gestión Financiera de Proyectos | Seminario de Investigación | Hormigón Armado | Mecánica de Suelos | Hidráulica
+9 | Taller de Resolución de Problemas en Ingeniería | Construcción de Obras Civiles e Industriales | Taller de Diseño de Estructuras de Hormigón | ~Taller de Empleabilidad
+10 | Taller de Estudio de Propuestas | Ética Profesional

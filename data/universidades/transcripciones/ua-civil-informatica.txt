@@ -1,0 +1,27 @@
+# universidad: Universidad Autónoma de Chile
+# sigla: UA
+# carrera: Ingeniería Civil Informática
+# area: informatica
+# plan: Malla 2025
+# duracion: 16
+# regimen: trimestral
+# fuente: https://admision.uautonoma.cl/content/uploads/2025/11/Malla-2025-Ingenieria-Civil-Informatica.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: Régimen trimestral (16 trimestres, sede Santiago-Providencia). Información referencial según la fuente.
+1 | Introducción a las Matemáticas | Introducción a la Ingeniería | ~Electivo de Desarrollo del Pensamiento
+2 | Álgebra | Química y Medio Ambiente | Introducción a la Programación
+3 | Álgebra Lineal | Cálculo I | Programación Orientada a Objetos | ~Electivo de Comunicación
+4 | Cálculo II | Física Mecánica | Fundamentos de Hardware
+5 | Probabilidades y Estadística Computacional | Cálculo III | Fundamentos de Estructura de Datos | ~Electivo de Comunicación
+6 | Fundamentos de IoT | Ciencia de Materiales para Electrónica Moderna | Redes y Comunicaciones | Inglés Técnico I
+7 | Ecuaciones Diferenciales | Inferencia Estadística | Bases de Datos I | Inglés Técnico II
+8 | Procesos Termodinámicos | Análisis y Modelamiento de Sistemas | Seguridad de Redes | Inglés Técnico III
+9 | Electricidad y Electromagnetismo | Termodinámica | Bases de Datos II | Big Data | Inglés Técnico IV
+10 | Electrónica y Electrotecnia | Contabilidad y Costos | Desarrollo de Aplicaciones Web | Ingeniería de Software | Sistemas Operativos
+11 | Gestión de Proyectos Complejos | Desarrollo de Aplicaciones Móviles | Ciencia de Datos e Inteligencia de Negocios | Programación Científica
+12 | Consultoría Informática | Arquitectura de Software | Machine Learning | ~Electivo de Desarrollo Personal | Práctica I
+13 | Economía y Finanzas | ~Especialidad I | Inteligencia Artificial | Infraestructura y Servicios Cloud
+14 | Arquitectura Empresarial y Liderazgo Corporativo | ~Especialidad II | ~Especialidad III | ~Electivo de Ética
+15 | Formulación y Evaluación de Proyectos | Trabajo de Título I | Derecho de Empresa y Legislación Laboral | ~Electivo de Responsabilidad Social | Práctica II
+16 | ~Especialidad IV | Trabajo de Título II

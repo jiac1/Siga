@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ingresar · Suite UNAB</title>
+<link rel="stylesheet" href="shared/tokens.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--su-font);background:var(--su-bg);color:var(--su-ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+  .card{background:var(--su-surface);border-radius:14px;box-shadow:var(--su-shadow-lg);padding:36px 34px;width:100%;max-width:360px}
+  .brand{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--su-red)}
+  .brand span{font-weight:700;font-size:19px;color:var(--su-navy)}
+  p.sub{color:var(--su-ink-soft);font-size:13px;margin-bottom:24px}
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--su-ink-soft);margin-bottom:6px}
+  input{width:100%;padding:10px 12px;border:1px solid var(--su-line);border-radius:8px;font-size:14px;margin-bottom:18px;font-family:inherit}
+  input:focus{outline:2px solid var(--su-navy-2);outline-offset:1px}
+  button{width:100%;padding:11px;border:none;border-radius:8px;background:var(--su-navy);color:#fff;font-weight:700;font-size:14px;cursor:pointer;border-bottom:3px solid var(--su-red)}
+  button:hover{background:var(--su-navy-2)}
+  .note{margin-top:16px;font-size:11.5px;color:var(--su-ink-faint);line-height:1.5}
+</style>
+</head>
+<body>
+  <form class="card" id="login-form" hidden>
+    <div class="brand"><span class="dot"></span><span>Suite UNAB</span></div>
+    <p class="sub">Modo independiente: ingresa un nombre para separar tu avance guardado en este navegador.</p>
+    <label for="nombre">Nombre</label>
+    <input id="nombre" type="text" placeholder="Tu nombre" required>
+    <button type="submit">Ingresar</button>
+    <p class="note">Esta pantalla solo aparece cuando la Suite funciona sin su servicio de cuentas (por ejemplo, una app publicada sola). Con la Suite completa se usa el inicio de sesión institucional único.</p>
+  </form>
+
+  <script src="shared/suite-config.js"></script>
+  <script src="shared/auth.js"></script>
+  <script>
+    SuiteAuth.ready.then(({modo}) => {
+      if (modo === "suite") {
+        location.replace(window.SUITE_CONFIG.loginUrl + "?next=" + encodeURIComponent("/"));
+        return;
+      }
+      document.getElementById("login-form").hidden = false;
+      document.getElementById("nombre").focus();
+    });
+    document.getElementById("login-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      SuiteAuth.login(document.getElementById("nombre").value.trim() || "Estudiante");
+      location.href = "index.html";
+    });
+  </script>
+</body>
+</html>

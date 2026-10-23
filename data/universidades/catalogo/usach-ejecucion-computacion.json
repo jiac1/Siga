@@ -1,0 +1,416 @@
+{
+ "slug": "usach-ejecucion-computacion",
+ "universidad": "Universidad de Santiago de Chile",
+ "sigla": "USACH",
+ "carrera": "Ingeniería de Ejecución en Computación e Informática (vespertino)",
+ "area": "informatica",
+ "plan": "Res. Universitaria N° 7930 de 01/12/2017, mod. Res. N° 1313 de 29/04/2020",
+ "regimen": "semestral",
+ "duracion": 8,
+ "unidad_creditos": null,
+ "fuente": {
+  "url": "https://diinf.usach.cl/wp-content/uploads/2021/05/Malla-Ingenieria-de-Ejecu-en-Compu-e-Inf-Vespertino.pdf",
+  "consultado": "2026-10-21",
+  "metodo": "lectura visual del PDF oficial + capa de texto (códigos entre corchetes)",
+  "notas": "Programa de Ejecución (8 semestres). Los planes podrán variar según la fuente."
+ },
+ "estadisticas": {
+  "asignaturas": 39,
+  "convalidables": 36,
+  "genericas": 3,
+  "inciertas": 0
+ },
+ "semestres": [
+  {
+   "numero": 1,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s1-1",
+     "nombre": "Cálculo I para Ingeniería",
+     "codigo": "13140",
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s1-2",
+     "nombre": "Álgebra I para Ingeniería",
+     "codigo": "13141",
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s1-3",
+     "nombre": "Física I para Ingeniería",
+     "codigo": "13142",
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s1-4",
+     "nombre": "Gestión Personal",
+     "codigo": "13143",
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s1-5",
+     "nombre": "Introducción a la Programación",
+     "codigo": "13175",
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 2,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s2-1",
+     "nombre": "Cálculo II para Ingeniería",
+     "codigo": "13145",
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s2-2",
+     "nombre": "Álgebra II para Ingeniería",
+     "codigo": "13146",
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s2-3",
+     "nombre": "Física II para Ingeniería",
+     "codigo": "13147",
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s2-4",
+     "nombre": "Métodos de Programación",
+     "codigo": "13148",
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s2-5",
+     "nombre": "Comunicación Efectiva",
+     "codigo": "13149",
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 3,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s3-1",
+     "nombre": "Electricidad y Magnetismo para Ingeniería",
+     "codigo": "13150",
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s3-2",
+     "nombre": "Paradigmas de Programación",
+     "codigo": "13151",
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s3-3",
+     "nombre": "Ecuaciones Diferenciales y Métodos Numéricos para Ingeniería",
+     "codigo": "13152",
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s3-4",
+     "nombre": "Fundamentos de Economía",
+     "codigo": "13153",
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s3-5",
+     "nombre": "Análisis Estadístico para Ingeniería",
+     "codigo": "13154",
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s3-6",
+     "nombre": "Inglés I",
+     "codigo": "10130",
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 4,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s4-1",
+     "nombre": "Ingeniería de Sistemas",
+     "codigo": "13155",
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s4-2",
+     "nombre": "Fundamentos de Ingeniería de Software",
+     "codigo": "13156",
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s4-3",
+     "nombre": "Estructura de Computadores",
+     "codigo": "13157",
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s4-4",
+     "nombre": "Evaluación de Proyectos Informáticos",
+     "codigo": "13176",
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s4-5",
+     "nombre": "Análisis de Algoritmos y Estructura de Datos",
+     "codigo": "13159",
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s4-6",
+     "nombre": "Inglés II",
+     "codigo": "10131",
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 5,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s5-1",
+     "nombre": "Diseño de Bases de Datos",
+     "codigo": "13160",
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s5-2",
+     "nombre": "Organización de Computadores",
+     "codigo": "13161",
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s5-3",
+     "nombre": "Administración de Proyectos Informáticos",
+     "codigo": "13177",
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s5-4",
+     "nombre": "Sistemas de Información",
+     "codigo": "13163",
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s5-5",
+     "nombre": "Inglés III",
+     "codigo": "10132",
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 6,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s6-1",
+     "nombre": "Sistemas Operativos",
+     "codigo": "13164",
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s6-2",
+     "nombre": "Taller de Bases de Datos",
+     "codigo": "13165",
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s6-3",
+     "nombre": "Métodos de Ingeniería de Software",
+     "codigo": "16166",
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s6-4",
+     "nombre": "Redes Computacionales",
+     "codigo": "13167",
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s6-5",
+     "nombre": "Inglés IV",
+     "codigo": "10133",
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 7,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s7-1",
+     "nombre": "Proyecto de Ingeniería de Software",
+     "codigo": "13168",
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s7-2",
+     "nombre": "Tópicos de Especialidad I",
+     "codigo": "13169",
+     "creditos": null,
+     "semestre": 7,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s7-3",
+     "nombre": "Tópicos de Especialidad II",
+     "codigo": "13170",
+     "creditos": null,
+     "semestre": 7,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s7-4",
+     "nombre": "Tópicos de Especialidad III",
+     "codigo": "13171",
+     "creditos": null,
+     "semestre": 7,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s7-5",
+     "nombre": "Seminario de Computación e Informática",
+     "codigo": "13172",
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 8,
+   "asignaturas": [
+    {
+     "id": "usach-ejecucion-computacion-s8-1",
+     "nombre": "Trabajo de Titulación",
+     "codigo": "13173",
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "usach-ejecucion-computacion-s8-2",
+     "nombre": "Informática y Sociedad",
+     "codigo": "13174",
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  }
+ ]
+}

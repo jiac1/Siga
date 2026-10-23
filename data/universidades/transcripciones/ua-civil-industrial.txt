@@ -1,0 +1,21 @@
+# universidad: Universidad Autónoma de Chile
+# sigla: UA
+# carrera: Ingeniería Civil Industrial
+# area: industrial
+# plan: Malla 2025 (título interno del archivo: 2024)
+# duracion: 11
+# fuente: https://admision.uautonoma.cl/content/uploads/2025/01/Malla-Ing-Civil-Industrial-2025.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: Régimen semestral diurno. Información referencial según la fuente.
+1 | Introducción a las Matemáticas | Introducción a la Ingeniería | Fundamentos de Gestión | Tecnologías para la Gestión | ~Electivo de Desarrollo del Pensamiento
+2 | Álgebra | Cálculo I | Química y Medio Ambiente | Programación | ~Electivo de Comunicación
+3 | Álgebra Lineal | Cálculo II | Física Mecánica | Probabilidad y Estadística | Programación Avanzada | ~Electivo de Comunicación
+4 | Cálculo III | Ciencia y Resistencia de Materiales | Teoría Organizacional | Taller de Aplicación Industrial | Inglés Técnico I
+5 | Ecuaciones Diferenciales | Mecánica de Fluidos | Optimización | Inferencia Estadística | Contabilidad y Costos | Inglés Técnico II
+6 | Electricidad y Electromagnetismo | Termodinámica | Investigación Operativa | Microeconomía | ~Electivo de Desarrollo Personal
+7 | Electrónica y Electrotecnia | Gestión de Operaciones I | ~Especialidad I | Macroeconomía | Ingeniería Económica | Inglés Técnico III | Práctica I
+8 | Gestión de Operaciones II | Consultoría de Empresas | Gestión Estratégica | E-Commerce & E-Business | Finanzas | Inglés Técnico IV
+9 | Procesos Industriales | ~Especialidad II | Innovación y Emprendimiento | Formulación y Evaluación de Proyectos | Economía y Desarrollo Regional | ~Electivo de Ética | Práctica II
+10 | Simulación de Procesos | Derecho de Empresa y Ambiental | Marketing | Administración y Dirección de Proyectos | Plan de Negocios | ~Electivo de Responsabilidad Social
+11 | ~Especialidad III | Trabajo de Título

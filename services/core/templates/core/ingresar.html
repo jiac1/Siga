@@ -1,0 +1,18 @@
+{% extends "core/base.html" %}
+{% block titulo %}Ingresar · Suite UNAB{% endblock %}
+{% block contenido %}
+<h1>Ingresa a tus aplicaciones</h1>
+<p class="sub">Una sola cuenta para Malla, Horarios, Convalidación, Mapa de Calor y Estrés de Malla.</p>
+{% if error %}<div class="alerta" role="alert">{{ error }}</div>{% endif %}
+<form method="post" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+  <div class="campo">{{ form.email.label_tag }}{{ form.email }}{{ form.email.errors }}</div>
+  <div class="campo">{{ form.password.label_tag }}{{ form.password }}{{ form.password.errors }}</div>
+  <button type="submit">Ingresar</button>
+</form>
+<p class="pie">
+  {% if registro_abierto %}¿Eres estudiante y no tienes cuenta? <a href="{% url 'identidad:registro' %}">Crea tu cuenta</a><br>{% endif %}
+  ¿Postulas desde otra universidad? <a href="/apps/convalidacion/index.html">Revisa tu convalidación sin cuenta</a>
+</p>
+{% endblock %}

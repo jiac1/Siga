@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suite UNAB</title>
+<meta name="description" content="Suite UNAB: aplicaciones de apoyo académico para estudiantes, postulantes y personal de la Universidad Andrés Bello.">
+<link rel="stylesheet" href="shared/tokens.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--su-font);background:var(--su-bg);color:var(--su-ink);min-height:100vh}
+  header.top{background:linear-gradient(160deg,var(--su-navy) 0%,var(--su-navy-2) 100%);color:#fff;
+    padding:28px clamp(16px,4vw,40px) 32px;border-bottom:3px solid var(--su-red)}
+  .top-inner{max-width:1180px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--su-red)}
+  .brand span{font-weight:700;font-size:20px}
+  h1{font-size:clamp(22px,3vw,30px);font-weight:700;letter-spacing:-.02em;margin:14px 0 6px}
+  .lede{color:#bcd0e8;font-size:14px;max-width:60ch;line-height:1.5}
+  .user-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .user-row .who{font-size:13px;color:#9db6d4}
+  .user-row a{color:#e8eef7;font-size:12.5px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.3);padding:6px 12px;border-radius:6px}
+  .modo{display:inline-block;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 9px;border-radius:99px;background:rgba(255,255,255,.12);color:#cfdcec}
+  main{max-width:1180px;margin:0 auto;padding:32px clamp(16px,4vw,40px) 60px}
+  .section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--su-ink-soft);margin:6px 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-bottom:34px}
+  .card{background:var(--su-surface);border-radius:12px;box-shadow:var(--su-shadow);padding:20px;display:flex;flex-direction:column;
+    gap:10px;text-decoration:none;color:inherit;border:1px solid var(--su-line);transition:transform .12s,box-shadow .12s}
+  a.card:hover,a.card:focus-visible{transform:translateY(-2px);box-shadow:var(--su-shadow-lg);outline:none}
+  .card.bloqueada{opacity:.6;cursor:not-allowed}
+  .icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff}
+  .card h3{font-size:15px;font-weight:700}
+  .card p{font-size:12.8px;color:var(--su-ink-soft);line-height:1.45}
+  .badge{align-self:flex-start;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:5px}
+  .badge.live{background:#e5f3ea;color:#1e7a42}
+  .badge.publico{background:#e8f1fb;color:#1d4f8a}
+  .badge.off{background:#f1f2f4;color:var(--su-ink-faint)}
+  .aviso{background:#fff;border:1px solid var(--su-line);border-left:3px solid var(--su-navy-2);border-radius:10px;padding:14px 16px;
+    font-size:13px;color:var(--su-ink-soft);line-height:1.5;margin-bottom:26px}
+  footer{max-width:1180px;margin:0 auto;padding:0 clamp(16px,4vw,40px) 40px;color:var(--su-ink-faint);font-size:12px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="user-row">
+        <div class="brand"><span class="dot"></span><span>Suite UNAB</span></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="who" id="who"></span>
+          <a href="#" id="salir" hidden>Salir</a>
+          <a href="#" id="ingresar" hidden>Ingresar</a>
+        </div>
+      </div>
+      <h1>Tus aplicaciones académicas, en un solo lugar</h1>
+      <p class="lede">Herramientas de apoyo para estudiantes, postulantes y personal de la Facultad de Ingeniería de la Universidad Andrés Bello — sede Santiago.</p>
+      <span class="modo" id="modo">Cargando…</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="aviso" id="aviso" hidden></div>
+    <div id="secciones"></div>
+  </main>
+  <footer>Suite UNAB · Proyecto de título · Cada módulo puede usarse por separado o como parte de la suite.</footer>
+
+  <script src="shared/suite-config.js"></script>
+  <script src="shared/auth.js"></script>
+  <script>
+  /* Catálogo usado cuando core no está disponible (modo independiente). En
+     modo suite la lista viene de core según las licencias de la institución. */
+  const CATALOGO_LOCAL = [
+    {slug:"malla", nombre:"Malla curricular", icono:"M", color:"#102338", ruta:"apps/malla/index.html",
+     descripcion:"Consulta interactiva de la malla de tu carrera, con prerrequisitos y registro de avance.", publico:false, grupo:"estudiantes"},
+    {slug:"convalidacion", nombre:"Convalidación de asignaturas", icono:"C", color:"#d8232a", ruta:"apps/convalidacion/index.html",
+     descripcion:"Pre-evaluación de convalidación para postulantes de otras universidades.", publico:true, grupo:"postulantes"},
+    {slug:"horarios", nombre:"Generador de horarios", icono:"H", color:"#5b7495", ruta:"apps/horarios/index.html",
+     descripcion:"Combinaciones de horario sin topes a partir de la programación académica.", publico:false, grupo:"estudiantes"},
+    {slug:"mapa-calor", nombre:"Mapa de calor de salas", icono:"MC", color:"#1d3e63", ruta:null,
+     descripcion:"Ocupación de salas por bloque horario a partir de la programación académica.", publico:false, grupo:"gestion"},
+    {slug:"estres-malla", nombre:"Estrés de malla", icono:"EM", color:"#2f5233", ruta:null,
+     descripcion:"Cuellos de botella de la malla según tasas de reprobación.", publico:false, grupo:"gestion"},
+    {slug:"siga", nombre:"SIGA · visión de producto", icono:"S", color:"#8794a6", ruta:"apps/siga/index.html",
+     descripcion:"Presentación del sistema integrado de gestión académica (datos de ejemplo).", publico:false, grupo:"estudiantes"}
+  ];
+  const GRUPOS = {estudiantes:"Para estudiantes", postulantes:"Para postulantes", gestion:"Gestión académica"};
+  const GRUPO_DE = {"malla":"estudiantes","horarios":"estudiantes","siga":"estudiantes","convalidacion":"postulantes",
+                    "mapa-calor":"gestion","estres-malla":"gestion"};
+  const CFG = window.SUITE_CONFIG;
+
+  function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+  function rutaDe(m, modo){
+    const ext = CFG.modulos[m.slug];
+    if (ext) return modo === "suite" ? ext.suite : ext.independiente;
+    return (m.ruta || "").replace(/^\//, "");
+  }
+
+  function tarjeta(m, modo, autenticado){
+    const habil = m.habilitado !== false;
+    const badge = m.publico ? '<span class="badge publico">Acceso público</span>'
+                : habil ? '<span class="badge live">Disponible</span>'
+                : autenticado ? '<span class="badge off">No incluido en tu plan</span>'
+                : '<span class="badge off">Requiere iniciar sesión</span>';
+    const cuerpo = `<div class="icon" style="background:${esc(m.color)}">${esc(m.icono)}</div>${badge}
+      <h3>${esc(m.nombre)}</h3><p>${esc(m.descripcion)}</p>`;
+    return habil
+      ? `<a class="card" href="${esc(rutaDe(m, modo))}">${cuerpo}</a>`
+      : autenticado
+        ? `<div class="card bloqueada" aria-disabled="true" title="Tu institución no tiene licencia para este módulo o tu rol no lo permite">${cuerpo}</div>`
+        : `<a class="card" href="${esc(CFG.loginUrl)}?next=${encodeURIComponent("/" + rutaDe(m, modo).replace(/^\//, ""))}">${cuerpo}</a>`;
+  }
+
+  function pintar(modulos, modo, autenticado){
+    const cont = document.getElementById("secciones");
+    const porGrupo = {};
+    modulos.forEach(m => (porGrupo[m.grupo] = porGrupo[m.grupo] || []).push(m));
+    cont.innerHTML = Object.keys(GRUPOS).filter(g => porGrupo[g]).map(g =>
+      `<div class="section-title">${GRUPOS[g]}</div><div class="grid">${porGrupo[g].map(m => tarjeta(m, modo, autenticado)).join("")}</div>`
+    ).join("");
+  }
+
+  async function iniciar(){
+    const {modo, usuario} = await SuiteAuth.ready;
+    document.getElementById("modo").textContent = modo === "suite" ? "Suite conectada · inicio de sesión único" : "Modo independiente · demostración";
+
+    if (modo === "suite") {
+      let modulos = [];
+      try {
+        const r = await fetch(CFG.coreApi + "/modulos", {credentials:"include", headers:{Accept:"application/json"}});
+        modulos = (await r.json()).map(m => ({...m, publico:m.acceso_publico, grupo:GRUPO_DE[m.slug] || "estudiantes"}));
+      } catch (e) { modulos = CATALOGO_LOCAL; }
+      if (usuario) {
+        document.getElementById("who").textContent = usuario.nombre + (usuario.organizacion ? " · " + usuario.organizacion : "");
+        document.getElementById("salir").hidden = false;
+      } else {
+        document.getElementById("ingresar").hidden = false;
+        const aviso = document.getElementById("aviso");
+        aviso.hidden = false;
+        aviso.innerHTML = "Ingresa con tu cuenta institucional para usar todas las aplicaciones. " +
+          "Si postulas desde otra universidad, puedes usar <b>Convalidación</b> sin cuenta.";
+      }
+      pintar(modulos, modo, !!usuario);
+    } else {
+      if (!usuario) { location.href = "login.html"; return; }
+      document.getElementById("who").textContent = usuario.nombre;
+      document.getElementById("salir").hidden = false;
+      pintar(CATALOGO_LOCAL, modo, true);
+    }
+  }
+
+  document.getElementById("salir").addEventListener("click", e => { e.preventDefault(); SuiteAuth.logout(); });
+  document.getElementById("ingresar").addEventListener("click", e => {
+    e.preventDefault(); location.href = CFG.loginUrl + "?next=" + encodeURIComponent("/");
+  });
+  iniciar();
+  </script>
+</body>
+</html>

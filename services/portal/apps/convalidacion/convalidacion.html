@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convalidación de Asignaturas · UNAB</title>
+<style>
+  :root{
+    --bg:#eef1f5; --surface:#ffffff; --ink:#0e1b29; --muted:#5a6b7b;
+    --line:#e0e6ed; --line-2:#eef2f6;
+    --brand:#0a2a43; --brand-2:#16708c; --accent:#1f9d6b; --accent-d:#157a52;
+    --warn:#d98a2b; --soft:#f3f6f9;
+    --shadow:0 1px 2px rgba(14,27,41,.05), 0 8px 28px rgba(14,27,41,.07);
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--bg);
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:780px; margin:0 auto; padding:0 20px 80px}
+
+  /* Header */
+  header{
+    background:linear-gradient(160deg,var(--brand) 0%, #103a59 100%);
+    color:#fff; padding:34px 0 30px; margin-bottom:30px;
+    border-bottom:3px solid var(--brand-2);
+  }
+  header .wrap{padding-bottom:0}
+  .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.04em}
+  .brand .mark{
+    width:34px;height:34px;border-radius:8px;display:grid;place-items:center;
+    background:var(--brand-2); font-size:18px; font-weight:900;
+  }
+  .brand .mark span{transform:translateY(-1px)}
+  h1{font-size:1.7rem; line-height:1.15; margin:18px 0 8px; font-weight:800; letter-spacing:-.01em}
+  header p{margin:0; color:#b9d2dd; max-width:54ch; font-size:.97rem}
+
+  /* Steps */
+  .step{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:22px 22px; margin-bottom:18px;
+  }
+  .step-lbl{display:flex; align-items:center; gap:10px; font-size:.78rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.09em; color:var(--brand-2); margin-bottom:14px}
+  .step-lbl .n{width:22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;
+    display:grid;place-items:center;font-size:.72rem}
+
+  select{
+    width:100%; padding:13px 14px; font-size:1rem; font-family:inherit;
+    border:1.5px solid var(--line); border-radius:10px; background:#fff; color:var(--ink);
+    appearance:none; cursor:pointer;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235a6b7b' stroke-width='2.5'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat; background-position:right 14px center;
+  }
+  select:focus{outline:none; border-color:var(--brand-2); box-shadow:0 0 0 3px rgba(22,112,140,.15)}
+
+  /* Dropzone */
+  .drop{
+    border:1.5px dashed #c2cdd8; border-radius:12px; background:var(--soft);
+    padding:30px 20px; text-align:center; cursor:pointer; transition:.18s;
+  }
+  .drop:hover,.drop:focus-visible{border-color:var(--brand-2); background:#eef5f8; outline:none}
+  .drop.drag{border-color:var(--brand-2); background:#e7f1f5}
+  .drop.has-file{border-style:solid; border-color:var(--accent); background:#f0faf5}
+  .drop .ico{font-size:30px; color:var(--brand-2); line-height:1}
+  .drop .t{font-weight:600; margin:10px 0 3px}
+  .drop .s{font-size:.86rem; color:var(--muted)}
+  .drop .fname{margin-top:10px; font-size:.9rem; color:var(--accent-d); font-weight:600; word-break:break-all}
+  .drop .fname:empty{display:none}
+
+  /* Run button */
+  .run-row{display:flex; justify-content:flex-end}
+  .btn{
+    border:none; border-radius:10px; padding:14px 26px; font-size:1rem; font-weight:700;
+    font-family:inherit; cursor:pointer; color:#fff; background:var(--brand-2); transition:.15s;
+  }
+  .btn:hover:not(:disabled){background:#125c73}
+  .btn:disabled{background:#c2cdd8; cursor:not-allowed}
+
+  /* Results */
+  #resultados{margin-top:26px; scroll-margin-top:16px}
+  .res-head{margin:0 0 14px}
+  .rh-eyebrow{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-d)}
+  .res-head h2{margin:4px 0 0; font-size:1.3rem; font-weight:800}
+  .leyenda{background:#eef5f8; border:1px solid #d6e7ee; border-left:3px solid var(--brand-2);
+    border-radius:8px; padding:11px 14px; margin:12px 0 16px; font-size:.84rem;
+    line-height:1.5; color:#33495a}
+  .leyenda b{color:var(--brand)}
+
+  .card{
+    display:flex; gap:0; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden;
+  }
+  .card-top{border-color:#bfe6d3; box-shadow:0 1px 2px rgba(14,27,41,.05),0 10px 30px rgba(31,157,107,.12)}
+  .card-rank{
+    flex:0 0 46px; background:var(--soft); display:grid; place-items:center;
+    font-weight:800; font-size:1.1rem; color:var(--brand-2); border-right:1px solid var(--line-2);
+  }
+  .card-top .card-rank{background:#eafaf2; color:var(--accent-d)}
+  .card-main{flex:1; padding:18px 20px; min-width:0}
+  .card-top-row{display:flex; justify-content:space-between; gap:16px; align-items:flex-start}
+  .card-code{font-size:.78rem; color:var(--muted); font-weight:600; letter-spacing:.02em}
+  .card-name{margin:3px 0 0; font-size:1.12rem; font-weight:700; line-height:1.25}
+  .score{text-align:right; flex:0 0 auto}
+  .score-num{font-size:1.7rem; font-weight:800; color:var(--accent-d); line-height:1}
+  .score-num small{font-size:.9rem; font-weight:700}
+  .score-tag{display:block; font-size:.72rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:.06em; color:var(--accent-d); margin-top:2px}
+
+  .meter{position:relative; height:8px; background:#edf1f5; border-radius:99px; margin:16px 0 4px; overflow:visible}
+  .meter-fill{height:100%; border-radius:99px; background:linear-gradient(90deg,var(--brand-2),var(--accent))}
+  .meter-mark{position:absolute; top:-3px; width:2px; height:14px; background:#9aa8b6}
+
+  .ae-box{margin-top:14px; border-top:1px solid var(--line-2); padding-top:12px}
+  .ae-head{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+  .ae-lbl{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  .ae-val{font-size:.9rem; font-weight:700; color:var(--brand)}
+  .ae-bar{height:6px; background:#edf1f5; border-radius:99px; margin:7px 0 0; overflow:hidden}
+  .ae-fill{height:100%; background:var(--brand-2); border-radius:99px}
+  .ae-det{margin-top:8px}
+  .ae-det summary{font-size:.82rem; color:var(--brand-2); cursor:pointer; font-weight:600; list-style:none}
+  .ae-det summary::-webkit-details-marker{display:none}
+  .ae-det summary::before{content:'▸ '; font-size:.7rem}
+  .ae-det[open] summary::before{content:'▾ '}
+  .ae-det ul{margin:8px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:6px}
+  .ae-det li{font-size:.84rem; line-height:1.35; padding-left:20px; position:relative; color:var(--ink)}
+  .ae-det .ae-mk{position:absolute; left:0; top:0; font-weight:800}
+  .ae-det li.ae-ok .ae-mk{color:var(--accent-d)}
+  .ae-det li.ae-no{color:var(--muted)}
+  .ae-det li.ae-no .ae-mk{color:#b6c0ca}
+
+  .why{margin-top:14px; border-top:1px solid var(--line-2); padding-top:12px}
+  .why-lbl{font-size:.72rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+  .chip{background:#eef5f8; color:#0f5468; border:1px solid #d6e7ee; border-radius:99px;
+    padding:3px 10px; font-size:.8rem; font-weight:600}
+
+  .empty{
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+    box-shadow:var(--shadow); padding:34px 26px; text-align:center;
+  }
+  .empty-ico{font-size:34px; color:var(--warn); line-height:1}
+  .empty h3{margin:12px 0 8px; font-size:1.15rem}
+  .empty p{margin:0 auto; max-width:46ch; color:var(--muted); font-size:.95rem}
+  .empty .hint{margin-top:14px; font-size:.85rem; color:#7a8896; padding-top:12px; border-top:1px solid var(--line-2)}
+
+  .disclaimer{font-size:.8rem; color:#7a8896; text-align:center; margin:18px auto 0; max-width:60ch}
+
+  footer{text-align:center; color:#8896a3; font-size:.78rem; margin-top:40px}
+
+  /* Toast */
+  .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:#fff; padding:12px 20px; border-radius:10px; font-size:.9rem;
+    box-shadow:0 10px 30px rgba(0,0,0,.25); opacity:0; pointer-events:none; transition:.25s; z-index:50}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  @media (max-width:560px){
+    h1{font-size:1.4rem}
+    .card-top-row{flex-direction:column}
+    .score{text-align:left}
+  }
+
+  /* ---- Cola de archivos / programas cargados ---- */
+  .cola{margin-top:14px; display:flex; flex-direction:column; gap:10px}
+  .cola:empty{display:none}
+  .fitem{border:1px solid var(--line); border-radius:11px; background:#fff; padding:12px 14px}
+  .fitem-top{display:flex; align-items:center; gap:10px; justify-content:space-between}
+  .fitem-name{font-weight:600; font-size:.9rem; word-break:break-all; display:flex; align-items:center; gap:8px; min-width:0}
+  .fitem-name .doc{color:var(--brand-2); flex:0 0 auto}
+  .fitem-x{border:none; background:none; color:var(--muted); cursor:pointer; font-size:1rem; line-height:1; padding:3px 7px; border-radius:7px; flex:0 0 auto}
+  .fitem-x:hover{background:#f3f6f9; color:var(--ink)}
+  .fitem-meta{display:flex; align-items:center; gap:14px; margin-top:11px; flex-wrap:wrap}
+  .fitem-count{font-size:.82rem; color:var(--muted)}
+  .fitem-count b{color:var(--brand)}
+  .fitem-mode{display:flex; align-items:center; gap:7px; font-size:.8rem; color:var(--muted)}
+  .fitem-mode select{width:auto; padding:6px 30px 6px 10px; font-size:.82rem; border-radius:8px; border-width:1px}
+  .fitem-progs{margin:11px 0 0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:6px}
+  .fitem-progs li{font-size:.77rem; background:var(--soft); border:1px solid var(--line-2); border-radius:99px; padding:3px 10px; color:#33495a; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+  /* ---- Resultados por asignatura de origen ---- */
+  .res-sub{font-size:.9rem; color:var(--muted); margin:6px 0 0}
+  .pcard{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:14px; padding:16px 18px}
+  .pcard.is-conv{border-color:#bfe6d3}
+  .pcard.is-rev{border-color:#ecd6b0}
+  .pcard-head{display:flex; justify-content:space-between; gap:12px; align-items:flex-start}
+  .porigen{min-width:0}
+  .porigen-lbl{font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .porigen h3{margin:3px 0 0; font-size:1.05rem; font-weight:700; line-height:1.25}
+  .parch{display:block; font-size:.75rem; color:#8896a3; margin-top:2px; word-break:break-all}
+  .pstatus{flex:0 0 auto; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:4px 11px; border-radius:99px; white-space:nowrap}
+  .pstatus.is-conv{background:#eafaf2; color:var(--accent-d)}
+  .pstatus.is-rev{background:#fbf1e0; color:#9a661f}
+  .pstatus.is-no{background:#f1f4f7; color:#7a8896}
+  .pmatch{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:13px; padding-top:13px; border-top:1px solid var(--line-2)}
+  .pmatch-info{display:flex; gap:10px; align-items:center; min-width:0}
+  .pm-arrow{color:var(--brand-2); font-weight:800; flex:0 0 auto; font-size:1.1rem}
+  .pm-code{font-size:.76rem; color:var(--muted); font-weight:600}
+  .pm-name{font-size:1.02rem; font-weight:700; line-height:1.2}
+  .pm-score{flex:0 0 auto; text-align:right}
+  .pm-score span{font-size:1.5rem; font-weight:800; color:var(--accent-d); line-height:1}
+  .pm-score small{font-size:.85rem; font-weight:700}
+  .pcard.is-rev .pm-score span{color:#9a661f}
+  .pae{font-size:.84rem; color:var(--brand); font-weight:700; margin-top:11px}
+  .pae .pae-lbl{color:var(--muted); font-weight:600}
+  .pnone{margin:13px 0 0; padding-top:13px; border-top:1px solid var(--line-2); font-size:.9rem; color:var(--muted); line-height:1.5}
+  .pdet{margin-top:12px}
+  .pdet>summary{font-size:.82rem; color:var(--brand-2); cursor:pointer; font-weight:600; list-style:none}
+  .pdet>summary::-webkit-details-marker{display:none}
+  .pdet>summary::before{content:'▸ '; font-size:.7rem}
+  .pdet[open]>summary::before{content:'▾ '}
+  .pdet .ae-box{margin-top:12px; border-top:none; padding-top:0}
+  .pdet .why{margin-top:14px}
+  .pcand{margin-top:14px; border-top:1px solid var(--line-2); padding-top:12px}
+  .pcand .pc-lbl{font-size:.72rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)}
+  .pcand-row{display:flex; justify-content:space-between; gap:10px; margin-top:5px; font-size:.88rem; color:#33495a}
+  .pcand-row b{color:var(--brand)}
+  .pdecision{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px; margin-top:14px; padding-top:13px; border-top:1px solid var(--line-2)}
+  .pdec-lbl{font-size:.86rem; font-weight:600; color:var(--brand)}
+  .pdec-btns{display:flex; gap:8px}
+  .pdec-btn{appearance:none; cursor:pointer; font:inherit; font-size:.82rem; font-weight:700; padding:8px 15px; border-radius:99px; border:1.5px solid var(--line-2); background:#fff; color:var(--muted); transition:all .12s ease}
+  .pdec-btn:hover{border-color:#c7d0d8}
+  .pdec-btn.accept.active{background:#eafaf2; border-color:var(--accent); color:var(--accent-d)}
+  .pdec-btn.reject.active{background:#fbeceb; border-color:#d9776e; color:#b8382c}
+
+  /* ====== Paso 2: identidad + certificado + notas (añadido) ====== */
+  .flow{margin-top:16px; margin-bottom:2px; display:flex; align-items:center; gap:8px; font-size:.74rem;
+    font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#b9d2dd}
+  .flow .dot{width:7px;height:7px;border-radius:50%;background:#3c6783}
+  .flow .dot.on{background:var(--brand-2); box-shadow:0 0 0 3px rgba(22,112,140,.35)}
+  .flow .sep{flex:0 0 22px; height:1px; background:#3c6783}
+  header h1{margin-top:14px}
+  .idbar{background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--brand-2);
+    border-radius:12px; box-shadow:var(--shadow); padding:12px 16px; margin:-12px 0 22px;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+  .idbar .who{display:flex; align-items:center; gap:11px; min-width:0}
+  .idbar .av{width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;
+    display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+  .idbar .nm{font-weight:700; line-height:1.2}
+  .idbar .dc{font-size:.8rem; color:var(--muted); word-break:break-word}
+  .idbar .salir{margin-left:auto; font-size:.82rem; color:var(--brand-2); font-weight:600;
+    text-decoration:none; border:1px solid var(--line); padding:7px 12px; border-radius:8px; white-space:nowrap}
+  .idbar .salir:hover{background:var(--soft)}
+  .idbar.anon{border-left-color:var(--warn)}
+  .idbar.anon .av{background:var(--warn)}
+
+  .cert-sum{margin-top:14px; border:1px solid #bfe6d3; background:#f0faf5; border-radius:11px; padding:12px 14px}
+  .cert-sum.warn{border-color:#ecd6b0; background:#fdf6ea}
+  .cert-sum-top{display:flex; align-items:center; gap:10px; justify-content:space-between}
+  .cert-sum-name{font-weight:600; font-size:.9rem; display:flex; align-items:center; gap:8px; min-width:0; word-break:break-all}
+  .cert-sum-name .doc{color:var(--accent-d); flex:0 0 auto}
+  .cert-sum.warn .cert-sum-name .doc{color:var(--warn)}
+  .cert-count{font-size:.83rem; color:#33495a; margin-top:8px; line-height:1.45}
+  .cert-count b{color:var(--brand)}
+  .cert-inst{font-size:.85rem; color:#33495a; margin-top:8px}
+  .cert-inst b{color:var(--brand)}
+  .cert-det{margin-top:8px}
+  .cert-det summary{font-size:.82rem; color:var(--brand-2); cursor:pointer; font-weight:600; list-style:none}
+  .cert-det summary::-webkit-details-marker{display:none}
+  .cert-det summary::before{content:'▸ '; font-size:.7rem}
+  .cert-det[open] summary::before{content:'▾ '}
+  .cert-rows{margin:9px 0 0; max-height:240px; overflow:auto; display:flex; flex-direction:column; gap:4px}
+  .cert-r{display:flex; justify-content:space-between; gap:12px; font-size:.84rem; padding:5px 9px; border-radius:6px; background:#fff; border:1px solid var(--line-2)}
+  .cert-r .n{font-weight:700; flex:0 0 auto}
+  .cert-r.ap .n{color:var(--accent-d)}
+  .cert-r.re .n{color:#c8453a}
+
+  .gbadge{display:inline-flex; align-items:center; gap:6px; font-size:.72rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.04em; padding:4px 10px; border-radius:99px; white-space:nowrap}
+  .gbadge.ap{background:#eafaf2; color:var(--accent-d)}
+  .gbadge.re{background:#fbf0ef; color:#c8453a}
+  .gbadge.nf{background:#f1f4f7; color:#7a8896}
+  .gline{display:flex; align-items:center; gap:9px; margin-top:13px; padding-top:12px;
+    border-top:1px solid var(--line-2); font-size:.88rem; color:#33495a; flex-wrap:wrap}
+  .gline .gk{font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .pstatus.is-no.rep{background:#fbf0ef; color:#c8453a}
+
+  /* --- Verificación del documento --- */
+  .verif{margin-top:12px; border:1px solid var(--line); border-radius:11px; padding:13px 15px; background:#fff}
+  .verif.ok{border-color:#bfe6d3; background:#f5fbf8}
+  .verif.rev{border-color:#ecd6b0; background:#fdf8ef}
+  .verif.bad{border-color:#e6b8b3; background:#fdf3f2}
+  .verif.info{border-color:#d6e7ee; background:#f5f9fb}
+  .verif-top{display:flex; align-items:center; gap:10px; justify-content:space-between; flex-wrap:wrap}
+  .verif-veredicto{font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; padding:4px 11px; border-radius:99px}
+  .verif-veredicto.ok{background:#eafaf2; color:var(--accent-d)}
+  .verif-veredicto.rev{background:#fbf1e0; color:#9a661f}
+  .verif-veredicto.bad{background:#fbe3e0; color:#c8453a}
+  .verif-veredicto.info{background:#e9f1f5; color:#0f5468}
+  .verif-lbl{font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+  .verif-facts{display:grid; grid-template-columns:1fr 1fr; gap:9px 18px; margin:12px 0 0}
+  .verif-facts .vk{display:block; font-size:.68rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)}
+  .verif-facts .vv{font-size:.9rem; font-weight:600; word-break:break-word}
+  .verif-flags{list-style:none; margin:12px 0 0; padding:0; display:flex; flex-direction:column; gap:7px}
+  .verif-flags li{font-size:.85rem; line-height:1.4; color:#33495a; padding-left:18px; position:relative}
+  .verif-flags .vf-dot{position:absolute; left:0; top:6px; width:8px; height:8px; border-radius:50%}
+  .verif-flags li.vf-ok .vf-dot{background:var(--accent)}
+  .verif-flags li.vf-medio .vf-dot{background:var(--warn)}
+  .verif-flags li.vf-alto .vf-dot{background:#c8453a}
+  .verif-flags li.vf-info .vf-dot{background:#9aa8b6}
+  .verif-cod{margin-top:10px; font-size:.85rem; color:#33495a}
+  .verif-cod b{color:var(--brand)}
+  .verif-foot{margin-top:12px; font-size:.78rem; color:#7a8896; line-height:1.45; border-top:1px solid var(--line-2); padding-top:10px}
+  .verif-foot b{color:#5a6b7b}
+  .vbtn{display:inline-block; margin-top:12px; padding:10px 18px; font-size:.9rem; text-decoration:none}
+  @media (max-width:560px){ .verif-facts{grid-template-columns:1fr} }
+
+  /* ---- Modo malla de origen (catálogo) ---- */
+  .modo-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .modo-tab{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:9px 16px;font:inherit;font-weight:600;
+    font-size:.9rem;color:var(--muted);cursor:pointer}
+  .modo-tab.on{border-color:var(--brand-2);background:#e9f3f6;color:var(--brand)}
+  .cat-sel{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .cat-fuente{font-size:.8rem;color:var(--muted);margin:10px 0 4px}
+  .cat-fuente a{color:var(--brand-2)}
+  .malla-origen{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:10px;max-height:520px;overflow:auto;padding-right:4px}
+  .sem{border:1px solid var(--line);border-radius:10px;padding:8px 10px 10px;margin:0;background:var(--soft)}
+  .sem legend{font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--brand-2);padding:0 4px}
+  .sem-todo{border:0;background:none;color:var(--muted);font:inherit;font-size:.68rem;text-transform:none;letter-spacing:0;cursor:pointer;text-decoration:underline}
+  .asig{display:flex;gap:8px;align-items:flex-start;font-size:.86rem;line-height:1.3;padding:4px 2px;cursor:pointer}
+  .asig input{margin-top:2px;accent-color:var(--brand-2)}
+  .asig small{color:var(--muted)}
+  .envio{margin-top:22px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--brand-2);border-radius:12px;padding:18px}
+  .envio h3{margin:0 0 6px;font-size:1.02rem}
+  .envio p{margin:0 0 12px;color:var(--muted);font-size:.9rem}
+  .envio a.btn{display:inline-block;text-decoration:none}
+  .envio .folio{background:#eafaf2;color:var(--accent-d);border-radius:8px;padding:10px 12px;font-weight:600;margin-top:12px}
+  @media (max-width:560px){ .cat-sel{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="mark"><span>U</span></span> UNAB · Facultad de Ingeniería</div>
+    <div class="flow">
+      <span class="dot"></span> Identificación
+      <span class="sep"></span>
+      <span class="dot on"></span> Convalidación
+    </div>
+    <h1>Convalidación de asignaturas</h1>
+    <p>Elige tu carrera de destino e indica las asignaturas que aprobaste: selecciónalas desde la malla oficial de tu universidad o sube los programas en PDF para un análisis detallado. Revisaremos con qué asignaturas del plan UNAB podrían convalidar.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="idbar" id="idbar"></div>
+  <section class="step">
+    <div class="step-lbl"><span class="n">1</span> Carrera de destino</div>
+    <select id="selCarrera"><option value="">Selecciona una carrera…</option></select>
+  </section>
+
+  <section class="step" id="stepOrigen">
+    <div class="step-lbl"><span class="n">2</span> Asignaturas cursadas en tu universidad de origen</div>
+    <div class="modo-tabs" role="tablist" aria-label="Forma de informar tus asignaturas">
+      <button type="button" class="modo-tab on" role="tab" aria-selected="true" data-modo="catalogo">Elegir desde la malla de mi universidad</button>
+      <button type="button" class="modo-tab" role="tab" aria-selected="false" data-modo="pdf">Subir programas en PDF (detallado)</button>
+    </div>
+    <div id="panelCatalogo">
+      <div class="cat-sel">
+        <select id="selUni" aria-label="Universidad de origen"><option value="">Cargando universidades…</option></select>
+        <select id="selCarreraOrigen" aria-label="Carrera de origen" disabled><option value="">Selecciona tu carrera…</option></select>
+      </div>
+      <div id="otraUni" hidden style="margin-top:10px">
+        <input type="text" id="otraUniTexto" placeholder="Nombre de tu universidad y carrera" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font:inherit">
+      </div>
+      <div class="cat-fuente" id="fuenteOrigen"></div>
+      <div class="malla-origen" id="mallaOrigen" aria-label="Marca las asignaturas que aprobaste"></div>
+    </div>
+  </section>
+
+  <section class="step">
+    <div class="step-lbl"><span class="n">3</span> Certificado de notas (opcional)</div>
+    <div class="drop" id="dropCert" tabindex="0" role="button" aria-label="Subir certificado de notas en PDF">
+      <div class="ico">⬆</div>
+      <div class="t">Arrastra tu certificado de notas aquí o haz clic para elegirlo</div>
+      <div class="s">Un solo PDF · se usa para verificar qué asignaturas aprobaste y con qué nota</div>
+    </div>
+    <input type="file" id="fileCert" accept="application/pdf" hidden>
+    <div class="cola" id="colaCert"></div>
+  </section>
+
+  <section class="step" id="stepPDF" hidden>
+    <div class="step-lbl"><span class="n">4</span> Programas de las asignaturas (PDF)</div>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-label="Subir PDF de programas">
+      <div class="ico">⬆</div>
+      <div class="t">Arrastra los PDF aquí o haz clic para elegirlos</div>
+      <div class="s">Uno o varios programas · puedes subir un PDF por asignatura, o un solo PDF con todas</div>
+    </div>
+    <input type="file" id="file" accept="application/pdf" multiple hidden>
+    <div class="cola" id="cola"></div>
+  </section>
+
+  <div class="run-row">
+    <button class="btn" id="btnRun" disabled>Evaluar convalidación</button>
+  </div>
+
+  <section id="resultados"></section>
+
+  <footer>Herramienta de apoyo · El resultado es orientativo y no reemplaza la resolución oficial de la Dirección de Carrera.</footer>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<!-- ===== pdf.js (incrustado) ===== -->
+<script src="vendor/pdfjs-3.11.174/pdf.min.js"></script>
+<!-- ===== worker pdf.js incrustado como script normal: registra globalThis.pdfjsWorker
+         y evita el Blob worker bloqueado en iframes sandbox ===== -->
+<!-- El worker ya no se incrusta: pdf.js lo carga como Web Worker real desde vendor/ -->
+<script>
+  // pdf.js queda como pdfjsLib; con el worker ya presente en memoria global,
+  // no fijamos workerSrc (evita el fetch/Blob que se bloquea en sandbox).
+  (function(){
+    try{
+      if(typeof pdfjsLib!=='undefined' && pdfjsLib.GlobalWorkerOptions){
+        // dejar workerSrc vacío fuerza el uso del worker ya cargado en memoria
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdfjs-3.11.174/pdf.worker.min.js';
+        // silenciar avisos (incluido "Setting up fake worker"); solo errores reales
+        if(typeof pdfjsLib.setVerbosityLevel === 'function'){
+          var ERR = (pdfjsLib.VerbosityLevel && pdfjsLib.VerbosityLevel.ERRORS) || 0;
+          pdfjsLib.setVerbosityLevel(ERR);
+        }
+      }
+    }catch(e){ /* sin ruido */ }
+  })();
+</script>
+
+<!-- ===== Base de asignaturas UNAB (incrustada) ===== -->
+<script>/* Base de asignaturas UNAB: ahora es un archivo de datos cacheable
+   (shared/data/unab/base-convalidacion.json) en vez de 1,2 MB incrustados. */
+window.BASE_UNAB_READY = fetch("../../shared/data/unab/base-convalidacion.json")
+  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(d => { window.BASE_UNAB = d; return d; });
+</script>
+
+<!-- ===== Lógica de la app ===== -->
+<script>/* =========================================================================
+   MOTOR DE CONVALIDACIÓN UNAB  —  100% en el navegador, sin internet
+   ------------------------------------------------------------------------
+   Flujo: el postulante elige carrera UNAB de destino, sube el PDF del
+   programa de su asignatura de origen, y el sistema lo compara contra el
+   plan de estudios. Se muestran SOLO las dos coincidencias más altas y
+   únicamente si quedan en zona alta (>= UMBRAL_CONVALIDA).
+   ========================================================================= */
+
+/* ---- Umbrales (calibrables) ------------------------------------------- */
+const UMBRAL_CONVALIDA = 0.45;   // zona alta -> se muestra como convalidable
+const UMBRAL_REVISION  = 0.25;   // zona media -> revisión manual
+const MAX_RESULTADOS    = 2;     // tope de tarjetas a mostrar
+
+/* ---- Stopwords español (palabras función) ----------------------------- */
+const STOP = new Set(("de la que el en y a los del se las por un para con no una su al lo como mas pero sus le ya o este si porque esta entre cuando muy sin sobre tambien me hasta hay donde quien desde todo nos durante todos uno les ni contra otros ese eso ante ellos e esto mi antes algunos unos yo otro otras otra tanto esa estos mucho quienes nada muchos cual poco ella estar estas algunas algo nosotros tu te ti tus ellas vosotros os mediante cuyo cuya segun ser son ademas asi etc cada tales tal este esta estos estas ademas dicha dicho dichas dichos cuales sera seran debe deben puede pueden mismo misma mismos mismas dos tres cual modo forma parte partir traves luego entonces ello cuyo ámbito ambito accion acciones ra ae unidad unidades aprendizaje aprendizajes esperado esperados contenido contenidos asignatura curso estudiante estudiantes nivel niveles general").split(/\s+/));
+
+/* ---- Normalización + tokenización + stemming ligero -------------------- */
+function quitarAcentos(s){
+  return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function stem(w){
+  // Stemmer conservador con reglas de plural del español. Solo unifica
+  // singular/plural sin destruir la palabra (clave: no dejar raíces cortas).
+  const MIN = 4;
+  if(w.length > MIN+1){
+    if(w.endsWith('bles')) return w.slice(0,-1);      // variables -> variable
+    if(w.endsWith('ses'))  return w.slice(0,-1);      // bases -> base, clases -> clase
+    if(w.endsWith('es')){
+      const prev = w[w.length-3];
+      if('aeiou'.indexOf(prev) === -1) return w.slice(0,-2); // operadores->operador, funciones->funcion, condicionales->condicional
+      return w.slice(0,-1);
+    }
+  }
+  if(w.length > MIN && w.endsWith('s')) return w.slice(0,-1); // datos->dato, algoritmos->algoritmo
+  return w;
+}
+function tokenizar(texto){
+  const limpio = quitarAcentos((texto||'').toLowerCase()).replace(/[^a-z\u00f1\s]/g,' ');
+  const out = [];
+  for(let t of limpio.split(/\s+/)){
+    if(t.length < 3) continue;
+    if(STOP.has(t)) continue;
+    t = stem(t);
+    if(t.length < 3) continue;
+    if(STOP.has(t)) continue;
+    out.push(t);
+  }
+  return out;
+}
+
+/* ---- IDF GLOBAL: sobre TODO el catálogo UNAB (deduplicado por código) --
+   Así la "rareza" de un término no depende de la carrera seleccionada, y un
+   mismo ramo arroja el mismo puntaje en cualquier carrera. -------------- */
+function tokensAsig(a){
+  return tokenizar((a.nombre+' ')+(a.nombre+' ')+(a.nombre+' ')+a.contenidos);
+}
+function construirIDFGlobal(base){
+  const vistos=new Set(); const docs=[];
+  for(const carrera of Object.keys(base)){
+    for(const a of base[carrera]){
+      if(vistos.has(a.codigo)) continue;   // un ramo cuenta una sola vez
+      vistos.add(a.codigo);
+      docs.push(new Set(tokensAsig(a)));
+    }
+  }
+  const N=docs.length, df=new Map();
+  for(const toks of docs) for(const t of toks) df.set(t,(df.get(t)||0)+1);
+  const idf=new Map();
+  for(const [t,d] of df) idf.set(t, Math.log((N+1)/(d+1))+1);
+  return idf;
+}
+
+/* ---- Índice de una carrera usando un IDF dado (el global) -------------- */
+function construirIndice(asignaturas, idf){
+  const idfFloor = mediana([...idf.values()]);   // umbral de "término distintivo"
+  const docs = asignaturas.map(a=>{
+    const toks = tokensAsig(a);
+    const tf = new Map();
+    for(const t of toks) tf.set(t,(tf.get(t)||0)+1);
+    return {asig:a, tf};
+  });
+
+  for(const d of docs){
+    let norm = 0;
+    const vec = new Map();
+    for(const [t,f] of d.tf){
+      const w = (1+Math.log(f)) * (idf.get(t)||0);
+      vec.set(t,w); norm += w*w;
+    }
+    norm = Math.sqrt(norm)||1;
+    for(const [t,w] of vec) vec.set(t, w/norm);
+    d.vec = vec;
+    const idfMed = mediana([...d.tf.keys()].map(t=>idf.get(t)||0));
+    const clave = [...vec.entries()]
+      .filter(([t])=>(idf.get(t)||0) >= idfMed)
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,12)
+      .map(([t])=>t);
+    d.clave = new Set(clave);
+    // aprendizajes esperados: por cada AE, sus TÉRMINOS DISTINTIVOS (idf alto),
+    // ignorando verbos/conectores genéricos que no aportan al tema.
+    d.aeData = (d.asig.aprendizajes||[]).map(texto=>{
+      const toks = [...new Set(tokenizar(texto))];
+      let dist = toks.filter(t => (idf.get(t)||0) >= idfFloor);
+      if(dist.length < 2) dist = toks;                 // AE muy corto: usa todos
+      // los más distintivos primero, máximo 6 (evita que colas largas diluyan)
+      dist = dist.sort((a,b)=>(idf.get(b)||0)-(idf.get(a)||0)).slice(0,6);
+      return {texto, terms:dist};
+    });
+  }
+  return {docs, idf};
+}
+function mediana(arr){
+  if(!arr.length) return 0;
+  const s=[...arr].sort((a,b)=>a-b);
+  const m=Math.floor(s.length/2);
+  return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
+}
+
+/* ---- Vector del documento subido -------------------------------------- */
+function vectorDoc(texto, idf){
+  const toks = tokenizar(texto);
+  const tf = new Map();
+  for(const t of toks) tf.set(t,(tf.get(t)||0)+1);
+  const presentes = new Set(tf.keys());
+  let norm=0; const vec=new Map();
+  for(const [t,f] of tf){
+    const w=(1+Math.log(f))*(idf.get(t)||0);
+    vec.set(t,w); norm+=w*w;
+  }
+  norm=Math.sqrt(norm)||1;
+  for(const [t,w] of vec) vec.set(t,w/norm);
+  return {vec, presentes, tf};
+}
+
+/* ---- Puntaje híbrido: coverage + (1-coverage)*cosine ------------------- */
+function evaluar(textoDoc, indice){
+  const {vec:dv, presentes} = vectorDoc(textoDoc, indice.idf);
+  const res = indice.docs.map(d=>{
+    // coseno
+    let cos=0;
+    const [chico,grande] = dv.size < d.vec.size ? [dv,d.vec] : [d.vec,dv];
+    for(const [t,w] of chico){ const o=grande.get(t); if(o) cos+=w*o; }
+    // cobertura de términos clave de la asignatura
+    let hit=0; const matched=[];
+    for(const t of d.clave){ if(presentes.has(t)){ hit++; matched.push(t); } }
+    const cov = d.clave.size ? hit/d.clave.size : 0;
+    const score = cov + (1-cov)*cos;
+    // cobertura de aprendizajes esperados (sobre términos distintivos del AE)
+    let aeCov=0; const aeItems=[];
+    for(const ae of d.aeData){
+      let pres=0;
+      for(const t of ae.terms) if(presentes.has(t)) pres++;
+      const c = ae.terms.length ? pres/ae.terms.length : 0;
+      const ok = c >= 0.4;
+      if(ok) aeCov++;
+      aeItems.push({texto:ae.texto, ok});
+    }
+    const aeTot = d.aeData.length;
+    const aePct = aeTot ? Math.round(aeCov/aeTot*100) : null;
+    return {asig:d.asig, score, cov, cos, matched, aePct, aeCov, aeTot, aeItems};
+  });
+  res.sort((a,b)=>b.score-a.score);
+  return res;
+}
+
+/* =========================================================================
+   INTERFAZ
+   ========================================================================= */
+let cola=[], seqId=0;
+let indiceActual=null, idfGlobal=null;
+
+/* ====== Paso 2: estado del certificado y configuración (añadido) ====== */
+let certEntradas=[], certActivo=false, certArchivo='', certVerif=null;
+const UMBRAL_NOTA   = 4.0;    // nota mínima de aprobación en origen (ajustable; muchas convalidaciones exigen 5.0)
+const GATE_ESTRICTO = false;  // true en producción: exige identificación antes de entrar
+
+/* Validación criptográfica FUERTE de la firma -> la hace tu backend Django.
+   Deja la URL vacía para usar solo la verificación cliente (triaje). */
+const URL_BACKEND_VERIFICACION = ''; // p.ej. 'https://mallaiq.onrender.com/api/verificar-certificado/'
+const EDITORES_CONSUMO = /(microsoft word|word\b|libreoffice|openoffice|wps office|canva|photoshop|gimp|ilovepdf|smallpdf|pdfescape|sejda|nitro|foxit phantom|pages\b)/i;
+
+/* ---- Identidad del postulante (viene del Paso 1) ----------------------- */
+function leerPostulante(){
+  try{ const p=JSON.parse(sessionStorage.getItem('postulante')||'null'); if(p) return p; }catch(e){}
+  return window.POSTULANTE||null;
+}
+function pintarIdentidad(){
+  const p=leerPostulante(); const bar=$('idbar');
+  if(p){
+    const ini=((p.nombres||'?').trim()[0]||'?').toUpperCase();
+    bar.className='idbar';
+    bar.innerHTML=`
+      <div class="who">
+        <span class="av">${ini}</span>
+        <div>
+          <div class="nm">${esc((p.nombres+' '+p.apellidos).trim())}</div>
+          <div class="dc">${esc((p.tipoDoc==='rut'?'RUT':'Pasaporte')+' '+(p.documento||''))} · ${esc(p.correo||'')}</div>
+        </div>
+      </div>
+      <a class="salir" href="index.html">Salir</a>`;
+  } else {
+    if(GATE_ESTRICTO){ window.location.href='index.html'; return; }
+    bar.className='idbar anon';
+    bar.innerHTML=`
+      <div class="who">
+        <span class="av">!</span>
+        <div>
+          <div class="nm">Sin identificar · modo prueba</div>
+          <div class="dc">Para una solicitud real, identifícate primero.</div>
+        </div>
+      </div>
+      <a class="salir" href="index.html">Identificarme</a>`;
+  }
+}
+
+/* ---- Parseo del certificado de notas ----------------------------------- */
+function limpiarAsigCert(raw){
+  let s=String(raw||'').replace(/\s+/g,' ').trim();
+  // si la fila trae códigos de ramo, el nombre va DESPUÉS del último código
+  const codes=[...s.matchAll(/\b[A-Z]{2,4}\d{2,4}\b/g)];
+  if(codes.length){
+    const last=codes[codes.length-1];
+    s=s.slice(last.index+last[0].length);
+  }
+  s=s.replace(/\b(aprobad[oa]s?|reprobad[oa]s?|convalidad[oa]s?|homologad[oa]s?|eximid[oa]s?|pendientes?|cursand[oa]|inscrit[oa]s?|ex|co|ho)\b/gi,' ');
+  s=s.replace(/\b(semestre|trimestre|periodo|per[ií]odo|anual|verano)\b[\s,]*\d{0,4}\s*\/?\s*\d*/gi,' '); // "Semestre, 2022/1"
+  s=s.replace(/(^|\s)\/\d+\b/g,' ');                     // restos "/1" "/2"
+  s=s.replace(/\b(19|20)\d{2}\b/g,' ');                 // años
+  let pal=s.split(' ').filter(Boolean);
+  // quita al INICIO las columnas de la fila anterior (código / horas / créditos)
+  while(pal.length && (/^[A-Z]{2,4}\d{2,4}$/.test(pal[0]) || /^\d{1,3}$/.test(pal[0]))) pal.shift();
+  pal=pal.slice(-9);                                    // el nombre del ramo va junto a la nota
+  const nom=pal.join(' ').trim();
+  if(!nom || /^(promedio|ponderado|total)\b/i.test(nom)) return '';
+  return nom;
+}
+/* Nivel del ramo (I/II/III… o número final): evita cruzar Cálculo I con Cálculo II */
+function nivelDe(nombre){
+  const s=quitarAcentos(String(nombre||'').toLowerCase()).replace(/[^a-z0-9ivx ]/g,' ').trim();
+  const m=s.match(/\b(viii|vii|iii|ii|iv|ix|vi|xi|x|v|i|[1-9])\s*$/);
+  if(!m) return null;
+  const map={i:1,ii:2,iii:3,iv:4,v:5,vi:6,vii:7,viii:8,ix:9,x:10,xi:11};
+  return map[m[1]]!=null?map[m[1]]:parseInt(m[1],10);
+}
+function parsearCertificado(texto){
+  let t=String(texto||'').replace(/\s+/g,' ');
+  // Quita leyenda y pies que ensucian el conteo (escala de notas, folios, firmas, RUT, URLs)
+  t=t.replace(/la escala de notas[\s\S]*$/i,' ');                 // "1,0 a 7,0, siendo 4,0..."
+  t=t.replace(/c[oó]digos?\s*:\s*(co|ex|ho)[\s\S]*$/i,' ');
+  t=t.replace(/p[aá]gina\s+\d+\s+de\s+\d+/gi,' ');
+  t=t.replace(/folio\s*:?\s*\d+/gi,' ');
+  t=t.replace(/id\s+alumno\s*:?\s*[\d.\-kK]+/gi,' ');
+  t=t.replace(/c[eé]dula de identidad[^\d]*[\d.\-kK]+/gi,' ');
+  t=t.replace(/\b\d{1,2}\.\d{3}\.\d{3}-[\dkK]\b/gi,' ');          // RUT
+  t=t.replace(/\b0{2,}\d+\b/g,' ');                                // folio largo 0000245527
+  t=t.replace(/la instituci[oó]n o persona[\s\S]*?verificar[^.]*\.?/gi,' ');
+  t=t.replace(/powered by tcpdf\S*/gi,' ');
+  t=t.replace(/santiago,\s+\d+\s+de\s+[a-zñ]+\s+de\s+\d{4}/gi,' ');
+  // Recorta el preámbulo (deja desde la primera cabecera de tabla) y quita cabeceras repetidas
+  const reHeader=/asignatura\s+(?:per[ií]odo\s+)?nota\s+horas\s+cr[eé]ditos\s+estado/i;
+  const h=t.search(reHeader);
+  if(h>=0) t=t.slice(h);
+  t=t.replace(new RegExp(reHeader.source,'gi'),' ');
+  const reNota=/([1-7][.,]\d)(?!\d)/g;
+  const hits=[]; let m;
+  while((m=reNota.exec(t))!==null){
+    hits.push({nota:parseFloat(m[1].replace(',','.')), index:m.index, end:reNota.lastIndex});
+  }
+  const vistos=new Map();
+  for(let i=0;i<hits.length;i++){
+    if(hits[i].nota<1 || hits[i].nota>7) continue;
+    const ini=i===0?0:hits[i-1].end;
+    const nombre=limpiarAsigCert(t.slice(ini, hits[i].index));
+    if(!nombre || nombre.length<4) continue;
+    const cola=t.slice(hits[i].end, hits[i].end+16).toLowerCase();
+    let aprobado=hits[i].nota>=UMBRAL_NOTA;
+    if(/reprob/.test(cola)) aprobado=false;
+    else if(/aprob/.test(cola)) aprobado=true;
+    const key=quitarAcentos(nombre.toLowerCase());
+    vistos.set(key, {asignatura:nombre, nota:hits[i].nota, aprobado}); // última ocurrencia gana
+  }
+  return [...vistos.values()];
+}
+
+/* ---- Cruce: nombre del programa -> entrada del certificado ------------- */
+function cruzarNota(prog, entradas){
+  const toksP=new Set(tokenizar(prog.nombre));
+  if(!toksP.size || !entradas.length) return null;
+  const nP=nivelDe(prog.nombre);
+  let best=null, bestCov=0;
+  for(const e of entradas){
+    const toksE=new Set(tokenizar(e.asignatura));
+    if(!toksE.size) continue;
+    let inter=0; for(const t of toksP) if(toksE.has(t)) inter++;
+    let cov=inter/toksP.size;
+    const nE=nivelDe(e.asignatura);
+    if(nP!=null && nE!=null && nP!==nE) cov*=0.4;   // distinto nivel: penaliza fuerte
+    if(cov>bestCov){ bestCov=cov; best=e; }
+  }
+  if(best && bestCov>=0.5){
+    const aprobado = typeof best.aprobado==='boolean' ? best.aprobado : best.nota>=UMBRAL_NOTA;
+    return {asignatura:best.asignatura, nota:best.nota, aprobado};
+  }
+  return null;
+}
+
+/* ---- Estado final = contenido + aprobación en origen ------------------- */
+function statusFinal(score, nota){
+  const base=statusDe(score);
+  if(!certActivo) return base;
+  const contenidoOk=score>=UMBRAL_CONVALIDA;
+  if(nota && !nota.aprobado) return {cls:'is-no rep', lbl:'No aprobada en origen'};
+  if(nota && nota.aprobado){
+    if(contenidoOk) return {cls:'is-conv', lbl:'Convalidable'};
+    if(score>=ConvalCatalogo.umbralRevision()) return {cls:'is-rev', lbl:'Revisión manual'};
+    return {cls:'is-no', lbl:'Sin coincidencia'};
+  }
+  if(contenidoOk) return {cls:'is-rev', lbl:'Verificar nota'};
+  return base;
+}
+function notaBadge(nota){
+  if(!nota) return `<span class="gbadge nf">No encontrada en el certificado</span>`;
+  const cls=nota.aprobado?'ap':'re';
+  return `<span class="gbadge ${cls}">${nota.aprobado?'Aprobada':'Reprobada'} · ${nota.nota.toFixed(1)}</span>`;
+}
+
+/* ---- Carga y render del certificado ------------------------------------ */
+/* ---- Verificación del documento (triaje cliente) ----------------------- */
+function leerCrudo(arrayBuffer){
+  const u8=new Uint8Array(arrayBuffer); let s=''; const CH=0x8000;
+  for(let i=0;i<u8.length;i+=CH) s+=String.fromCharCode.apply(null, u8.subarray(i, Math.min(i+CH,u8.length)));
+  return {raw:s, len:u8.length};
+}
+function decodePdfStr(s){
+  if(s==null) return null;
+  if(s.charCodeAt(0)===0xFE && s.charCodeAt(1)===0xFF){
+    let o=''; for(let i=2;i+1<s.length;i+=2) o+=String.fromCharCode((s.charCodeAt(i)<<8)|s.charCodeAt(i+1)); return o.trim();
+  }
+  return s.replace(/\\([0-7]{1,3})/g,(_,o)=>String.fromCharCode(parseInt(o,8))).replace(/\\([()\\])/g,'$1').trim();
+}
+function fechaPDF(d){
+  if(!d) return null;
+  const m=String(d).match(/D?:?(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?/);
+  if(!m) return d;
+  return `${m[3]}-${m[2]}-${m[1]}`+(m[4]?` ${m[4]}:${m[5]||'00'}`:'');
+}
+function buscar1(raw, re){ const m=raw.match(re); return m?m[1]:null; }
+function detectarInstitucion(texto){
+  const t=quitarAcentos(String(texto||'').toLowerCase());
+  const reglas=[
+    [/universidad de chile|\buchile\b/, 'Universidad de Chile', 'https://validador.uchile.cl/'],
+    [/federico santa maria|utfsm|\busm\b/, 'U. Federico Santa María', 'https://validaciondocumentos.usm.cl/'],
+    [/adolfo iba[nñ]ez|\buai\b/, 'Universidad Adolfo Ibáñez', 'https://solicitudes.uai.cl/verificar/'],
+    [/universidad autonoma/, 'Universidad Autónoma de Chile', 'https://certificado.uautonoma.cl/'],
+    [/\bdemre\b/, 'DEMRE', 'https://validador.uchile.cl/'],
+    [/mineduc|ayuda ?mineduc/, 'Mineduc', 'https://www.ayudamineduc.cl/'],
+    [/andres bello|\bunab\b/, 'Universidad Andrés Bello', '']
+  ];
+  for(const [re,nombre,validador] of reglas) if(re.test(t)) return {nombre, validador};
+  // Fallback: capta "UNIVERSIDAD ..." del encabezado (institución no catalogada)
+  const g=String(texto||'').match(/\bUNIVERSIDAD\s+[A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑ.]+(?:\s+[A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑ.]+){0,3}/);
+  if(g){
+    const nombre=g[0].replace(/\s+/g,' ').trim().toLowerCase().replace(/(^|\s)\S/g,c=>c.toUpperCase());
+    return {nombre, validador:''};
+  }
+  return null;
+}
+function verificarCertificado(arrayBuffer, texto){
+  const {raw,len}=leerCrudo(arrayBuffer);
+  // Firma electrónica
+  const subfilter=buscar1(raw, /\/SubFilter\s*\/([A-Za-z0-9.\-_]+)/);
+  const firmaPresente=/\/ByteRange\s*\[/.test(raw) &&
+    (/\/Type\s*\/Sig/.test(raw) || /adbe\.pkcs7|ETSI\.CAdES|ETSI\.RFC3161/i.test(raw) || !!subfilter);
+  const nSig=(raw.match(/\/ByteRange\s*\[/g)||[]).length;
+  const firmante=decodePdfStr(buscar1(raw, /\/Name\s*\(([^)]{2,80})\)/));
+  const fechaFirma=fechaPDF(buscar1(raw, /\/M\s*\(([^)]+)\)/));
+  let cubreTodo=null;
+  const brs=[...raw.matchAll(/\/ByteRange\s*\[\s*(\d+)\s+(\d+)\s+(\d+)\s+(\d+)/g)];
+  if(brs.length){ const b=brs[brs.length-1]; cubreTodo=Math.abs(len-(parseInt(b[3],10)+parseInt(b[4],10)))<=96; }
+  // Metadatos
+  const producer=decodePdfStr(buscar1(raw, /\/Producer\s*\(([^)]{0,160})\)/));
+  const creator =decodePdfStr(buscar1(raw, /\/Creator\s*\(([^)]{0,160})\)/));
+  const creacion=fechaPDF(buscar1(raw, /\/CreationDate\s*\(([^)]+)\)/));
+  const modif   =fechaPDF(buscar1(raw, /\/ModDate\s*\(([^)]+)\)/));
+  const revisiones=(raw.match(/%%EOF/g)||[]).length;
+  const editorConsumo=EDITORES_CONSUMO.test((producer||'')+' '+(creator||''));
+  // Validador / código en el texto
+  const urls=(texto.match(/https?:\/\/[^\s)"'<>]+/gi)||[]).filter(u=>/valid|verif|autentic|folio|cert/i.test(u));
+  const urlCert=urls[0]||null;
+  const codigo=buscar1(texto, /(?:c[oó]digo de (?:validaci[oó]n|verificaci[oó]n)|folio)\s*[:#]?\s*([A-Za-z0-9][A-Za-z0-9\-\/]{3,40})/i);
+  const inst=detectarInstitucion(texto);
+  // Flags
+  const flags=[];
+  if(firmaPresente) flags.push({n:'ok', t:`Firma electrónica detectada${subfilter?` (${subfilter})`:''}${nSig>1?` · ${nSig} firmas`:''}.`});
+  else flags.push({n:'medio', t:'No se detectó firma electrónica en el PDF.'});
+  if(firmaPresente && cubreTodo===false) flags.push({n:'alto', t:'Hay contenido posterior a la firma: el documento pudo modificarse después de firmarse.'});
+  if(editorConsumo) flags.push({n:'medio', t:`Generado/editado con herramienta de oficina (${producer||creator}), inusual en un certificado institucional.`});
+  if(creacion && modif && modif!==creacion) flags.push({n:'info', t:`Creado ${creacion}; modificado ${modif}.`});
+  if(revisiones>1 && !firmaPresente) flags.push({n:'medio', t:`El PDF tiene ${revisiones} ediciones incrementales.`});
+  if(!urlCert && !codigo && !inst) flags.push({n:'info', t:'Sin código ni URL de validación en el texto del certificado.'});
+  // Veredicto
+  const hayAlto=flags.some(f=>f.n==='alto');
+  let veredicto;
+  if(firmaPresente && cubreTodo!==false && !editorConsumo && !hayAlto) veredicto='firmado';
+  else if(firmaPresente) veredicto='firmado_revisar';
+  else if(hayAlto || editorConsumo) veredicto='sospechoso';
+  else veredicto='sin_firma';
+  return {firmaPresente, subfilter, nSig, firmante, fechaFirma, cubreTodo,
+          producer, creator, creacion, modif, revisiones, editorConsumo,
+          inst, urlCert, codigo, flags, veredicto};
+}
+/* Enganche opcional al backend Django para validación criptográfica real */
+async function validarFirmaServidor(arrayBuffer){
+  if(!URL_BACKEND_VERIFICACION) return null;
+  try{
+    const fd=new FormData();
+    fd.append('archivo', new Blob([arrayBuffer], {type:'application/pdf'}), 'certificado.pdf');
+    const r=await fetch(URL_BACKEND_VERIFICACION, {method:'POST', body:fd});
+    return await r.json(); // se espera {valido, firmante, emisor, vigente, ...}
+  }catch(e){ console.error(e); return null; }
+}
+function htmlVerif(v){
+  if(!v) return '';
+  const map={firmado:{cls:'ok',lbl:'Firmado electrónicamente'}, firmado_revisar:{cls:'rev',lbl:'Firmado · revisar'},
+             sospechoso:{cls:'bad',lbl:'Requiere atención'}, sin_firma:{cls:'info',lbl:'Sin firma digital'}};
+  const m=map[v.veredicto]||map.sin_firma;
+  const facts=[];
+  if(v.firmante) facts.push(['Firmante', v.firmante]);
+  if(v.fechaFirma) facts.push(['Fecha de firma', v.fechaFirma]);
+  if(v.subfilter) facts.push(['Tipo de firma', v.subfilter]);
+  if(v.producer) facts.push(['Generado por', v.producer]);
+  if(v.creacion) facts.push(['Creado', v.creacion]);
+  if(v.modif && v.modif!==v.creacion) facts.push(['Modificado', v.modif]);
+  const factsH=facts.length?`<div class="verif-facts">${facts.map(([k,val])=>`<div><span class="vk">${esc(k)}</span><span class="vv">${esc(val)}</span></div>`).join('')}</div>`:'';
+  const flagsH=v.flags.length?`<ul class="verif-flags">${v.flags.map(f=>`<li class="vf-${f.n}"><span class="vf-dot"></span>${esc(f.t)}</li>`).join('')}</ul>`:'';
+  const codH=v.codigo?`<div class="verif-cod">Código de validación detectado: <b>${esc(v.codigo)}</b></div>`:'';
+  const dest=v.urlCert || (v.inst&&v.inst.validador) || '';
+  const btn=dest?`<a class="btn vbtn" href="${esc(dest)}" target="_blank" rel="noopener">Verificar en el portal oficial${v.inst&&v.inst.validador?` · ${esc(v.inst.nombre)}`:''}</a>`:'';
+  return `
+    <div class="verif ${m.cls}">
+      <div class="verif-top"><span class="verif-veredicto ${m.cls}">${m.lbl}</span><span class="verif-lbl">Verificación del documento</span></div>
+      ${factsH}${flagsH}${codH}
+      <div class="verif-foot">Revisión automática <b>orientativa</b>. La autenticidad la confirma el <b>validador oficial</b> de la institución o el Registro Académico, no este sistema.</div>
+      ${btn}
+    </div>`;
+}
+
+async function manejarCertificado(fileList){
+  const f=Array.from(fileList||[]).filter(x=> x.type==='application/pdf' || /\.pdf$/i.test(x.name))[0];
+  if(!f){ toast('Selecciona un PDF para el certificado.'); return; }
+  try{
+    const buf=await f.arrayBuffer();
+    const bufCopia=buf.slice(0);                 // copia para análisis crudo (pdf.js puede transferir buf)
+    const paginas=await leerPDFPaginas(buf);
+    const texto=paginas.join('\n');
+    if(texto.replace(/\s/g,'').length<40){ toast('El certificado no tiene texto legible (¿es un escaneo?).'); return; }
+    certEntradas=parsearCertificado(texto);
+    certActivo=certEntradas.length>0;
+    certArchivo=f.name;
+    certVerif=verificarCertificado(bufCopia, texto);
+    // Validación criptográfica fuerte (si configuras el backend Django):
+    if(URL_BACKEND_VERIFICACION){ const srv=await validarFirmaServidor(bufCopia); if(srv) certVerif.servidor=srv; }
+    if(!certActivo) toast('No detecté notas en el certificado. Puedes evaluar igualmente por contenido.');
+  }catch(err){ console.error(err); toast('No se pudo leer el certificado.'); return; }
+  renderCert(); actualizarBoton();
+}
+function quitarCertificado(){ certEntradas=[]; certActivo=false; certArchivo=''; certVerif=null; renderCert(); actualizarBoton(); }
+function renderCert(){
+  const c=$('colaCert'); c.innerHTML='';
+  if(!certArchivo) return;
+  const inst = certVerif && certVerif.inst ? certVerif.inst.nombre : null;
+  const div=document.createElement('div');
+  div.className='cert-sum'+(certActivo?'':' warn');
+  div.innerHTML=`
+    <div class="cert-sum-top">
+      <div class="cert-sum-name"><span class="doc">▦</span>${esc(certArchivo)}</div>
+      <button class="fitem-x" id="certX" title="Quitar" aria-label="Quitar">✕</button>
+    </div>
+    ${inst?`<div class="cert-inst">Universidad de origen: <b>${esc(inst)}</b></div>`:''}
+    <div class="cert-count">${certActivo
+      ? `Detecté <b>${certEntradas.length}</b> ${certEntradas.length===1?'asignatura con nota':'asignaturas con nota'} en el certificado.`
+      : 'No pude detectar notas legibles. Revisa que el PDF tenga texto seleccionable (no un escaneo).'}</div>`;
+  c.appendChild(div);
+  $('certX').addEventListener('click', quitarCertificado);
+  if(certVerif){
+    const vd=document.createElement('div');
+    vd.innerHTML=htmlVerif(certVerif);
+    if(vd.firstElementChild) c.appendChild(vd.firstElementChild);
+  }
+}
+
+function $(id){ return document.getElementById(id); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3200); }
+function pct(x){ return Math.round(x*100); }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* poblar selector de carreras */
+function poblarCarreras(){
+  const sel=$('selCarrera');
+  for(const c of Object.keys(BASE_UNAB)){
+    const o=document.createElement('option'); o.value=c; o.textContent=c; sel.appendChild(o);
+  }
+}
+
+/* ---- Lectura de PDF: texto por páginas (robusto en iframe/sandbox) ----- */
+async function leerPDFPaginas(arrayBuffer){
+  const pdf = await pdfjsLib.getDocument({data:arrayBuffer, verbosity:0}).promise;
+  const paginas=[];
+  for(let p=1; p<=pdf.numPages; p++){
+    const page = await pdf.getPage(p);
+    const tc = await page.getTextContent();
+    paginas.push(tc.items.map(i=>i.str).join(' '));
+  }
+  return paginas;
+}
+
+/* ---- Segmentación: un PDF puede traer 1 o varios programas ------------- */
+/* Marcadores de inicio de programa. Las palabras clave no llevan tilde, así
+   que el match case-insensitive sobre el texto original es seguro. */
+const RE_INICIO = /(programa\s+de\s+(?:la\s+)?asignatura|programa\s+de\s+estudios?|programa\s+formativo|nombre\s+de\s+(?:la\s+)?asignatura|nombre\s+del\s+curso|\bsyllabus\b)/gi;
+
+function limpiarNombre(s){
+  s=String(s||'').replace(/\s+/g,' ').trim();
+  s=s.replace(/\s*\b(c[oó]digo|cr[eé]dito\w*|sct|semestre|carrera|horas?|requisito\w*|prerequisito\w*|unidad\w*|tipo|nivel|facultad|departamento|a[ñn]o|periodo|per[ií]odo)\b.*$/i,'').trim();
+  s=s.replace(/[:\-–·•]+$/,'').trim();
+  if(s.length>70) s=s.slice(0,70).trim()+'…';
+  return s;
+}
+function nombreDeSegmento(seg, idx, archivo){
+  let m = seg.match(/(?:nombre\s+de\s+la\s+asignatura|nombre\s+del\s+curso|nombre\s+de\s+asignatura)\s*:?\s*([0-9A-Za-zÁÉÍÓÚÑÜáéíóúñü().,\/ -]{3,70})/i);
+  if(!m) m = seg.match(/\basignatura\s*:\s*([0-9A-Za-zÁÉÍÓÚÑÜáéíóúñü().,\/ -]{3,70})/i);
+  let nom = m ? limpiarNombre(m[1]) : '';
+  if(!nom || nom.length<3){
+    const base=String(archivo||'').replace(/\.pdf$/i,'').trim();
+    nom = base ? base : ('Programa '+(idx+1));
+  }
+  return nom;
+}
+function segmentar(paginas, archivo, modo){
+  const texto = paginas.join('\n');
+  if(modo==='unico'){
+    return [{nombre: nombreDeSegmento(texto,0,archivo), texto}];
+  }
+  if(modo==='pagina'){
+    return paginas
+      .map((t,i)=>({texto:t, idx:i}))
+      .filter(o=>o.texto.replace(/\s/g,'').length>=40)
+      .map((o,k)=>({nombre: nombreDeSegmento(o.texto,o.idx,archivo), texto:o.texto}));
+  }
+  /* AUTO: posiciones de marcadores de inicio repetidos (con distancia mínima
+     para no partir por encabezados/pies cercanos). */
+  const pos=[]; let mm; RE_INICIO.lastIndex=0;
+  while((mm=RE_INICIO.exec(texto))!==null){
+    const i=mm.index;
+    if(pos.length===0 || (i-pos[pos.length-1])>60) pos.push(i);
+    if(RE_INICIO.lastIndex===i) RE_INICIO.lastIndex++;
+  }
+  if(pos.length>=2 && pos.length<=80){
+    const segs=[];
+    for(let i=0;i<pos.length;i++){
+      const ini=pos[i], fin=(i+1<pos.length)?pos[i+1]:texto.length;
+      let t=texto.slice(ini,fin);
+      if(i===0 && pos[0]>0) t=texto.slice(0,pos[0])+t;
+      segs.push({nombre: nombreDeSegmento(t,i,archivo), texto:t});
+    }
+    return segs;
+  }
+  /* sin marcadores claros -> un solo programa (no sobre-fragmentar) */
+  return [{nombre: nombreDeSegmento(texto,0,archivo), texto}];
+}
+
+/* ---- Cola de archivos cargados ---------------------------------------- */
+function programasCargados(){
+  const out=[];
+  for(const f of cola) for(const p of f.programas) out.push({nombre:p.nombre, texto:p.texto, archivo:f.archivo});
+  return out;
+}
+function actualizarBoton(){
+  const n = ConvalCatalogo.estado.modo==='catalogo'
+    ? document.querySelectorAll('#mallaOrigen input:checked').length
+    : programasCargados().length;
+  $('btnRun').disabled = !( $('selCarrera').value && n );
+}
+async function manejarArchivos(fileList){
+  const files = Array.from(fileList||[]).filter(f=> f.type==='application/pdf' || /\.pdf$/i.test(f.name));
+  if(!files.length){ toast('Selecciona uno o más archivos PDF.'); return; }
+  for(const file of files){
+    try{
+      const buf = await file.arrayBuffer();
+      const paginas = await leerPDFPaginas(buf);
+      if(paginas.join(' ').replace(/\s/g,'').length < 40){
+        toast('"'+file.name+'": sin texto legible (¿es un escaneo?).'); continue;
+      }
+      const item={id:++seqId, archivo:file.name, paginas, modo:'auto', programas:[]};
+      item.programas = segmentar(item.paginas, item.archivo, item.modo);
+      cola.push(item);
+    }catch(err){ console.error(err); toast('No se pudo leer "'+file.name+'".'); }
+  }
+  renderCola();
+  actualizarBoton();
+}
+function renderCola(){
+  const c=$('cola'); c.innerHTML='';
+  cola.forEach(item=>{
+    const div=document.createElement('div'); div.className='fitem';
+    const progNames=item.programas.map(p=>`<li>${esc(p.nombre)}</li>`).join('');
+    div.innerHTML = `
+      <div class="fitem-top">
+        <div class="fitem-name"><span class="doc">▦</span>${esc(item.archivo)}</div>
+        <button class="fitem-x" data-id="${item.id}" title="Quitar" aria-label="Quitar">✕</button>
+      </div>
+      <div class="fitem-meta">
+        <span class="fitem-count"><b>${item.programas.length}</b> ${item.programas.length===1?'programa':'programas'}</span>
+        <label class="fitem-mode">Lectura
+          <select data-mode="${item.id}">
+            <option value="auto"${item.modo==='auto'?' selected':''}>Automática</option>
+            <option value="pagina"${item.modo==='pagina'?' selected':''}>1 por página</option>
+            <option value="unico"${item.modo==='unico'?' selected':''}>Todo junto</option>
+          </select>
+        </label>
+      </div>
+      <ul class="fitem-progs">${progNames}</ul>`;
+    c.appendChild(div);
+  });
+  c.querySelectorAll('.fitem-x').forEach(b=>b.addEventListener('click',()=>{
+    cola=cola.filter(i=>String(i.id)!==String(b.dataset.id)); renderCola(); actualizarBoton();
+  }));
+  c.querySelectorAll('select[data-mode]').forEach(s=>s.addEventListener('change',()=>{
+    const it=cola.find(i=>String(i.id)===String(s.dataset.mode)); if(!it) return;
+    it.modo=s.value; it.programas=segmentar(it.paginas, it.archivo, it.modo);
+    renderCola(); actualizarBoton();
+  }));
+}
+
+/* ---- Evaluación y render por asignatura de origen --------------------- */
+function statusDe(score){
+  if(score>=UMBRAL_CONVALIDA) return {cls:'is-conv', lbl:'Convalidable'};
+  if(score>=ConvalCatalogo.umbralRevision())  return {cls:'is-rev',  lbl:'Revisión manual'};
+  return {cls:'is-no', lbl:'Sin coincidencia'};
+}
+function correr(){
+  const carrera=$('selCarrera').value;
+  if(!carrera){ toast('Elige primero la carrera de destino.'); return; }
+  const catalogo = ConvalCatalogo.estado.modo==='catalogo';
+  const progs = catalogo ? ConvalCatalogo.asignaturasMarcadas() : programasCargados();
+  if(!progs.length){ toast(catalogo ? 'Marca al menos una asignatura aprobada.' : 'Sube al menos un programa en PDF.'); return; }
+  if(!idfGlobal) idfGlobal = construirIDFGlobal(BASE_UNAB);
+  if(!indiceActual || indiceActual._carrera!==carrera){
+    indiceActual = construirIndice(BASE_UNAB[carrera], idfGlobal);
+    indiceActual._carrera = carrera;
+  }
+  const evals = progs.map(pr=>{
+    const ranking = ConvalCatalogo.evaluarCombinado(pr.nombre, catalogo ? '' : pr.texto, indiceActual);
+    const nota = certActivo ? cruzarNota(pr, certEntradas) : null;
+    return {prog:pr, ranking, nota};
+  });
+  render(evals, carrera);
+}
+function tarjetaPrograma(prog, ranking, nota, idx, aceptada){
+  const top = ranking[0];
+  const score = top?top.score:0;
+  const st = statusFinal(score, nota);
+  const p  = top?pct(top.score):0;
+  const card=document.createElement('article');
+  card.className='pcard '+st.cls;
+  const hayCandidato = !!(top && top.score>=ConvalCatalogo.umbralRevision());
+
+  const gradeLine = certActivo ? `
+    <div class="gline">
+      <span class="gk">Nota de origen</span>
+      ${notaBadge(nota)}${nota?` <span style="color:var(--muted)">${esc(nota.asignatura)}</span>`:''}
+    </div>` : '';
+
+  let cuerpo='';
+  // En modo malla de origen no hay programa: no se puede medir cobertura de aprendizajes.
+  const conAE = top && top.aeTot && ConvalCatalogo.estado.modo!=='catalogo';
+  if(top && top.score>=ConvalCatalogo.umbralRevision()){
+    const cr = top.asig.creditos?` · ${top.asig.creditos} cr`:'';
+    const aeLine = conAE
+      ? `<div class="pae"><span class="pae-lbl">Aprendizajes esperados cubiertos:</span> ${top.aeCov} de ${top.aeTot} · ${top.aePct}%</div>` : '';
+    const aeDet = top.aeTot
+      ? '<ul>'+top.aeItems.map(it=>`<li class="${it.ok?'ae-ok':'ae-no'}"><span class="ae-mk">${it.ok?'✓':'·'}</span>${esc(it.texto)}</li>`).join('')+'</ul>' : '';
+    const chips = top.matched.slice(0,10).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
+    const seg = ranking[1];
+    const segHtml = (seg && seg.score>=ConvalCatalogo.umbralRevision())
+      ? `<div class="pcand"><span class="pc-lbl">Otra opción</span><div class="pcand-row"><span>${esc(seg.asig.codigo)} · ${esc(seg.asig.nombre)}</span><b>${pct(seg.score)}%</b></div></div>` : '';
+    cuerpo = `
+      <div class="pmatch">
+        <div class="pmatch-info">
+          <span class="pm-arrow">→</span>
+          <div>
+            <div class="pm-code">${esc(top.asig.codigo)} · Semestre ${esc(top.asig.semestre)}${cr}</div>
+            <div class="pm-name">${esc(top.asig.nombre)}</div>
+          </div>
+        </div>
+        <div class="pm-score"><span>${p}<small>%</small></span></div>
+      </div>
+      <div class="meter"><div class="meter-fill" style="width:${p}%"></div>
+        <div class="meter-mark" style="left:${pct(UMBRAL_CONVALIDA)}%" title="Umbral ${pct(UMBRAL_CONVALIDA)}%"></div>
+      </div>
+      ${aeLine}
+      ${gradeLine}
+      <details class="pdet"><summary>Ver detalle</summary>
+        ${conAE?`<div class="ae-box"><div class="ae-head"><span class="ae-lbl">Aprendizajes esperados</span><span class="ae-val">${top.aeCov} de ${top.aeTot} · ${top.aePct}%</span></div><div class="ae-bar"><div class="ae-fill" style="width:${top.aePct}%"></div></div><div class="ae-det" style="margin-top:8px">${aeDet}</div></div>`:''}
+        ${chips?`<div class="why"><span class="why-lbl">Por qué coincide</span><div class="chips">${chips}</div></div>`:''}
+        ${segHtml}
+      </details>`;
+  } else {
+    const best=ranking[0];
+    cuerpo = `<p class="pnone">Ninguna asignatura del plan alcanzó el umbral de convalidación.${best?` Coincidencia más alta: ${esc(best.asig.nombre)} (${esc(best.asig.codigo)}) · ${pct(best.score)}%.`:''} Requiere revisión manual de la Dirección de Carrera.</p>${gradeLine}`;
+  }
+
+  const decisionHtml = hayCandidato ? `
+    <div class="pdecision" data-idx="${idx}">
+      <span class="pdec-lbl">¿Convalidar esta asignatura?</span>
+      <div class="pdec-btns">
+        <button type="button" class="pdec-btn accept${aceptada?' active':''}" data-idx="${idx}" data-val="1">✓ Aceptar</button>
+        <button type="button" class="pdec-btn reject${aceptada?'':' active'}" data-idx="${idx}" data-val="0">✕ Rechazar</button>
+      </div>
+    </div>` : '';
+
+  card.innerHTML = `
+    <div class="pcard-head">
+      <div class="porigen">
+        <span class="porigen-lbl">Asignatura de origen</span>
+        <h3>${esc(prog.nombre)}</h3>
+        ${prog.archivo?`<span class="parch">${esc(prog.archivo)}</span>`:''}
+      </div>
+      <span class="pstatus ${st.cls}">${st.lbl}</span>
+    </div>
+    ${cuerpo}
+    ${decisionHtml}`;
+  return card;
+}
+function render(evals, carrera){
+  const cont=$('resultados'); cont.innerHTML='';
+  const n=evals.length;
+  const conv=evals.filter(e=>e.ranking[0] && e.ranking[0].score>=UMBRAL_CONVALIDA).length;
+  const rev =evals.filter(e=>e.ranking[0] && e.ranking[0].score>=ConvalCatalogo.umbralRevision() && e.ranking[0].score<UMBRAL_CONVALIDA).length;
+
+  const head=document.createElement('div'); head.className='res-head';
+  const aprob = certActivo
+    ? evals.filter(e=> e.nota && e.nota.aprobado && e.ranking[0] && e.ranking[0].score>=UMBRAL_CONVALIDA).length
+    : null;
+  const subCert = certActivo ? ` · ${aprob} aprobadas en origen` : '';
+  head.innerHTML = `<span class="rh-eyebrow">Resultado · ${esc(carrera)}</span>
+    <h2>${n} ${n===1?'asignatura evaluada':'asignaturas evaluadas'}</h2>
+    <p class="res-sub">${conv} con convalidación sugerida${rev?` · ${rev} para revisión manual`:''}${subCert}</p>`;
+  cont.appendChild(head);
+
+  const nota=document.createElement('div'); nota.className='leyenda';
+  nota.innerHTML = ConvalCatalogo.estado.modo==='catalogo'
+    ? 'Cada asignatura que marcaste se compara con el plan UNAB por su <b>nombre</b>, su <b>concepto curricular</b> (p. ej. «Cálculo I» ≈ «Cálculo Diferencial») y los contenidos de los programas UNAB. Para un análisis más fino, sube los programas en PDF.'
+    : certActivo
+    ? 'Cada asignatura combina dos señales: el <b>parecido de contenidos</b> con el plan UNAB y si la <b>aprobaste en origen</b> según tu certificado. Una asignatura solo se sugiere como <b>Convalidable</b> si el contenido calza y además aparece aprobada.'
+    : 'Por cada asignatura de origen se muestra su mejor coincidencia en el plan UNAB. <b>Convalidable</b> mide el parecido global de contenidos; <b>Aprendizajes esperados cubiertos</b> indica qué proporción de los aprendizajes del ramo UNAB aborda tu programa (suele ser el criterio más relevante).';
+  cont.appendChild(nota);
+
+  // Decisión inicial por tarjeta: aceptada por defecto solo si el sistema la sugiere
+  // como Convalidable (score>=UMBRAL_CONVALIDA). El usuario puede cambiarla libremente
+  // antes de pasar a la malla (incluye tarjetas de "Revisión manual").
+  const decisiones = evals.map(({ranking,nota})=>{
+    const top=ranking[0]; if(!top||!top.asig) return false;
+    return statusFinal(top.score, nota).cls.indexOf('is-conv')>=0;
+  });
+
+  evals.forEach(({prog,ranking,nota},idx)=> cont.appendChild(tarjetaPrograma(prog, ranking, nota, idx, decisiones[idx])) );
+
+  // --- Handoff al Paso 3 (malla): persistir según la decisión real del usuario ---
+  const URL_MALLA='malla.html';
+  const resumenSpan=document.createElement('span');
+
+  function codigosDecididos(){
+    const conv=[], pend=[];
+    evals.forEach(({ranking,nota},idx)=>{
+      const top=ranking[0]; if(!top||!top.asig) return;
+      if(decisiones[idx]) conv.push(top.asig.codigo);
+    });
+    return {conv: Array.from(new Set(conv))};
+  }
+
+  function guardarYActualizar(){
+    const {conv}=codigosDecididos();
+    try{
+      sessionStorage.setItem('convalidacion_resultado', JSON.stringify({
+        carrera, convalidadas:conv, revision:[], generadoEn:new Date().toISOString()
+      }));
+    }catch(e){}
+    resumenSpan.textContent = conv.length + ' convalidable' + (conv.length===1?'':'s')
+      + ' se ' + (conv.length===1?'marcará':'marcarán') + ' en tu plan de estudios.';
+  }
+
+  cont.querySelectorAll('.pdec-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx=Number(btn.dataset.idx);
+      const val = btn.dataset.val==='1';
+      decisiones[idx]=val;
+      const wrap = cont.querySelector('.pdecision[data-idx="'+idx+'"]');
+      if(wrap){
+        wrap.querySelector('.pdec-btn.accept').classList.toggle('active', val);
+        wrap.querySelector('.pdec-btn.reject').classList.toggle('active', !val);
+      }
+      guardarYActualizar();
+    });
+  });
+
+  const cta=document.createElement('div');
+  cta.style.cssText='display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:24px 0 6px';
+  const btnMalla=document.createElement('button');
+  btnMalla.type='button'; btnMalla.id='btnMalla';
+  btnMalla.style.cssText='appearance:none;border:0;cursor:pointer;background:var(--accent);color:#fff;'
+    +'font:inherit;font-weight:700;font-size:1rem;padding:13px 22px;border-radius:12px;'
+    +'box-shadow:0 6px 18px rgba(31,157,107,.28)';
+  btnMalla.textContent='Ver mi malla curricular ›';
+  resumenSpan.style.cssText='color:var(--muted);font-size:.86rem';
+  cta.appendChild(btnMalla); cta.appendChild(resumenSpan);
+  cont.appendChild(cta);
+  guardarYActualizar();
+  btnMalla.addEventListener('click',()=>{ window.location.href=URL_MALLA; });
+
+  ConvalCatalogo.bloqueEnvio(evals, carrera, cont);
+
+  const disc=document.createElement('p'); disc.className='disclaimer';
+  disc.innerHTML='El porcentaje es una estimación de coincidencia de contenidos y <b>no constituye una resolución oficial</b>. La decisión final corresponde a la Dirección de Carrera / Coordinación Académica.';
+  cont.appendChild(disc);
+  cont.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ---- enganches de UI -------------------------------------------------- */
+function initUI(){
+  poblarCarreras();
+  pintarIdentidad();
+  $('selCarrera').addEventListener('change', actualizarBoton);
+  const drop=$('drop');
+  drop.addEventListener('click',()=>$('file').click());
+  drop.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();$('file').click();} });
+  $('file').addEventListener('change',e=>{ manejarArchivos(e.target.files); e.target.value=''; });
+  ['dragenter','dragover'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('drag');}));
+  drop.addEventListener('drop',e=>{ if(e.dataTransfer.files && e.dataTransfer.files.length) manejarArchivos(e.dataTransfer.files); });
+
+  // Certificado de notas
+  const dropC=$('dropCert');
+  dropC.addEventListener('click',()=>$('fileCert').click());
+  dropC.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();$('fileCert').click();} });
+  $('fileCert').addEventListener('change',e=>{ manejarCertificado(e.target.files); e.target.value=''; });
+  ['dragenter','dragover'].forEach(ev=>dropC.addEventListener(ev,e=>{e.preventDefault();dropC.classList.add('drag');}));
+  ['dragleave','drop'].forEach(ev=>dropC.addEventListener(ev,e=>{e.preventDefault();dropC.classList.remove('drag');}));
+  dropC.addEventListener('drop',e=>{ if(e.dataTransfer.files && e.dataTransfer.files.length) manejarCertificado(e.dataTransfer.files); });
+
+  $('btnRun').addEventListener('click',correr);
+
+  // Modo malla de origen (catálogo de universidades)
+  document.querySelectorAll('.modo-tab').forEach(t=>t.addEventListener('click',()=>ConvalCatalogo.cambiarModo(t.dataset.modo)));
+  $('selUni').addEventListener('change', ConvalCatalogo.poblarCarrerasOrigen);
+  $('selCarreraOrigen').addEventListener('change', ()=>ConvalCatalogo.elegirCarreraOrigen().catch(e=>{console.error(e);toast('No se pudo cargar la malla.');}));
+  ConvalCatalogo.iniciarCatalogo().catch(e=>{ console.error(e); toast('Catálogo no disponible: usa la opción de PDF.'); ConvalCatalogo.cambiarModo('pdf'); });
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  BASE_UNAB_READY.then(initUI).catch(e=>{
+    console.error(e); toast('No se pudo cargar la base de asignaturas UNAB. Recarga la página.');
+  });
+});
+</script>
+<script>window.SUITE_APP_DEPTH = 2;</script>
+<link rel="stylesheet" href="../../shared/tokens.css">
+<script src="catalogo-origen.js"></script>
+<link rel="stylesheet" href="../../shared/suite-bar.css">
+<script src="../../shared/suite-config.js"></script>
+<script src="../../shared/auth.js"></script>
+<script src="../../shared/suite-bar.js" data-app="Convalidación"></script>
+</body>
+</html>

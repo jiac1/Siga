@@ -1,0 +1,20 @@
+# universidad: Universidad Técnica Federico Santa María
+# sigla: USM
+# carrera: Ingeniería Civil Informática
+# area: informatica
+# plan: Nuevo plan Ingenierías Civiles en 5 años (julio 2025)
+# duracion: 10
+# fuente: https://informatica.usm.cl/wp-content/uploads/sites/6/2025/07/MALLA-10-SEMESTRES-INGENIERIA-CIVIL-INFORMATICA.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: Impartida en Casa Central (Valparaíso) y Campus San Joaquín (Santiago). Información referencial. Práctica I y II de 2 meses.
+1 | Introducción a la Programación | Álgebra y Geometría | Introducción al Cálculo | Introducción a la Física | Comunicación Efectiva en Español / Inglés I | ~Educación Física I
+2 | Proyecto Inicial | Álgebra Lineal | Cálculo en una Variable | Física General Mecánica | Comunicación Efectiva en Español / Inglés II | ~Educación Física II
+3 | Programación Avanzada | Matemática Discreta | Cálculo en Varias Variables | Calor y Ondas | Análisis Crítico de Texto | Administración y Sostenibilidad Organizacional
+4 | Estructura de Datos | Estadística Computacional | Ecuaciones Diferenciales Elementales | Electricidad y Magnetismo | Comunicación Efectiva en Español / Inglés III | Ingeniería Económica
+5 | Bases de Datos | Optimización | Arquitectura y Organización de Computadores | Paradigmas de Programación | Ingeniería, Informática y Sociedad | Teoría de Autómatas y Lenguajes Formales
+6 | Comunicación Efectiva en Español / Inglés IV | Algoritmos y Complejidad | Sistemas Operativos | Análisis y Diseño de Software | Computación Científica | Investigación de Operaciones | Práctica I
+7 | Inglés Disciplinar | Teoría de Sistemas | Redes y Ciberseguridad | Ingeniería de Software | Inteligencia Artificial I | Fundamentos de Ciencia de Datos
+8 | ~Electivo | Proyecto de Ingeniería | Sistemas Distribuidos | Diseño de Experiencia Usuaria | Sistemas para la Gestión Organizacional | Inteligencia Artificial II | Práctica II
+9 | ~Electivo | Gestión de Proyectos de Informática | ~Electivo Disciplinar | ~Electivo Disciplinar | ~Electivo Disciplinar
+10 | Taller de Desarrollo de Proyectos de Informática | Taller Complementario de Titulación | ~Electivo Disciplinar | ~Electivo Disciplinar
