@@ -1,4 +1,4 @@
-# Suite UNAB — Proyecto de Título
+# Siga — Proyecto de Título
 
 **Diseño e implementación de Suite UNAB:** una plataforma web unificada para la integración de aplicaciones de apoyo académico de la carrera de Ingeniería Civil Informática (Universidad Andrés Bello), preparada para despliegue en infraestructura AWS.
 
