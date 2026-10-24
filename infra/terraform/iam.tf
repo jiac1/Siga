@@ -98,10 +98,16 @@ resource "aws_iam_role_policy" "core_ses" {
 
 # ── Despliegue continuo desde GitHub Actions (OIDC, sin llaves de larga duración) ──
 resource "aws_iam_openid_connect_provider" "github" {
-  count           = var.github_repositorio == "" ? 0 : 1
+  count           = var.github_repositorio != "" && var.crear_proveedor_oidc_github ? 1 : 0
   url             = "https://token.actions.githubusercontent.com"
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+}
+
+locals {
+  arn_oidc_github = var.crear_proveedor_oidc_github ? (
+    length(aws_iam_openid_connect_provider.github) > 0 ? aws_iam_openid_connect_provider.github[0].arn : ""
+  ) : "arn:aws:iam::${data.aws_caller_identity.actual.account_id}:oidc-provider/token.actions.githubusercontent.com"
 }
 
 data "aws_iam_policy_document" "asumir_github" {
@@ -110,7 +116,7 @@ data "aws_iam_policy_document" "asumir_github" {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github[0].arn]
+      identifiers = [local.arn_oidc_github]
     }
     condition {
       test     = "StringEquals"

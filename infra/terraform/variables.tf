@@ -83,6 +83,12 @@ variable "github_repositorio" {
   default     = ""
 }
 
+variable "crear_proveedor_oidc_github" {
+  description = "Crear el recurso aws_iam_openid_connect_provider para GitHub Actions (solo debe crearse una vez por cuenta AWS)"
+  type        = bool
+  default     = true
+}
+
 variable "remitente_correo" {
   description = "Remitente de correos transaccionales (requiere identidad verificada en SES)"
   type        = string

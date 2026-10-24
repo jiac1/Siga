@@ -80,6 +80,13 @@ resource "aws_s3_bucket_versioning" "portal" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "media" {
+  bucket = aws_s3_bucket.media.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_s3_bucket_lifecycle_configuration" "media" {
   bucket = aws_s3_bucket.media.id
   rule {
@@ -100,13 +107,38 @@ resource "aws_s3_bucket_policy" "portal" {
   bucket = aws_s3_bucket.portal.id
   policy = jsonencode({
     Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "SoloCloudFront"
+        Effect    = "Allow"
+        Principal = { Service = "cloudfront.amazonaws.com" }
+        Action    = "s3:GetObject"
+        Resource  = "${aws_s3_bucket.portal.arn}/*"
+        Condition = { StringEquals = { "AWS:SourceArn" = aws_cloudfront_distribution.suite.arn } }
+      },
+      {
+        Sid       = "ExigirHTTPS"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource  = [aws_s3_bucket.portal.arn, "${aws_s3_bucket.portal.arn}/*"]
+        Condition = { Bool = { "aws:SecureTransport" = "false" } }
+      }
+    ]
+  })
+}
+
+resource "aws_s3_bucket_policy" "media" {
+  bucket = aws_s3_bucket.media.id
+  policy = jsonencode({
+    Version = "2012-10-17"
     Statement = [{
-      Sid       = "SoloCloudFront"
-      Effect    = "Allow"
-      Principal = { Service = "cloudfront.amazonaws.com" }
-      Action    = "s3:GetObject"
-      Resource  = "${aws_s3_bucket.portal.arn}/*"
-      Condition = { StringEquals = { "AWS:SourceArn" = aws_cloudfront_distribution.suite.arn } }
+      Sid       = "ExigirHTTPS"
+      Effect    = "Deny"
+      Principal = "*"
+      Action    = "s3:*"
+      Resource  = [aws_s3_bucket.media.arn, "${aws_s3_bucket.media.arn}/*"]
+      Condition = { Bool = { "aws:SecureTransport" = "false" } }
     }]
   })
 }

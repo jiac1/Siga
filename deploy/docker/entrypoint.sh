@@ -24,7 +24,7 @@ case "$1" in
       --threads "${GUNICORN_THREADS:-2}" \
       --timeout "${GUNICORN_TIMEOUT:-120}" \
       --access-logfile - --error-logfile - \
-      --forwarded-allow-ips="*"
+      --forwarded-allow-ips="${GUNICORN_FORWARDED_ALLOW_IPS:-*}"
     ;;
   migrar)
     case "$DJANGO_SERVICIO" in

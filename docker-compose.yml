@@ -91,7 +91,7 @@ services:
   gateway:
     build: { context: ., dockerfile: deploy/docker/portal.Dockerfile }
     restart: unless-stopped
-    ports: ["8080:8080"]
+    ports: ["127.0.0.1:8080:8080"]
     depends_on: [core, mapa-calor, estres-malla]
 
 volumes:
