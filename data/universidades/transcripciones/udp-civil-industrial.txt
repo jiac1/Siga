@@ -1,0 +1,21 @@
+# universidad: Universidad Diego Portales
+# sigla: UDP
+# carrera: Ingeniería Civil Industrial
+# area: industrial
+# plan: malla actualizada a octubre 2021
+# duracion: 11
+# fuente: https://eii.udp.cl/cms/wp-content/uploads/2022/01/Civil-Industrial.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: Código DEMRE 38174, SIES I3S1C10J1V1. Práctica I entre sem. IV-V y II entre VIII-IX (210 h).
+1 | Álgebra y Geometría | Cálculo I | Química | Programación | Comunicación para la Ingeniería
+2 | Álgebra Lineal | Cálculo II | Mecánica | Programación Avanzada | ~Curso de Formación General
+3 | Ecuaciones Diferenciales | Cálculo III | Calor y Ondas | Contabilidad y Costos | ~Curso de Formación General | Inglés General I
+4 | Probabilidades y Estadísticas | Estática | Electricidad y Magnetismo | Introducción a la Economía | ~Curso de Formación General | Inglés General II | Práctica Profesional I
+5 | Inferencia Estadística | Mecánica de Fluidos | Optimización | Teoría Organizacional | ~Curso de Formación General | Inglés General III
+6 | Bases de Datos | Termodinámica | Modelos Estocásticos | Microeconomía | Ingeniería Económica
+7 | Econometría | Proyectos Energéticos | Producción | Marketing | Finanzas
+8 | Data Science | Simulación | Logística | Gestión Estratégica | Evaluación de Proyectos | Práctica Profesional II
+9 | ~Electivo Profesional | ~Electivo Profesional | ~Electivo Profesional | ~Electivo Profesional | Liderazgo y Emprendimiento
+10 | ~Electivo Profesional | ~Electivo Profesional | ~Electivo Profesional | ~Electivo Profesional | Taller de Ingeniería Industrial
+11 | Actividad de Titulación

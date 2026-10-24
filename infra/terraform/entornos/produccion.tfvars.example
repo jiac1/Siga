@@ -1,0 +1,12 @@
+# Copiar como produccion.tfvars y ajustar.  terraform apply -var-file=entornos/produccion.tfvars
+ambiente           = "produccion"
+aws_region         = "sa-east-1"
+dominio            = "suite.unab.cl"
+zona_route53_id    = "Z0000000000000000000"
+rds_clase          = "db.t4g.small"
+rds_multi_az       = true
+nat_unico          = false
+habilitar_waf      = true
+correo_alertas     = "ti-suite@unab.cl"
+github_repositorio = "mi-organizacion/Suite-Unab"
+remitente_correo   = "no-responder@suite.unab.cl"

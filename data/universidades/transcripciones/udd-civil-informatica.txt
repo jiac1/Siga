@@ -1,0 +1,21 @@
+# universidad: Universidad del Desarrollo
+# sigla: UDD
+# carrera: Ingeniería Civil en Informática e Innovación Tecnológica
+# area: informatica
+# plan: cuadernillo 2024 (archivo 2023-11)
+# duracion: 10
+# regimen: mixto (20 trimestres / 10 semestres)
+# fuente: https://ingenieria.udd.cl/files/2024/07/14-ing-civil-informatica-cuadernillo_sin-intercambio-1.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial a alta resolución (página 3)
+# notas: Cursos dictados en trimestres; se asignan al semestre que los contiene. '?' marca cursos cuyo trimestre cae entre dos semestres (asignación incierta). Desafíos/Trabajos en Empresa son instancias laborales.
+1 | Taller de Programación | Desafíos de la Ingeniería Informática | Introducción al Cálculo | Álgebra | Comunicación Oral / Comunicación Escrita | ~Electivo Ciencia y Tecnología | ~Introducción a la Vida Universitaria
+2 | Taller de Obtención y Preparación de Datos | Bootcamp de Lenguajes de Programación | Cálculo Diferencial | Geometría | Lectura Crítica / Pensamiento Crítico | ~Electivo Responsabilidad Pública | ~Taller de Habilidades para la Autogestión
+3 | Taller de Estructuras de Datos y Algoritmos | Taller de Diseño de Servicios y Prototipado | Cálculo Integral | Álgebra Lineal | Física | ~Electivo Emprendimiento
+4 | Bases de Datos | Taller de Visualización de Datos | Cálculo Multivariable | Probabilidades y Estadística | Ecuaciones Diferenciales | ~Semana i | ~Electivo Humanidades | ~Taller de Habilidades Socioemocionales
+5 | Ingeniería de Software | Análisis de Datos | Métodos Numéricos | Taller de Métodos de Innovación Ágiles | Certificación de Fundamentos de la Nube | ~Taller de Liderazgo | ?Ética en Informática | ?Advanced Databases Workshop (Inglés) | ?Optimización Aplicada a Negocios | ?Taller de Experiencia del Usuario UX/UI | ?Software Development Certification I (Inglés)
+6 | Arquitectura de Sistemas | Tecnologías y Aplicaciones Web | Redes de Computadores | Business Intelligence (Inglés) | Software Development Certification II (Inglés)
+7 | Taller Ciencia de Redes | Computación Paralela y Distribuida | Artificial Intelligence Workshop (Inglés) | Formulación y Evaluación de Proyectos | Big Data Certification (Inglés) | ?~Electivo de Especialización I | ?~Electivo de Especialización II | ?~Electivo de Especialización III | ?Desafío en Empresa I
+8 | Seguridad y Protección de Datos | Tecnologías Emergentes | Deep Learning Workshop (Inglés) | Innovación y Emprendimiento Tecnológico | Advanced Certification I (Inglés) | ~Taller de Comunicación Efectiva | Desafío en Empresa II | Trabajo en Empresa I
+9 | Big Data Engineering (Inglés) | Gestión de Proyectos Informáticos | ~Electivo de Especialización IV | ~Electivo de Especialización V | Advanced Certification II (Inglés) | Trabajo en Empresa II
+10 | Proyecto de Título | Digital Transformation Workshop (Inglés) | ~Electivo de Especialización VI | ~Taller de Empleabilidad | Trabajo en Empresa III

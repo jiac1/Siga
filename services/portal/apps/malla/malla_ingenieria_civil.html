@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malla · Ingeniería Civil · UNAB</title>
+<style>
+  :root{
+    --bg:#eaeef3; --surface:#ffffff; --surface-2:#f6f8fb;
+    --ink:#0d1a2c; --ink-soft:#566276; --ink-faint:#8794a6; --line:#dde3ec;
+    --navy:#102338; --navy-2:#1d3e63; --red:#d8232a;
+    --a-matematicas:#2563eb;      --t-matematicas:#e7edfd;
+    --a-ciencias:#0891b2;         --t-ciencias:#e0f3f8;
+    --a-estructuras:#dc2626;      --t-estructuras:#fce8e8;
+    --a-geotecnia:#0d9488;        --t-geotecnia:#dff1ef;
+    --a-construccion:#ea580c;     --t-construccion:#fdecdf;
+    --a-gestion:#16a34a;          --t-gestion:#e4f6ea;
+    --a-integracion:#92400e;      --t-integracion:#f6eae2;
+    --a-ingles:#ca8a04;           --t-ingles:#f9f1da;
+    --a-formaciongeneral:#475569; --t-formaciongeneral:#eef1f5;
+    --shadow:0 1px 2px rgba(16,35,56,.06),0 6px 18px rgba(16,35,56,.07);
+    --shadow-lg:0 12px 40px rgba(16,35,56,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--bg);
+    line-height:1.45; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* ---------- Header ---------- */
+  header.top{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%);
+    color:#fff; padding:15px clamp(16px,4vw,40px) 0;
+    border-bottom:3px solid var(--red);
+  }
+  .top-inner{max-width:1480px;margin:0 auto}
+  .eyebrow{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:#9db6d4;font-weight:600;display:flex;gap:10px;align-items:center
+  }
+  .eyebrow .dun{
+    background:rgba(255,255,255,.12);padding:2px 8px;border-radius:4px;
+    letter-spacing:.06em;color:#cfe0f2;white-space:nowrap;flex:none
+  }
+  h1{
+    font-size:clamp(19px,2.5vw,26px);font-weight:700;letter-spacing:-.02em;
+    margin:5px 0 2px;line-height:1.08
+  }
+  .grado{color:#bcd0e8;font-size:13px;font-weight:400}
+  .stats{display:flex;flex-wrap:wrap;gap:0;margin:11px 0 0}
+  .stat{
+    padding:5px 18px 9px 0;margin-right:18px;
+    border-right:1px solid rgba(255,255,255,.14)
+  }
+  .stat:last-child{border-right:none}
+  .stat b{display:block;font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .stat span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9db6d4}
+
+  /* ---------- Legend / filter ---------- */
+  .legend-wrap{
+    position:sticky;top:0;z-index:30;background:rgba(234,238,243,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)
+  }
+  .legend{
+    max-width:1560px;margin:0 auto;padding:8px clamp(16px,4vw,40px);
+    display:flex;flex-wrap:wrap;gap:6px;align-items:center
+  }
+  .legend .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;margin-right:4px}
+  .chip{
+    border:1px solid var(--line);background:var(--surface);
+    padding:3px 9px 3px 7px;border-radius:20px;font-size:11px;font-weight:600;
+    color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+    transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
+  }
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .chip:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .chip[aria-pressed="true"]{color:var(--ink);box-shadow:var(--shadow);
+    border-color:transparent}
+  .chip.reset{color:var(--ink-soft)}
+  body.filtering .chip:not([aria-pressed="true"]):not(.reset){opacity:.5}
+
+  /* ---------- Malla ---------- */
+  .board-scroll{overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+  .board{
+    position:relative;
+    --label-w:28px; --lane-h:66px;
+    max-width:1560px;margin:0 auto;padding:18px clamp(16px,4vw,40px) 8px;
+    display:grid;
+    grid-template-columns:var(--label-w) repeat(11,minmax(132px,1fr));
+    grid-template-rows:auto; grid-auto-rows:var(--lane-h);
+    column-gap:9px; row-gap:6px;
+    align-items:stretch
+  }
+  /* arrow overlay sits above cards but ignores pointer events */
+  .arrows{position:absolute;top:0;left:0;z-index:5;pointer-events:none;overflow:visible}
+  .arrows path.edge{fill:none;stroke:var(--ink-soft);stroke-width:3;opacity:.5;
+    stroke-linecap:round;stroke-linejoin:round;
+    transition:opacity .18s ease,stroke .18s ease,stroke-width .18s ease}
+  .arrows polygon.head{fill:var(--ink-soft);opacity:.42;transition:opacity .18s ease,fill .18s ease}
+  body.no-arrows .arrows{display:none}
+  body.focusing .arrows path.edge{opacity:.06}
+  body.focusing .arrows polygon.head{opacity:.06}
+  .arrows path.edge.on{opacity:1;stroke-width:4.2}
+  .arrows polygon.head.on{opacity:1}
+
+  /* column (semester) headers */
+  .col-head{
+    grid-row:1;align-self:stretch;
+    padding:8px 11px;border-radius:8px;
+    background:var(--surface);border:1px solid var(--line);
+    display:flex;align-items:baseline;justify-content:space-between;z-index:2
+  }
+  .col-head .n{font-size:13px;font-weight:700;color:var(--ink)}
+  .col-head .n small{display:block;font-size:9px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .col-head .cr{font-size:10.5px;color:var(--ink-soft);font-weight:600}
+
+  /* area band tint behind a department's lanes */
+  .band{grid-column:1 / -1;background:var(--bt);border-radius:10px;z-index:0;
+    opacity:.55;margin:-3px -6px;pointer-events:none}
+  /* rotated area label in the left gutter */
+  .band-label{grid-column:1;writing-mode:vertical-rl;transform:rotate(180deg);
+    display:flex;align-items:center;justify-content:center;
+    font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bc);z-index:2;text-align:center;line-height:1.05;padding:2px 0}
+
+  .card{
+    --c:var(--ink-soft);--t:var(--surface-2);
+    position:relative;text-align:left;cursor:pointer;z-index:2;
+    background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    border-bottom:3px solid var(--c);
+    padding:6px 8px 5px;overflow:hidden;font-family:inherit;color:var(--ink);
+    transition:transform .13s ease,box-shadow .13s ease,border-color .13s ease,opacity .18s ease;
+    display:flex;flex-direction:column;justify-content:space-between;gap:3px
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line);border-bottom-color:var(--c)}
+  .card:focus-visible{outline:2.5px solid var(--c);outline-offset:2px}
+  .card .name{font-size:11.5px;font-weight:600;line-height:1.13;color:var(--ink);
+    letter-spacing:-.005em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card .meta{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .card .code{font-size:9.5px;letter-spacing:.03em;color:var(--c);font-weight:700;font-family:ui-monospace,Menlo,monospace}
+  .card .cr{font-size:9.5px;font-weight:700;color:var(--ink-soft);flex:none}
+  body.filtering .card.dim{opacity:.26;filter:saturate(.4)}
+  body.filtering .card.dim:hover{transform:none;box-shadow:none}
+  /* prereq-chain focus states */
+  body.focusing .card{opacity:.22;filter:saturate(.45)}
+  body.focusing .card.chain{opacity:1;filter:none}
+  body.focusing .card.dep{opacity:1;filter:none}
+  .card.chain{box-shadow:var(--shadow);border-color:var(--c)}
+  .card.root{outline:2px solid var(--c);outline-offset:2px}
+  .card.dep{border-style:dashed;border-color:var(--c)}
+
+  /* ---------- Detail drawer ---------- */
+  .backdrop{position:fixed;inset:0;background:rgba(13,26,44,.42);opacity:0;
+    pointer-events:none;transition:opacity .25s ease;z-index:50}
+  .backdrop.show{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(460px,92vw);background:var(--surface);
+    z-index:60;box-shadow:var(--shadow-lg);transform:translateX(100%);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
+  }
+  .drawer.show{transform:translateX(0)}
+  .drawer-head{padding:22px 24px 18px;border-bottom:1px solid var(--line);position:relative}
+  .drawer-head .bar{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c,var(--navy))}
+  .drawer .tag{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    font-weight:700;color:var(--c);background:var(--t);padding:3px 9px;border-radius:20px}
+  .drawer .code{font-size:12px;font-weight:700;color:var(--ink-faint);margin-top:12px;letter-spacing:.04em}
+  .drawer h2{font-size:21px;font-weight:700;letter-spacing:-.02em;margin:3px 0 0;line-height:1.18}
+  .drawer .facts{display:flex;gap:18px;margin-top:14px}
+  .drawer .facts div{font-size:12px;color:var(--ink-soft)}
+  .drawer .facts b{display:block;font-size:17px;color:var(--ink);font-weight:700}
+  .closeb{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;
+    border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:17px;
+    color:var(--ink-soft);line-height:1;display:flex;align-items:center;justify-content:center}
+  .closeb:hover{background:var(--surface-2);color:var(--ink)}
+  .drawer-body{padding:20px 24px 32px;overflow-y:auto;flex:1}
+  .sec-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+    color:var(--ink-faint);margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  .sec+.sec{margin-top:24px}
+  .contenidos{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  ul.ae{list-style:none;display:flex;flex-direction:column;gap:9px}
+  ul.ae li{position:relative;padding-left:22px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+  ul.ae li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;
+    border-radius:50%;background:var(--c)}
+  .empty{font-size:13px;color:var(--ink-faint);font-style:italic}
+  .chips-row{display:flex;flex-wrap:wrap;gap:7px}
+  .prq-chip{display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);border-radius:8px;
+    padding:6px 10px;font-family:inherit;font-size:12.5px;color:var(--ink);text-align:left;
+    transition:border-color .12s ease,box-shadow .12s ease,transform .12s ease}
+  .prq-chip:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+  .prq-chip .pc-dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .prq-chip .pc-code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink-faint);font-weight:700}
+  .prq-chip .pc-name{font-weight:600}
+  .prq-chip .pc-sem{font-size:10.5px;color:var(--ink-faint);font-weight:600}
+
+  footer.foot{max-width:1480px;margin:0 auto;padding:8px clamp(16px,4vw,40px) 40px;
+    color:var(--ink-faint);font-size:12px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+  footer.foot .sep{color:var(--line)}
+
+  @media (max-width:560px){
+    .stat{padding-right:16px;margin-right:16px}.stat b{font-size:20px}
+    .drawer-head{padding:20px 20px 16px}.drawer-body{padding:18px 20px 28px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+  /* page-load stagger */
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .board{animation:fade .35s ease both}
+
+  /* ===== progreso / tracker ===== */
+  .progress-wrap{background:var(--surface);border-bottom:1px solid var(--line)}
+  .progress-inner{max-width:1560px;margin:0 auto;padding:9px clamp(16px,4vw,40px);
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .prog-stats{display:flex;gap:18px}
+  .prog-stat{font-size:12px;color:var(--ink-soft)}
+  .prog-stat b{font-size:16px;color:var(--ink);font-weight:700;margin-right:3px}
+  .prog-bar{position:relative;flex:1;min-width:180px;height:12px;border-radius:7px;
+    background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+  .prog-fill{height:100%;width:0;border-radius:7px;
+    background:linear-gradient(90deg,#16a34a,#22c55e);transition:width .4s cubic-bezier(.4,0,.2,1)}
+  .prog-pct{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    font-size:10px;font-weight:700;color:var(--ink-soft);mix-blend-mode:luminosity}
+  .prog-reset{appearance:none;border:1px solid var(--line);background:var(--surface);
+    color:var(--ink-soft);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;
+    padding:7px 13px;border-radius:8px;transition:background .15s,color .15s}
+  .prog-reset:hover{background:var(--surface-2);color:var(--ink)}
+
+  /* check de aprobación en la tarjeta */
+  .chk{position:absolute;top:6px;right:6px;width:19px;height:19px;border-radius:50%;
+    border:2px solid var(--line);background:var(--surface);cursor:pointer;z-index:4;
+    display:flex;align-items:center;justify-content:center;padding:0;
+    transition:border-color .15s,background .15s,transform .12s}
+  .chk::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;
+    transform:rotate(-45deg) translate(0,-1px);opacity:0;transition:opacity .12s}
+  .chk:hover{border-color:#16a34a;transform:scale(1.12)}
+  .card .name{padding-right:18px}
+
+  /* estados */
+  .card.done{background:#f0fbf3;border-color:#bbe8c8}
+  .card.done .chk{background:#16a34a;border-color:#16a34a}
+  .card.done .chk::after{opacity:1}
+  .card.done .name{color:#15693a}
+  .card.avail{background:#e8f1ff;box-shadow:0 0 0 2px var(--c) inset, var(--shadow)}
+  .card.avail::after{content:"cursable";position:absolute;bottom:5px;right:8px;
+    font-size:8.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c);opacity:.9}
+  .card.avail .cr{visibility:hidden}
+  body.show-locked .card.locked{opacity:.42;filter:saturate(.5)}
+  .dw-aprob{margin-top:16px;width:100%;appearance:none;cursor:pointer;font-family:inherit;
+    font-size:13.5px;font-weight:700;padding:11px;border-radius:9px;border:1.5px solid var(--c);
+    background:var(--surface);color:var(--c);transition:background .15s,color .15s}
+  .dw-aprob:hover{background:var(--t)}
+  .dw-aprob.is-done{background:#16a34a;border-color:#16a34a;color:#fff}
+  .dw-aprob.is-done:hover{background:#15803d}
+</style>
+<link rel="stylesheet" href="../../shared/tokens.css">
+<link rel="stylesheet" href="../../shared/suite-bar.css">
+</head>
+<body>
+<script>window.SUITE_APP_DEPTH = 2;</script>
+<script src="../../shared/suite-config.js"></script>
+<script src="../../shared/auth.js"></script>
+<script>SuiteAuth.requireLogin({modulo: "malla"});</script>
+<script src="../../shared/suite-bar.js" data-app="Malla curricular"></script>
+  <header class="top">
+    <div class="top-inner">
+      <div class="eyebrow">
+        <span>Universidad Andrés Bello · Facultad de Ingeniería</span>
+        <span class="dun">Plan 11300</span>
+      </div>
+      <h1>Ingeniería Civil</h1>
+      <div class="grado">Plan de estudios · Régimen semestral</div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-inner">
+      <div class="prog-stats">
+        <div class="prog-stat"><b id="prog-aprob">0</b><span id="prog-aprob-l">/ 55 asignaturas</span></div>
+        <div class="prog-stat"><b id="prog-cred">0</b><span>/ 699 créditos UNAB</span></div>
+      </div>
+      <div class="prog-bar" role="progressbar" aria-label="Avance de carrera">
+        <div class="prog-fill" id="prog-fill"></div>
+        <span class="prog-pct" id="prog-pct">0%</span>
+      </div>
+      <button class="prog-reset" id="prog-reset" title="Desmarcar todas">↺ Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="legend-wrap">
+    <div class="legend" id="legend">
+      <span class="lbl">Áreas</span>
+    </div>
+  </div>
+
+  <div class="board-scroll">
+    <div class="board" id="board"></div>
+  </div>
+
+  <footer class="foot" id="foot"></footer>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dw-name" aria-hidden="true">
+    <div class="drawer-head">
+      <div class="bar" id="dw-bar"></div>
+      <button class="closeb" id="dw-close" aria-label="Cerrar detalle">&#10005;</button>
+      <span class="tag" id="dw-tag"></span>
+      <div class="code mono" id="dw-code"></div>
+      <h2 id="dw-name"></h2>
+      <div class="facts">
+        <div>Semestre<b id="dw-sem"></b></div>
+        <div>Créditos<b id="dw-cr"></b></div>
+        <div>Área<b id="dw-area" style="font-size:14px"></b></div>
+      </div>
+      <button class="dw-aprob" id="dw-aprob"></button>
+    </div>
+    <div class="drawer-body">
+      <div class="sec" id="dw-prq-sec">
+        <p class="sec-title">Prerrequisitos</p>
+        <div id="dw-prq" class="chips-row"></div>
+      </div>
+      <div class="sec" id="dw-dep-sec">
+        <p class="sec-title">Habilita</p>
+        <div id="dw-dep" class="chips-row"></div>
+      </div>
+      <div class="sec" id="dw-cont-sec">
+        <p class="sec-title">Contenidos</p>
+        <p class="contenidos" id="dw-cont"></p>
+      </div>
+      <div class="sec" id="dw-ae-sec">
+        <p class="sec-title">Aprendizajes esperados</p>
+        <div id="dw-ae"></div>
+      </div>
+    </div>
+  </aside>
+
+<script>const CURSOS = [{"codigo": "FMMP012", "nombre": "Introducción a las Matemáticas", "semestre": 1, "creditos": 16, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 0, "eje": "matematicas"}, {"codigo": "CFIS023", "nombre": "Física General", "semestre": 1, "creditos": 13, "area": "ciencias", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 2, "eje": "ciencias"}, {"codigo": "QUIM150", "nombre": "Química General", "semestre": 1, "creditos": 16, "area": "ciencias", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 3, "eje": "ciencias"}, {"codigo": "ICIV121", "nombre": "Introducción a la Ingeniería Civil", "semestre": 1, "creditos": 8, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 11, "eje": "integracion"}, {"codigo": "CEGHC11", "nombre": "Habilidades Comunicativas", "semestre": 1, "creditos": 8, "area": "formaciongeneral", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 16, "eje": "formaciongeneral"}, {"codigo": "FMMP112", "nombre": "Cálculo Diferencial", "semestre": 2, "creditos": 16, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP012"], "lane": 0, "eje": "matematicas"}, {"codigo": "OOCC001", "nombre": "Representación Gráfica de la Ingeniería", "semestre": 2, "creditos": 8, "area": "construccion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV121"], "lane": 8, "eje": "construccion"}, {"codigo": "ICIV122", "nombre": "Modelamiento y Programación de Sistemas", "semestre": 2, "creditos": 15, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV121"], "lane": 9, "eje": "gestion"}, {"codigo": "ING119", "nombre": "Inglés I", "semestre": 2, "creditos": 12, "area": "ingles", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 15, "eje": "ingles"}, {"codigo": "CEGCT12", "nombre": "Razonamiento Científico y Tecnologías de Información", "semestre": 2, "creditos": 6, "area": "formaciongeneral", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 16, "eje": "formaciongeneral"}, {"codigo": "FMMP212", "nombre": "Cálculo Integral", "semestre": 3, "creditos": 16, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP112"], "lane": 0, "eje": "matematicas"}, {"codigo": "CFIS025", "nombre": "Introducción a la Mecánica", "semestre": 3, "creditos": 13, "area": "ciencias", "contenidos": "", "aprendizajes": [], "requisitos": ["CFIS023"], "lane": 2, "eje": "ciencias"}, {"codigo": "OOCC003", "nombre": "Topografía", "semestre": 3, "creditos": 12, "area": "construccion", "contenidos": "", "aprendizajes": [], "requisitos": ["OOCC001", "FMMP012"], "lane": 8, "eje": "construccion"}, {"codigo": "ING129", "nombre": "Inglés II", "semestre": 3, "creditos": 12, "area": "ingles", "contenidos": "", "aprendizajes": [], "requisitos": ["ING119"], "lane": 15, "eje": "ingles"}, {"codigo": "CEGPC13", "nombre": "Pensamiento Crítico", "semestre": 3, "creditos": 5, "area": "formaciongeneral", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 16, "eje": "formaciongeneral"}, {"codigo": "FMMP312", "nombre": "Sistemas y Ecuaciones Diferenciales Lineales", "semestre": 4, "creditos": 16, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP212"], "lane": 0, "eje": "matematicas"}, {"codigo": "FMSP176", "nombre": "Probabilidades y Estadística", "semestre": 4, "creditos": 16, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP212"], "lane": 1, "eje": "matematicas"}, {"codigo": "CFIS144", "nombre": "Electricidad y Magnetismo", "semestre": 4, "creditos": 12, "area": "ciencias", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP212", "CFIS025"], "lane": 2, "eje": "ciencias"}, {"codigo": "OOCC002", "nombre": "Materiales de Ingeniería", "semestre": 4, "creditos": 10, "area": "construccion", "contenidos": "", "aprendizajes": [], "requisitos": ["QUIM150"], "lane": 8, "eje": "construccion"}, {"codigo": "ING239", "nombre": "Inglés III", "semestre": 4, "creditos": 12, "area": "ingles", "contenidos": "", "aprendizajes": [], "requisitos": ["ING129"], "lane": 15, "eje": "ingles"}, {"codigo": "FMMP315", "nombre": "Matemáticas Avanzadas I", "semestre": 5, "creditos": 16, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP312"], "lane": 0, "eje": "matematicas"}, {"codigo": "CFIS086", "nombre": "Física Experimental", "semestre": 5, "creditos": 8, "area": "ciencias", "contenidos": "", "aprendizajes": [], "requisitos": ["CFIS144"], "lane": 2, "eje": "ciencias"}, {"codigo": "ICIV331", "nombre": "Estática", "semestre": 5, "creditos": 15, "area": "estructuras", "contenidos": "", "aprendizajes": [], "requisitos": ["CFIS025", "ICIV122"], "lane": 4, "eje": "estructuras"}, {"codigo": "OOCC004", "nombre": "Tecnología del Hormigón", "semestre": 5, "creditos": 10, "area": "construccion", "contenidos": "", "aprendizajes": [], "requisitos": ["OOCC002"], "lane": 8, "eje": "construccion"}, {"codigo": "ING249", "nombre": "Inglés IV", "semestre": 5, "creditos": 12, "area": "ingles", "contenidos": "", "aprendizajes": [], "requisitos": ["ING239"], "lane": 15, "eje": "ingles"}, {"codigo": "FMMP415", "nombre": "Matemáticas Avanzadas II", "semestre": 6, "creditos": 12, "area": "matematicas", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP315"], "lane": 0, "eje": "matematicas"}, {"codigo": "ICIV332", "nombre": "Mecánica de Sólidos", "semestre": 6, "creditos": 12, "area": "estructuras", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV331", "FMMP315"], "lane": 4, "eje": "estructuras"}, {"codigo": "ICIV462", "nombre": "Ingeniería de Construcción", "semestre": 6, "creditos": 11, "area": "construccion", "contenidos": "", "aprendizajes": [], "requisitos": ["OOCC003", "OOCC004"], "lane": 8, "eje": "construccion"}, {"codigo": "ICIV321", "nombre": "Economía", "semestre": 6, "creditos": 12, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["FMSP176"], "lane": 9, "eje": "gestion"}, {"codigo": "ICIV322", "nombre": "Investigación de Operaciones", "semestre": 6, "creditos": 12, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP312"], "lane": 10, "eje": "gestion"}, {"codigo": "ICIV431", "nombre": "Análisis Estructural", "semestre": 7, "creditos": 14, "area": "estructuras", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV332"], "lane": 4, "eje": "estructuras"}, {"codigo": "ICIV341", "nombre": "Mecánica de Suelos I", "semestre": 7, "creditos": 12, "area": "geotecnia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV332"], "lane": 6, "eje": "geotecnia"}, {"codigo": "ICIV351", "nombre": "Mecánica de Fluidos", "semestre": 7, "creditos": 14, "area": "geotecnia", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP315", "CFIS086"], "lane": 7, "eje": "geotecnia"}, {"codigo": "ICIV461", "nombre": "Gestión de Operaciones de Construcción", "semestre": 7, "creditos": 12, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV322", "ICIV462"], "lane": 9, "eje": "gestion"}, {"codigo": "ICIV471", "nombre": "Integrador I: Desafíos de la Ingeniería", "semestre": 7, "creditos": 8, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ING249", "CEGPC13", "ICIV331", "ICIV462", "CFIS086"], "lane": 11, "eje": "integracion"}, {"codigo": "ICIV432", "nombre": "Dinámica de Estructuras", "semestre": 8, "creditos": 12, "area": "estructuras", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV431", "FMMP415"], "lane": 4, "eje": "estructuras"}, {"codigo": "ICIV441", "nombre": "Mecánica de Suelos II", "semestre": 8, "creditos": 13, "area": "geotecnia", "contenidos": "", "aprendizajes": [], "requisitos": ["FMMP415", "ICIV341"], "lane": 6, "eje": "geotecnia"}, {"codigo": "ICIV451", "nombre": "Ingeniería Hidráulica", "semestre": 8, "creditos": 11, "area": "geotecnia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV351", "FMMP415"], "lane": 7, "eje": "geotecnia"}, {"codigo": "ICIV463", "nombre": "Planificación y Control de Proyectos", "semestre": 8, "creditos": 12, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV461"], "lane": 9, "eje": "gestion"}, {"codigo": "ICIV464", "nombre": "Costos y Presupuestos de Obras", "semestre": 8, "creditos": 8, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV321", "ICIV461"], "lane": 10, "eje": "gestion"}, {"codigo": "ICIV433", "nombre": "Hormigón Armado", "semestre": 9, "creditos": 14, "area": "estructuras", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV432", "OOCC004"], "lane": 4, "eje": "estructuras"}, {"codigo": "ICIV532", "nombre": "Diseño de Elementos de Acero", "semestre": 9, "creditos": 12, "area": "estructuras", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV432"], "lane": 5, "eje": "estructuras"}, {"codigo": "ICIV442", "nombre": "Fundaciones", "semestre": 9, "creditos": 10, "area": "geotecnia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV441"], "lane": 6, "eje": "geotecnia"}, {"codigo": "ICIV452", "nombre": "Hidrología", "semestre": 9, "creditos": 11, "area": "geotecnia", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV451"], "lane": 7, "eje": "geotecnia"}, {"codigo": "OOCC005", "nombre": "Desarrollo de Proyectos Inmobiliarios", "semestre": 9, "creditos": 13, "area": "gestion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV464"], "lane": 9, "eje": "gestion"}, {"codigo": "ICIV472", "nombre": "Práctica Pre-profesional I", "semestre": 9, "creditos": 31, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV432", "ICIV463", "ICIV441", "ICIV451", "ICIV471"], "lane": 11, "eje": "integracion"}, {"codigo": "ICIV531", "nombre": "Ingeniería Sismica", "semestre": 10, "creditos": 14, "area": "estructuras", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV442", "ICIV532", "ICIV433"], "lane": 4, "eje": "estructuras"}, {"codigo": "ICIV561", "nombre": "Construcción Sustentable", "semestre": 10, "creditos": 8, "area": "construccion", "contenidos": "", "aprendizajes": [], "requisitos": ["OOCC005"], "lane": 8, "eje": "construccion"}, {"codigo": "ICIV521", "nombre": "Electivo de Formación Profesional", "semestre": 10, "creditos": 8, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 11, "eje": "integracion"}, {"codigo": "ICIV571", "nombre": "Taller de Título I", "semestre": 10, "creditos": 15, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV442", "ICIV472", "OOCC005", "ICIV532", "ICIV433", "ICIV452", "ICIV463"], "lane": 12, "eje": "integracion"}, {"codigo": "CEGRS14", "nombre": "Responsabilidad Social", "semestre": 10, "creditos": 6, "area": "formaciongeneral", "contenidos": "", "aprendizajes": [], "requisitos": [], "lane": 16, "eje": "formaciongeneral"}, {"codigo": "ICIV522", "nombre": "Innovación en Ingeniería Civil", "semestre": 11, "creditos": 2, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV472"], "lane": 11, "eje": "integracion"}, {"codigo": "ICIV572", "nombre": "Práctica Pre-profesional II", "semestre": 11, "creditos": 31, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV561", "ICIV472", "ICIV531", "ICIV521", "CEGRS14"], "lane": 12, "eje": "integracion"}, {"codigo": "ICIV573", "nombre": "Integrador II: Taller de Diseño/construcción", "semestre": 11, "creditos": 16, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV452", "ICIV472", "ICIV531", "ICIV561"], "lane": 13, "eje": "integracion"}, {"codigo": "ICIV574", "nombre": "Taller de Título II", "semestre": 11, "creditos": 30, "area": "integracion", "contenidos": "", "aprendizajes": [], "requisitos": ["ICIV571", "ICIV521"], "lane": 14, "eje": "integracion"}];</script>
+<script>
+const AREAS = {
+  matematicas:     {label:"Matemáticas",                     short:"Matemáticas"},
+  ciencias:        {label:"Ciencias Básicas",                short:"Cs. Básicas"},
+  estructuras:     {label:"Análisis y Diseño Estructural",   short:"Estructuras"},
+  geotecnia:       {label:"Geotecnia e Hidráulica",          short:"Geotec./Hidr."},
+  construccion:    {label:"Construcción y Materiales",       short:"Construcción"},
+  gestion:         {label:"Gestión, Operaciones y Economía", short:"Gestión"},
+  integracion:     {label:"Integración y Título",            short:"Integración"},
+  ingles:          {label:"Inglés",                          short:"Inglés"},
+  formaciongeneral:{label:"Formación General",               short:"F. General"},
+};
+const cvar = a => ({c:`var(--a-${a})`, t:`var(--t-${a})`});
+
+// ----- prereq graph -----
+const byCode = Object.fromEntries(CURSOS.map(c=>[c.codigo,c]));
+const PRE = Object.fromEntries(CURSOS.map(c=>[c.codigo,(c.requisitos||[]).filter(p=>byCode[p])]));
+const DEP = Object.fromEntries(CURSOS.map(c=>[c.codigo,[]]));
+CURSOS.forEach(c=>PRE[c.codigo].forEach(p=>DEP[p].push(c.codigo)));
+function ancestors(code){const seen=new Set(),st=[...PRE[code]];while(st.length){const x=st.pop();if(seen.has(x))continue;seen.add(x);PRE[x].forEach(y=>st.push(y));}return seen;}
+const cardEl={}; let drawerOpen=false; let currentCode=null;
+
+// ----- stats -----
+const totCr = CURSOS.reduce((s,c)=>s+c.creditos,0);
+const sems = [...new Set(CURSOS.map(c=>c.semestre))].sort((a,b)=>a-b);
+document.getElementById('stats').innerHTML = [
+  [sems.length,'Semestres'],[CURSOS.length,'Asignaturas'],[totCr,'Créditos UNAB'],[sems.length/2,'Años']
+].map(([b,s])=>`<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('');
+
+// ----- legend -----
+const legend = document.getElementById('legend');
+let activeArea = null;
+Object.entries(AREAS).forEach(([k,v])=>{
+  const n = CURSOS.filter(c=>c.area===k).length;
+  const b = document.createElement('button');
+  b.className='chip'; b.setAttribute('aria-pressed','false'); b.dataset.area=k;
+  b.innerHTML = `<span class="dot" style="background:var(--a-${k})"></span>${v.label} <span style="color:var(--ink-faint);font-weight:600">${n}</span>`;
+  b.onclick=()=>toggleArea(k);
+  legend.appendChild(b);
+});
+const reset = document.createElement('button');
+reset.className='chip reset'; reset.textContent='Mostrar todas';
+reset.style.display='none'; reset.onclick=()=>toggleArea(null);
+legend.appendChild(reset);
+
+const arrToggle=document.createElement('button');
+arrToggle.className='chip'; arrToggle.style.marginLeft='auto';
+arrToggle.setAttribute('aria-pressed','true');
+arrToggle.innerHTML='&#8627; Prerrequisitos';
+arrToggle.onclick=()=>{const on=document.body.classList.toggle('no-arrows');
+  arrToggle.setAttribute('aria-pressed',String(!on));};
+legend.appendChild(arrToggle);
+
+function toggleArea(k){
+  activeArea = (k===activeArea)?null:k;
+  document.body.classList.toggle('filtering', !!activeArea);
+  reset.style.display = activeArea?'inline-flex':'none';
+  legend.querySelectorAll('.chip[data-area]').forEach(ch=>{
+    ch.setAttribute('aria-pressed', String(ch.dataset.area===activeArea));
+  });
+  document.querySelectorAll('.card').forEach(card=>{
+    card.classList.toggle('dim', !!activeArea && card.dataset.area!==activeArea);
+  });
+}
+
+// ----- board (lane grid) -----
+const board = document.getElementById('board');
+const laneArea=[]; CURSOS.forEach(c=>{laneArea[c.lane]=c.area;});
+const nLanes=laneArea.length;
+board.style.setProperty('grid-template-rows','auto');
+// semester header cells (row 1)
+sems.forEach(s=>{
+  const cr=CURSOS.filter(c=>c.semestre===s).reduce((a,c)=>a+c.creditos,0);
+  const h=document.createElement('div'); h.className='col-head';
+  h.style.gridColumn=String(s+1); h.style.gridRow='1';
+  h.innerHTML=`<span class="n"><small>Sem</small>${roman(s)}</span><span class="cr">${cr} cr</span>`;
+  board.appendChild(h);
+});
+// area bands (tint + rotated label) over their lane rows
+const bands=[];
+laneArea.forEach((a,i)=>{
+  const last=bands[bands.length-1];
+  if(last && last.area===a && last.end===i-1) last.end=i;
+  else bands.push({area:a,start:i,end:i});
+});
+bands.forEach(b=>{
+  const r1=b.start+2, r2=b.end+3;
+  const tint=document.createElement('div'); tint.className='band';
+  tint.style.gridRow=`${r1} / ${r2}`; tint.style.setProperty('--bt',`var(--t-${b.area})`);
+  board.appendChild(tint);
+  const lab=document.createElement('div'); lab.className='band-label';
+  lab.style.gridRow=`${r1} / ${r2}`; lab.style.setProperty('--bc',`var(--a-${b.area})`);
+  lab.textContent=AREAS[b.area].short;
+  board.appendChild(lab);
+});
+// course cards positioned by lane & semester
+CURSOS.forEach(c=>{
+  const card=makeCard(c);
+  card.style.gridColumn=String(c.semestre+1);
+  card.style.gridRow=String(c.lane+2);
+  board.appendChild(card);
+});
+
+function makeCard(c){
+  const {c:cc,t:tt} = cvar(c.area);
+  const b = document.createElement('button');
+  b.className='card'; b.dataset.area=c.area; b.dataset.code=c.codigo;
+  b.style.setProperty('--c',cc); b.style.setProperty('--t',tt);
+  b.setAttribute('aria-label',`${c.nombre}, ${c.codigo}, ${c.creditos} créditos`);
+  b.title=c.nombre;
+  b.innerHTML = `
+    <span class="chk" role="checkbox" aria-checked="false" aria-label="Marcar ${esc(c.codigo)} como aprobada"></span>
+    <div class="name">${esc(c.nombre)}</div>
+    <div class="meta"><span class="code">${c.codigo}</span><span class="cr">${c.creditos} cr</span></div>`;
+  b.onclick=()=>openDrawer(c,b);
+  b.querySelector('.chk').addEventListener('click',e=>{e.stopPropagation();toggleAprobada(c.codigo);});
+  b.addEventListener('pointerenter',()=>{if(!drawerOpen)highlightChain(c.codigo);});
+  b.addEventListener('pointerleave',()=>{if(!drawerOpen)clearHighlight();});
+  b.addEventListener('focus',()=>{if(!drawerOpen)highlightChain(c.codigo);});
+  b.addEventListener('blur',()=>{if(!drawerOpen)clearHighlight();});
+  cardEl[c.codigo]=b;
+  return b;
+}
+
+// ----- arrows -----
+const SVGNS='http://www.w3.org/2000/svg';
+const svg=document.createElementNS(SVGNS,'svg'); svg.setAttribute('class','arrows');
+board.appendChild(svg);
+const EDGES=[];
+CURSOS.forEach(c=>PRE[c.codigo].forEach(p=>{
+  const path=document.createElementNS(SVGNS,'path'); path.setAttribute('class','edge');
+  const head=document.createElementNS(SVGNS,'polygon'); head.setAttribute('class','head');
+  svg.appendChild(path); svg.appendChild(head);
+  EDGES.push({from:p,to:c.codigo,path,head});
+}));
+function layoutArrows(){
+  const br=board.getBoundingClientRect();
+  const W=board.offsetWidth,H=board.offsetHeight;
+  svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  EDGES.forEach(e=>{
+    const a=cardEl[e.from],b=cardEl[e.to]; if(!a||!b)return;
+    const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();
+    const sx=ra.right-br.left, sy=ra.top-br.top+ra.height/2;
+    const ex=rb.left-br.left,  ey=rb.top-br.top+rb.height/2;
+    const dx=Math.max(26,(ex-sx)*0.45);
+    e.path.setAttribute('d',`M ${sx} ${sy} C ${sx+dx} ${sy}, ${ex-dx} ${ey}, ${ex-11} ${ey}`);
+    const hx=ex-11;
+    e.head.setAttribute('points',`${hx-10},${ey-7.5} ${hx+2},${ey} ${hx-10},${ey+7.5}`);
+  });
+}
+window.addEventListener('resize',layoutArrows);
+if(window.ResizeObserver) new ResizeObserver(layoutArrows).observe(board);
+requestAnimationFrame(()=>requestAnimationFrame(layoutArrows));
+setTimeout(layoutArrows,350);
+
+function highlightChain(code){
+  const chain=new Set([code,...ancestors(code)]);
+  const deps=new Set(DEP[code]);
+  const col=`var(--a-${byCode[code].area})`;
+  document.body.classList.add('focusing');
+  Object.entries(cardEl).forEach(([cd,el])=>{
+    el.classList.toggle('chain', chain.has(cd)&&cd!==code);
+    el.classList.toggle('root', cd===code);
+    el.classList.toggle('dep', deps.has(cd));
+  });
+  EDGES.forEach(e=>{
+    const on=(chain.has(e.from)&&chain.has(e.to))||(e.from===code&&deps.has(e.to));
+    e.path.classList.toggle('on',on); e.head.classList.toggle('on',on);
+    e.path.style.stroke=on?col:''; e.head.style.fill=on?col:'';
+  });
+}
+function clearHighlight(){
+  document.body.classList.remove('focusing');
+  Object.values(cardEl).forEach(el=>el.classList.remove('chain','root','dep'));
+  EDGES.forEach(e=>{e.path.classList.remove('on');e.head.classList.remove('on');e.path.style.stroke='';e.head.style.fill='';});
+}
+function chipHTML(code){const c=byCode[code];
+  return `<button class="prq-chip" data-code="${code}" style="--c:var(--a-${c.area})">`+
+    `<span class="pc-dot" style="background:var(--a-${c.area})"></span>`+
+    `<span><span class="pc-code">${code}</span> <span class="pc-name">${esc(c.nombre)}</span> <span class="pc-sem">· S${c.semestre}</span></span></button>`;
+}
+
+// ----- drawer -----
+const drawer=document.getElementById('drawer'),backdrop=document.getElementById('backdrop');
+let lastFocus=null;
+function openDrawer(c,trigger){
+  lastFocus=trigger; drawerOpen=true; currentCode=c.codigo; clearHighlight();
+  const {c:cc,t:tt}=cvar(c.area);
+  drawer.style.setProperty('--c',cc); drawer.style.setProperty('--t',tt);
+  document.getElementById('dw-bar').style.background=cc;
+  document.getElementById('dw-tag').textContent=AREAS[c.area].label;
+  document.getElementById('dw-code').textContent=c.codigo;
+  document.getElementById('dw-name').textContent=c.nombre;
+  document.getElementById('dw-sem').textContent=roman(c.semestre);
+  document.getElementById('dw-cr').textContent=c.creditos;
+  document.getElementById('dw-area').textContent=AREAS[c.area].short;
+  const prqBox=document.getElementById('dw-prq'), depBox=document.getElementById('dw-dep');
+  prqBox.innerHTML = PRE[c.codigo].length
+    ? PRE[c.codigo].map(chipHTML).join('')
+    : '<p class="empty">Sin prerrequisitos · ingreso directo.</p>';
+  depBox.innerHTML = DEP[c.codigo].length
+    ? DEP[c.codigo].map(chipHTML).join('')
+    : '<p class="empty">No es prerrequisito de otra asignatura.</p>';
+  drawer.querySelectorAll('.prq-chip').forEach(ch=>ch.onclick=()=>{
+    const code=ch.dataset.code; openDrawer(byCode[code], cardEl[code]);
+    document.getElementById('drawer').scrollTop=0;
+  });
+  const hasCont=!!(c.contenidos&&c.contenidos.trim());
+  document.getElementById('dw-cont-sec').style.display=hasCont?'':'none';
+  document.getElementById('dw-cont').textContent=c.contenidos||'';
+  updateDrawerAprob(c.codigo);
+  const aeBox=document.getElementById('dw-ae');
+  const hasAE=!!(c.aprendizajes && c.aprendizajes.length);
+  document.getElementById('dw-ae-sec').style.display=hasAE?'':'none';
+  aeBox.innerHTML=hasAE?'<ul class="ae">'+c.aprendizajes.map(a=>`<li>${esc(a)}</li>`).join('')+'</ul>':'';
+  backdrop.classList.add('show'); drawer.classList.add('show');
+  drawer.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  document.getElementById('dw-close').focus();
+}
+function closeDrawer(){
+  backdrop.classList.remove('show'); drawer.classList.remove('show');
+  drawer.setAttribute('aria-hidden','true'); document.body.style.overflow='';
+  drawerOpen=false; clearHighlight();
+  if(lastFocus) lastFocus.focus();
+}
+document.getElementById('dw-close').onclick=closeDrawer;
+backdrop.onclick=closeDrawer;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('show'))closeDrawer();});
+
+// ----- footer -----
+document.getElementById('foot').innerHTML =
+  `<span><b style="color:var(--ink-soft)">${CURSOS.length}</b> asignaturas</span><span class="sep">·</span>`+
+  `<span><b style="color:var(--ink-soft)">${totCr}</b> créditos UNAB</span><span class="sep">·</span>`+
+  `<span>11 semestres · 5,5 años</span><span class="sep">·</span>`+
+  `<span>Fuente: Malla UNAB 11300 · Catálogo 2017</span><span class="sep">·</span>`+
+  `<span>Pasa el cursor por una asignatura para ver su cadena de prerrequisitos · clic para el detalle</span>`;
+
+// ----- tracker de aprobación -----
+let STORE_KEY='malla_aprob_UNAB11300_ICIV';
+// Suite UNAB: separar el progreso por usuario logueado, para que no se
+// mezcle si varias personas usan el mismo navegador (antes era una sola
+// clave fija por carrera para cualquier visitante).
+try{const _u=window.SuiteAuth&&SuiteAuth.getUser&&SuiteAuth.getUser();if(_u&&_u.nombre) STORE_KEY+='_'+encodeURIComponent(_u.nombre);}catch(_e){}
+let aprobadas=new Set();
+try{ const s=localStorage.getItem(STORE_KEY); if(s) aprobadas=new Set(JSON.parse(s)); }catch(e){}
+function saveAprob(){ try{ localStorage.setItem(STORE_KEY,JSON.stringify([...aprobadas])); }catch(e){} }
+function toggleAprobada(code){
+  if(aprobadas.has(code)) aprobadas.delete(code); else aprobadas.add(code);
+  saveAprob(); refreshStates();
+}
+function isAvailable(code){
+  if(aprobadas.has(code)) return false;
+  return PRE[code].every(p=>aprobadas.has(p));
+}
+function refreshStates(){
+  CURSOS.forEach(c=>{
+    const el=cardEl[c.codigo]; if(!el) return;
+    const done=aprobadas.has(c.codigo), avail=!done && isAvailable(c.codigo);
+    el.classList.toggle('done',done);
+    el.classList.toggle('avail',avail);
+    el.classList.toggle('locked',!done && !avail);
+    const chk=el.querySelector('.chk'); if(chk) chk.setAttribute('aria-checked',String(done));
+  });
+  updateProgress();
+  if(drawerOpen && currentCode) updateDrawerAprob(currentCode);
+}
+function updateProgress(){
+  const nA=aprobadas.size;
+  const crA=CURSOS.filter(c=>aprobadas.has(c.codigo)).reduce((a,c)=>a+c.creditos,0);
+  const pct=totCr?Math.round(crA/totCr*100):0;
+  document.getElementById('prog-aprob').textContent=nA;
+  document.getElementById('prog-aprob-l').textContent=`/ ${CURSOS.length} asignaturas`;
+  document.getElementById('prog-cred').textContent=crA;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+function updateDrawerAprob(code){
+  const btn=document.getElementById('dw-aprob');
+  const done=aprobadas.has(code);
+  btn.classList.toggle('is-done',done);
+  btn.textContent=done?'✓ Aprobada — quitar':'Marcar como aprobada';
+  btn.onclick=()=>toggleAprobada(code);
+}
+document.getElementById('prog-reset').onclick=()=>{
+  if(!aprobadas.size) return;
+  if(confirm('¿Desmarcar todas las asignaturas aprobadas?')){ aprobadas.clear(); saveAprob(); refreshStates(); }
+};
+refreshStates();
+
+// ----- utils -----
+function roman(n){return ["","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"][n]||n;}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+</script>
+</body>
+</html>

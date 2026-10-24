@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mallas interactivas · Facultad de Ingeniería · UNAB</title>
+<style>
+  :root{
+    --bg:#eaeef3; --surface:#ffffff; --surface-2:#f6f8fb;
+    --ink:#0d1a2c; --ink-soft:#566276; --ink-faint:#8794a6; --line:#dde3ec;
+    --navy:#102338; --navy-2:#1d3e63; --red:#d8232a;
+    --shadow:0 1px 2px rgba(16,35,56,.06),0 6px 18px rgba(16,35,56,.07);
+    --shadow-lg:0 14px 44px rgba(16,35,56,.20);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--bg);
+    line-height:1.45; -webkit-font-smoothing:antialiased;
+    min-height:100vh; display:flex; flex-direction:column;
+  }
+  .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* ---------- Header ---------- */
+  header.top{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%);
+    color:#fff; padding:20px clamp(16px,4vw,40px) 22px;
+    border-bottom:3px solid var(--red);
+  }
+  .top-inner{max-width:1180px;margin:0 auto}
+  .eyebrow{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:#9db6d4;font-weight:600
+  }
+  h1{
+    font-size:clamp(22px,3.4vw,34px);font-weight:700;letter-spacing:-.025em;
+    margin:6px 0 4px;line-height:1.06
+  }
+  .lede{color:#bcd0e8;font-size:clamp(13px,1.6vw,15px);font-weight:400;max-width:52ch}
+  .stats{display:flex;flex-wrap:wrap;gap:0;margin:16px 0 0}
+  .stat{
+    padding:4px 20px 6px 0;margin-right:20px;
+    border-right:1px solid rgba(255,255,255,.14)
+  }
+  .stat:last-child{border-right:none}
+  .stat b{display:block;font-size:21px;font-weight:700;letter-spacing:-.01em}
+  .stat span{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#9db6d4}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar-wrap{
+    position:sticky;top:0;z-index:20;background:rgba(234,238,243,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)
+  }
+  .toolbar{
+    max-width:1180px;margin:0 auto;padding:10px clamp(16px,4vw,40px);
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap
+  }
+  .search{
+    flex:1 1 240px;display:flex;align-items:center;gap:9px;
+    background:var(--surface);border:1px solid var(--line);border-radius:10px;
+    padding:8px 13px;box-shadow:var(--shadow);transition:border-color .15s ease,box-shadow .15s ease
+  }
+  .search:focus-within{border-color:var(--navy-2);box-shadow:0 0 0 3px rgba(29,62,99,.12)}
+  .search svg{flex:none;color:var(--ink-faint)}
+  .search input{
+    border:0;outline:0;background:transparent;width:100%;font-size:14px;color:var(--ink);
+    font-family:inherit
+  }
+  .search input::placeholder{color:var(--ink-faint)}
+  .count{font-size:12px;color:var(--ink-soft);font-weight:600;white-space:nowrap;letter-spacing:.02em}
+
+  /* ---------- Grid of careers ---------- */
+  main{flex:1}
+  .grid{
+    max-width:1180px;margin:0 auto;padding:24px clamp(16px,4vw,40px) 36px;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:18px
+  }
+  @media(max-width:760px){ .grid{grid-template-columns:1fr;gap:14px} }
+
+  .card{
+    position:relative;display:grid;grid-template-columns:14px 1fr;
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    text-decoration:none;color:inherit;overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+  }
+  .card:hover,.card:focus-visible{
+    transform:translateY(-3px);box-shadow:var(--shadow-lg);
+    border-color:transparent;outline:none
+  }
+  .card:focus-visible{box-shadow:var(--shadow-lg),0 0 0 3px var(--navy-2)}
+
+  /* color spine: a literal preview of the program's subject areas */
+  .spine{display:flex;flex-direction:column}
+  .spine i{display:block;flex:1 1 0}
+  .card:hover .spine i,.card:focus-visible .spine i{animation:breathe 2.6s ease-in-out infinite}
+  @keyframes breathe{0%,100%{opacity:1}50%{opacity:.62}}
+
+  .body{padding:18px 20px 16px}
+  .kicker{
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:9px
+  }
+  .badge{
+    font-size:11px;font-weight:700;letter-spacing:.04em;
+    padding:3px 9px;border-radius:6px;background:var(--surface-2);
+    border:1px solid var(--line);color:var(--ink-soft)
+  }
+  .regimen{font-size:11px;color:var(--ink-faint);letter-spacing:.03em}
+  .card h2{
+    font-size:clamp(17px,2.1vw,20px);font-weight:700;letter-spacing:-.02em;
+    line-height:1.14;color:var(--ink)
+  }
+  .grado{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
+
+  .facts{display:flex;gap:0;margin:15px 0 4px;flex-wrap:wrap}
+  .fact{padding:0 16px 0 0;margin-right:16px;border-right:1px solid var(--line)}
+  .fact:last-child{border-right:none;margin-right:0;padding-right:0}
+  .fact b{display:block;font-size:17px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+  .fact span{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint)}
+
+  .areas{margin:15px 0 0;font-size:11.5px;color:var(--ink-faint);display:flex;align-items:center;gap:7px}
+  .dots{display:inline-flex;gap:3px}
+  .dots i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+  .go{
+    margin-top:16px;display:inline-flex;align-items:center;gap:7px;
+    font-size:13px;font-weight:700;color:var(--navy-2);letter-spacing:.01em
+  }
+  .go svg{transition:transform .16s ease}
+  .card:hover .go svg,.card:focus-visible .go svg{transform:translateX(4px)}
+
+  .empty{
+    grid-column:1/-1;text-align:center;padding:48px 20px;color:var(--ink-soft);
+    font-size:14px
+  }
+  .empty b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+
+  footer{
+    border-top:1px solid var(--line);background:var(--surface);
+    padding:16px clamp(16px,4vw,40px);
+  }
+  .foot-inner{
+    max-width:1180px;margin:0 auto;display:flex;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-faint);letter-spacing:.02em
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+
+  /* ---------- Banner de inscripción (cinta animada) ---------- */
+  .aviso-wrap{
+    background:linear-gradient(100deg,var(--red) 0%,#b81c22 100%);
+    position:relative; overflow:hidden;
+  }
+  .aviso{
+    max-width:1180px;margin:0 auto;padding:11px 0;
+    display:flex;align-items:center;gap:14px;
+  }
+  .aviso-icon{
+    flex:none;width:30px;height:30px;border-radius:8px;margin-left:clamp(16px,4vw,40px);
+    background:rgba(255,255,255,.16);color:#fff;
+    display:flex;align-items:center;justify-content:center
+  }
+  .marquee{
+    flex:1;overflow:hidden;position:relative;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);
+  }
+  .marquee-track{
+    display:flex;align-items:center;gap:56px;white-space:nowrap;width:max-content;
+    animation:marquee 22s linear infinite;
+  }
+  .aviso-wrap:hover .marquee-track{animation-play-state:paused}
+  .marquee-item{display:inline-flex;align-items:center;gap:10px;font-size:13px;color:#fdeaea}
+  .marquee-item b{color:#fff;font-weight:700}
+  .marquee-item .aviso-fecha{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:12.5px;font-weight:700;color:var(--red);
+    background:#fff;padding:4px 11px;border-radius:20px;white-space:nowrap
+  }
+  @keyframes marquee{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+  }
+  .aviso-close{
+    flex:none;width:26px;height:26px;border-radius:50%;border:0;cursor:pointer;
+    background:rgba(255,255,255,.14);color:#fff;margin-right:clamp(16px,4vw,40px);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s ease
+  }
+  .aviso-close:hover{background:rgba(255,255,255,.26)}
+  .aviso-wrap[data-hidden="true"]{display:none}
+  @media(prefers-reduced-motion:reduce){
+    .marquee-track{animation:none;gap:0}
+  }
+
+  /* ---------- Visitor counter (header, top-right) ---------- */
+  header.top{position:relative}
+  .visitas{
+    position:absolute;top:16px;right:clamp(16px,4vw,40px);z-index:2;
+    display:inline-flex;align-items:center;gap:7px;
+    background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.20);
+    border-radius:20px;padding:5px 12px 5px 10px;
+    color:#cfe0f2;font-size:11.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap;
+    backdrop-filter:blur(4px)
+  }
+  .visitas svg{flex:none;color:#9db6d4}
+  .visitas b{color:#fff;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:0}
+  .visitas .vlbl{color:#9db6d4;text-transform:uppercase;letter-spacing:.07em;font-size:10px}
+  .visitas[data-hidden="true"]{display:none}
+  @media(max-width:560px){
+    .visitas{position:static;margin:0 0 12px;align-self:flex-start}
+    header.top .top-inner{display:block}
+  }
+</style>
+<link rel="stylesheet" href="../../shared/tokens.css">
+<link rel="stylesheet" href="../../shared/suite-bar.css">
+</head>
+<body>
+<script>window.SUITE_APP_DEPTH = 2;</script>
+<script src="../../shared/suite-config.js"></script>
+<script src="../../shared/auth.js"></script>
+<script>SuiteAuth.requireLogin({modulo: "malla"});</script>
+<script src="../../shared/suite-bar.js" data-app="Malla curricular"></script>
+
+<header class="top">
+  <span class="visitas" id="visitas" title="Visitas totales a la página">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+    <b id="vcount">…</b><span class="vlbl">visitas</span>
+  </span>
+  <div class="top-inner">
+    <div class="eyebrow">Universidad Andrés Bello · Facultad de Ingeniería</div>
+    <h1>Mallas interactivas</h1>
+    <p class="lede">Elige tu carrera para abrir su malla: explora prerrequisitos, áreas de formación y marca tu avance.</p>
+    <div class="stats">
+      <div class="stat"><b>10</b><span>Carreras</span></div>
+      <div class="stat"><b>486</b><span>Asignaturas</span></div>
+      <div class="stat"><b>10</b><span>Planes vigentes</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="aviso-wrap" id="aviso">
+  <div class="aviso">
+    <div class="aviso-icon" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track">
+        <span class="marquee-item">
+          <b>Inscripción de asignaturas vía web</b>, alumnos antiguos y nuevos (por prelación académica).
+          <span class="aviso-fecha">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            Ver fechas en el calendario académico
+          </span>
+        </span>
+        <span class="marquee-item">
+          <b>Inscripción de asignaturas vía web</b>, alumnos antiguos y nuevos (por prelación académica).
+          <span class="aviso-fecha">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            Ver fechas en el calendario académico
+          </span>
+        </span>
+      </div>
+    </div>
+    <button class="aviso-close" id="avisoClose" aria-label="Cerrar aviso" title="Cerrar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="toolbar-wrap">
+  <div class="toolbar">
+    <label class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+      <input id="q" type="search" placeholder="Buscar carrera…" autocomplete="off" aria-label="Buscar carrera">
+    </label>
+    <span class="count" id="count">10 carreras</span>
+  </div>
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <span>Mallas interactivas · UNAB · uso referencial para orientación académica</span>
+    <span>Los planes de estudio oficiales prevalecen sobre esta herramienta</span>
+  </div>
+</footer>
+
+<script>
+const CAREERS = [
+  {
+    name:"Ingeniería en Automatización y Robótica",
+    grado:"Ingeniero(a) en Automatización y Robótica",
+    href:"malla_automatizacion_robotica.html",
+    badge:"DUN 14-2022", regimen:"Semestral",
+    cursos:43, periodos:"8 sem", periodoLbl:"Semestres", creditos:240, credLbl:"Créditos SCT",
+    keywords:"automatizacion robotica control mecatronica",
+    areas:[
+      ["#2563eb","Matemáticas"],["#0891b2","Ciencias Físicas"],
+      ["#16a34a","Control y Automatización"],["#dc2626","Sistemas Electrónicos y de Potencia"],
+      ["#ea580c","Mecatrónica Industrial"],["#7c3aed","Transformación Digital y Datos"],
+      ["#db2777","Innovación y Emprendimiento"],["#92400e","Integración y Título"],
+      ["#ca8a04","Inglés"],["#475569","Formación General"]
+    ]
+  },
+  {
+    name:"Ingeniería Civil Eléctrica",
+    grado:"Ingeniero(a) Civil Eléctrico(a)",
+    href:"malla_ingenieria_civil_electrica.html",
+    badge:"DUN 84-2022", regimen:"Semestral",
+    cursos:49, periodos:"10 sem", periodoLbl:"Semestres", creditos:300, credLbl:"Créditos SCT",
+    keywords:"electrica energia potencia electronica civil",
+    areas:[
+      ["#2563eb","Matemáticas"],["#0891b2","Ciencias Básicas"],
+      ["#dc2626","Electrónica y Señales"],["#ea580c","Sistemas Eléctricos y Energía"],
+      ["#16a34a","Control y Automatización"],["#7c3aed","Computación y Datos"],
+      ["#db2777","Innovación y Emprendimiento"],["#92400e","Integración y Título"],
+      ["#ca8a04","Inglés"],["#475569","Formación General"]
+    ]
+  },
+  {
+    name:"Ingeniería Civil Informática",
+    grado:"Ingeniero(a) Civil Informático(a)",
+    href:"malla_ingenieria_civil_informatica.html",
+    badge:"Plan 12210", regimen:"Semestral · 5 años",
+    cursos:48, periodos:"10 sem", periodoLbl:"Semestres", creditos:669, credLbl:"Créditos UNAB",
+    keywords:"informatica software computacion datos civil",
+    areas:[
+      ["#2563eb","Matemáticas"],["#0891b2","Ciencias Básicas"],
+      ["#16a34a","Ciencias de la Computación"],["#dc2626","Programación e Ing. de Software"],
+      ["#7c3aed","Datos y Transformación Digital"],["#db2777","Innovación y Emprendimiento"],
+      ["#92400e","Integración y Título"],["#ca8a04","Inglés"],["#475569","Formación General"]
+    ]
+  },
+  {
+    name:"Ingeniería en Computación e Informática",
+    grado:"Ingeniero(a) en Computación e Informática",
+    href:"malla_ingenieria_en_computacion_e_informatica.html",
+    badge:"Res. 2719-2020", regimen:"Semestral · 4 años",
+    cursos:40, periodos:"8 sem", periodoLbl:"Semestres", creditos:534, credLbl:"Créditos UNAB",
+    keywords:"computacion informatica software programacion datos ciberseguridad ingenieria",
+    areas:[
+      ["#2563eb","Matemáticas"],["#0891b2","Ciencias Básicas"],
+      ["#16a34a","Ciencias de la Computación"],["#dc2626","Ingeniería de Software y TI"],
+      ["#7c3aed","Datos y Transformación Digital"],["#db2777","Innovación y Emprendimiento"],
+      ["#92400e","Integración y Título"],["#ca8a04","Inglés"],["#475569","Formación General"]
+    ]
+  },
+  {
+    name:"Ingeniería Industrial",
+    grado:"Ingeniero(a) Industrial",
+    href:"malla_ingenieria_industrial.html",
+    badge:"DUN 71-2022", regimen:"Continuidad · Trimestral",
+    cursos:34, periodos:"8 trim", periodoLbl:"Trimestres", creditos:114, credLbl:"Créditos SCT",
+    keywords:"industrial gestion procesos operaciones economia continuidad",
+    areas:[
+      ["#2563eb","Matemáticas"],["#0891b2","Ciencias Básicas"],
+      ["#dc2626","Procesos y Operaciones"],["#ea580c","Gestión y Economía"],
+      ["#7c3aed","Transformación Digital y Datos"],["#db2777","Innovación y Emprendimiento"],
+      ["#92400e","Integración y Título"],["#ca8a04","Inglés"],["#475569","Formación General"]
+    ]
+  },
+  {
+    name:"Ingeniería Civil",
+    grado:"Ingeniero(a) Civil",
+    href:"malla_ingenieria_civil.html",
+    badge:"Plan 11300", regimen:"Semestral · 5,5 años",
+    cursos:55, periodos:"11 sem", periodoLbl:"Semestres", creditos:699, credLbl:"Créditos UNAB",
+    keywords:"civil estructuras geotecnia hidraulica construccion obras",
+    areas:[
+      ["#2563eb","Matemáticas"], ["#0891b2","Ciencias Básicas"],
+      ["#dc2626","Análisis y Diseño Estructural"], ["#0d9488","Geotecnia e Hidráulica"],
+      ["#ea580c","Construcción y Materiales"], ["#16a34a","Gestión, Operaciones y Economía"],
+      ["#92400e","Integración y Título"], ["#ca8a04","Inglés"],
+      ["#475569","Formación General"],
+    ]
+  },
+  {
+    name:"Ingeniería Civil en Minas",
+    grado:"Ingeniero(a) Civil en Minas",
+    href:"malla_ingenieria_civil_en_minas.html",
+    badge:"Plan 11303", regimen:"Semestral · 5 años",
+    cursos:49, periodos:"10 sem", periodoLbl:"Semestres", creditos:666, credLbl:"Créditos UNAB",
+    keywords:"minas mineria metalurgia geologia rajo extraccion civil",
+    areas:[
+      ["#2563eb","Matemáticas"], ["#0891b2","Ciencias Básicas"],
+      ["#4d7c0f","Geología y Geomecánica"], ["#dc2626","Operaciones y Diseño Minero"],
+      ["#ea580c","Metalurgia y Procesamiento"], ["#7c3aed","Datos y Transformación Digital"],
+      ["#16a34a","Gestión, Innovación y Proyectos"], ["#92400e","Integración y Título"],
+      ["#ca8a04","Inglés"], ["#475569","Formación General"],
+    ]
+  },
+  {
+    name:"Ingeniería en Construcción",
+    grado:"Ingeniero(a) en Construcción",
+    href:"malla_ingenieria_en_construccion.html",
+    badge:"Plan 11400", regimen:"Semestral · 5 años",
+    cursos:50, periodos:"10 sem", periodoLbl:"Semestres", creditos:578, credLbl:"Créditos UNAB",
+    keywords:"construccion edificacion obras estructuras hormigon",
+    areas:[
+      ["#2563eb","Matemáticas"], ["#0891b2","Ciencias Básicas"],
+      ["#dc2626","Análisis y Diseño Estructural"], ["#ea580c","Procesos Constructivos y Materiales"],
+      ["#0d9488","Obras Civiles e Infraestructura"], ["#16a34a","Gestión y Economía"],
+      ["#7c3aed","Electivos de Formación Profesional"], ["#92400e","Integración y Título"],
+      ["#ca8a04","Inglés"], ["#475569","Formación General"],
+    ]
+  },
+  {
+    name:"Ingeniería Civil Industrial",
+    grado:"Ingeniero(a) Civil Industrial",
+    href:"malla_ingenieria_civil_industrial.html",
+    badge:"Plan 12100", regimen:"Semestral · 5 años",
+    cursos:51, periodos:"10 sem", periodoLbl:"Semestres", creditos:673, credLbl:"Créditos UNAB",
+    keywords:"industrial civil gestion procesos operaciones cadena suministro economia",
+    areas:[
+      ["#2563eb","Matemáticas"],["#0891b2","Ciencias Básicas"],
+      ["#dc2626","Inv. de Operaciones y Analítica"],["#ea580c","Cadena de Suministro y Procesos"],
+      ["#16a34a","Gestión, Economía y Finanzas"],["#7c3aed","Datos y Transformación Digital"],
+      ["#db2777","Innovación y Emprendimiento"],["#92400e","Integración y Título"],
+      ["#ca8a04","Inglés"],["#475569","Formación General"]
+    ]
+  },
+  {
+    name:"Ingeniería Civil Industrial 2.0",
+    grado:"Ingeniero(a) Civil Industrial",
+    href:"malla_ingenieria_civil_industrial_2_0.html",
+    badge:"UNAB37044", regimen:"Continuidad · Trimestral",
+    cursos:67, periodos:"15 trim", periodoLbl:"Trimestres", creditos:0, credLbl:"",
+    keywords:"civil industrial 2.0 continuidad trimestral capstone online cadena suministro gestion",
+    areas:[
+      ["#2563eb","Matemáticas"], ["#0891b2","Ciencias Básicas"],
+      ["#dc2626","Procesos y Operaciones"], ["#ea580c","Cadena de Suministro"],
+      ["#16a34a","Gestión, Economía y Finanzas"], ["#7c3aed","Transformación Digital y Datos"],
+      ["#db2777","Innovación y Emprendimiento"], ["#0d9488","Electivos de Especialidad"],
+      ["#92400e","Capstone e Integración"], ["#ca8a04","Inglés"], ["#475569","Formación General"],
+    ]
+  }
+];
+
+const grid = document.getElementById('grid');
+const countEl = document.getElementById('count');
+
+function cardHTML(c){
+  const spine = c.areas.map(a=>`<i style="background:${a[0]}" title="${a[1]}"></i>`).join('');
+  const dots = c.areas.slice(0,c.areas.length).map(a=>`<i style="background:${a[0]}"></i>`).join('');
+  return `
+  <a class="card" href="${c.href}" data-kw="${c.name.toLowerCase()} ${c.keywords}">
+    <div class="spine" aria-hidden="true">${spine}</div>
+    <div class="body">
+      <div class="kicker">
+        <span class="badge">${c.badge}</span>
+        <span class="regimen">${c.regimen}</span>
+      </div>
+      <h2>${c.name}</h2>
+      <div class="grado">${c.grado}</div>
+      <div class="facts">
+        <div class="fact"><b>${c.cursos}</b><span>Asignaturas</span></div>
+        <div class="fact"><b>${c.periodos.split(' ')[0]}</b><span>${c.periodoLbl}</span></div>
+        ${c.creditos ? `<div class="fact"><b>${c.creditos}</b><span>${c.credLbl}</span></div>` : ''}
+      </div>
+      <div class="areas">
+        <span class="dots" aria-hidden="true">${dots}</span>
+        <span>${c.areas.length} áreas de formación</span>
+      </div>
+      <span class="go">Ver malla
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </div>
+  </a>`;
+}
+
+function render(filter=""){
+  const f = filter.trim().toLowerCase();
+  const shown = CAREERS.filter(c =>
+    !f || `${c.name} ${c.keywords}`.toLowerCase().includes(f)
+  );
+  grid.innerHTML = shown.length
+    ? shown.map(cardHTML).join('')
+    : `<div class="empty"><b>Sin resultados</b>No encontramos una carrera con “${filter}”. Prueba con otro término.</div>`;
+  const n = shown.length;
+  countEl.textContent = n === 1 ? "1 carrera" : `${n} carreras`;
+}
+
+render();
+document.getElementById('q').addEventListener('input', e => render(e.target.value));
+
+/* Cerrar banner de aviso */
+(function(){
+  var aviso = document.getElementById('aviso');
+  var btn = document.getElementById('avisoClose');
+  if(!aviso || !btn) return;
+  try{
+    if(sessionStorage.getItem('aviso_inscripcion_cerrado') === '1'){
+      aviso.setAttribute('data-hidden','true');
+    }
+  }catch(e){}
+  btn.addEventListener('click', function(){
+    aviso.setAttribute('data-hidden','true');
+    try{ sessionStorage.setItem('aviso_inscripcion_cerrado','1'); }catch(e){}
+  });
+})();
+</script>
+<script>
+/* Contador de visitas — Abacus (gratuito, sin registro). Cuenta 1 por sesión de navegador. */
+(function(){
+  var NS = "unab-malla-sabattin";      // namespace propio del sitio
+  var KEY = "home";
+  var BASE = "https://abacus.jasoncameron.dev";
+  var box = document.getElementById("visitas");
+  var out = document.getElementById("vcount");
+  if(!box || !out) return;
+
+  var nf = new Intl.NumberFormat("es-CL");
+  function paint(n){
+    if(typeof n !== "number" || isNaN(n)){ box.setAttribute("data-hidden","true"); return; }
+    // animación de conteo
+    var start = 0, dur = 900, t0 = null;
+    function step(ts){
+      if(!t0) t0 = ts;
+      var p = Math.min((ts - t0)/dur, 1);
+      var val = Math.floor(start + (n - start)*(p*(2-p))); // easeOut
+      out.textContent = nf.format(val);
+      if(p < 1) requestAnimationFrame(step);
+      else out.textContent = nf.format(n);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // 1 visita por sesión: incrementa solo la primera vez en esta pestaña; si no, solo lee.
+  var counted = false;
+  try { counted = sessionStorage.getItem("malla_visit_counted") === "1"; } catch(e){}
+  var url = BASE + (counted ? "/get/" : "/hit/") + NS + "/" + KEY;
+
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var n = (d && (d.value!=null ? d.value : d.count));
+      if(typeof n === "number"){
+        paint(n);
+        try { sessionStorage.setItem("malla_visit_counted","1"); } catch(e){}
+      } else { box.setAttribute("data-hidden","true"); }
+    })
+    .catch(function(){ box.setAttribute("data-hidden","true"); });
+})();
+</script>
+</body>
+</html>

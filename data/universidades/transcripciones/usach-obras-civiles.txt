@@ -1,0 +1,21 @@
+# universidad: Universidad de Santiago de Chile
+# sigla: USACH
+# carrera: Ingeniería Civil en Obras Civiles
+# area: civil
+# plan: Resolución N° 6672 año 2019, mod. Res. N° 6111 año 2022 y Res. N° 6104 año 2023
+# duracion: 11
+# fuente: https://admision.usach.cl/sites/default/files/2025-11/16008_ING%20CIVIL%20EN%20OBRAS%20CIVILES.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (folleto admisión, noviembre 2025)
+# notas: Código DEMRE 16008. Requisito de titulación: dos prácticas profesionales. Malla sujeta a cambios.
+1 | Cálculo I para Ingeniería | Álgebra I para Ingeniería | Física I para Ingeniería | Inglés I | Introducción al Diseño en Ingeniería
+2 | Cálculo II para Ingeniería | Álgebra II para Ingeniería | Física II para Ingeniería | Análisis Estadístico para Obras Civiles | Fundamentos de Programación para Ingeniería | Inglés II
+3 | Cálculo III para Ingeniería | Estática Aplicada | Herramientas Computacionales para Ingeniería I | Ecuaciones Diferenciales para Ingeniería | Fundamentos de Economía para Ingeniería | Inglés III
+4 | Análisis Estructural | Materiales de Ingeniería | Topografía | Ciencias Ambientales | Taller de Diseño en Ingeniería | Inglés IV
+5 | Mecánica de Fluidos | Tecnología del Hormigón | Mecánica de Sólidos | Edificación | Taller de Integración I
+6 | Hidráulica | Ingeniería Sísmica | Investigación de Operaciones | Mecánica de Suelos I | Herramientas Computacionales para Ingeniería II | Inglés Profesional I
+7 | Hidrología Aplicada | Diseño en Hormigón Armado I | Diseño de Estructuras de Acero | Mecánica de Suelos II | Taller de Integración II
+8 | Redes de Agua Potable y Alcantarillado | ~Tópicos de Especialidad I | Diseño en Hormigón Armado II | Diseño de Caminos | Evaluación de Proyectos | Inglés Profesional II
+9 | Administración de Obras | ~Tópicos de Especialidad II | Ingeniería Vial | Planificación de Proyectos | ~Electivo I | ~Tópicos de Especialidad III
+10 | Seminario de Titulación | Dirección de Empresas | Taller de Integración III | Gestión Ambiental y Ocupacional | ~Electivo II | ~Tópicos de Especialidad IV
+11 | Trabajo de Titulación

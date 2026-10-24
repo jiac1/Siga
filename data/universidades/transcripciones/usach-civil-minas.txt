@@ -1,0 +1,21 @@
+# universidad: Universidad de Santiago de Chile
+# sigla: USACH
+# carrera: Ingeniería Civil en Minas
+# area: minas
+# plan: Resolución N° 6669 año 2019, mod. Res. N° 6585 año 2021 y Res. N° 6113 año 2022
+# duracion: 11
+# fuente: https://admision.usach.cl/sites/default/files/2025-11/16007_ING%20CIVIL%20EN%20MINAS.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (folleto admisión, noviembre 2025)
+# notas: Código DEMRE 16007. Malla sujeta a cambios.
+1 | Cálculo I para Ingeniería | Álgebra I para Ingeniería | Física I para Ingeniería | Química General para Ingeniería | Introducción al Diseño en Ingeniería
+2 | Cálculo II para Ingeniería | Álgebra II para Ingeniería | Física II para Ingeniería | Análisis Estadístico para Ingeniería en Minas | Fundamentos de Programación para Ingeniería | Métodos Gráficos para Ingeniería en Minas
+3 | Cálculo III para Ingeniería | Termodinámica y Físico Química | Electricidad y Electrotecnia | Geología General y Estructural | Fundamentos de Economía para Ingeniería | Inglés I
+4 | Métodos de Explotación | Ecuaciones Diferenciales y Métodos Numéricos para Ingeniería | Mineralogía y Petrografía | Mecánica de Fluidos | Taller de Diseño en Ingeniería | Inglés II
+5 | Voladura de Rocas | Geomensura de Minas | Geología Económica y de Minas | Resistencia de Materiales | Ingeniería Económica y Evaluación de Proyectos | Inglés III
+6 | Carguío y Transporte | Modelación y Simulación | Procesos Mineralúrgicos | Mecánica de Rocas I | Administración de Empresas | Inglés IV
+7 | Estimación de Recursos Mineros | Optimización | Servicios Generales Mina | Mecánica de Rocas II | Seguridad Minera y Salud Ocupacional | Concentración de Minerales
+8 | Ventilación de Minas | Procesos Metalúrgicos | Economía Minera | Gestión en las Operaciones Unitarias | Liderazgo | Tecnologías Avanzadas para Minería
+9 | ~Tópicos de la Especialidad I | Administración y Gestión de Proyectos Mineros | Sustentabilidad Minera | Diseño y Planificación Mina Cielo Abierto | ~Electivo I | Diseño y Planificación Mina Subterránea
+10 | ~Tópicos de la Especialidad II | Legislación Laboral y Minera | Taller de Evaluación de Proyectos Metalúrgicos | Taller de Proyecto Mina Cielo Abierto | ~Electivo II | Taller de Proyecto Mina Subterránea
+11 | Trabajo de Titulación

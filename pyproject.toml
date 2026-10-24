@@ -1,0 +1,11 @@
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["**/migrations/*", "archive", "services/mapa-calor/heatmap/procesador.py", "services/estres-malla/malla/engine.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "B", "UP"]
+ignore = ["E731"]
+
+[tool.ruff.lint.per-file-ignores]
+"services/core/convalidaciones/motor.py" = ["E501"]  # lista de palabras vacías idéntica a la del cliente

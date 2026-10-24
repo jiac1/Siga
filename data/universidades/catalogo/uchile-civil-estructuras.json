@@ -1,0 +1,656 @@
+{
+ "slug": "uchile-civil-estructuras",
+ "universidad": "Universidad de Chile",
+ "sigla": "UCHILE",
+ "carrera": "Ingeniería Civil (mención Estructura, Construcción y Geotecnia)",
+ "area": "civil",
+ "plan": "Malla mayo 2024 (FCFM)",
+ "regimen": "semestral",
+ "duracion": 11,
+ "unidad_creditos": "UD (unidades docentes FCFM)",
+ "fuente": {
+  "url": "https://ingenieria.uchile.cl/dam/jcr:5ccf1d24-7b4b-434f-8be8-c1cddcc87281/Malla-Civil-Estructura-mayo-2024.jpg",
+  "consultado": "2026-10-21",
+  "metodo": "lectura visual de la imagen oficial publicada en ingenieria.uchile.cl/carreras/4969",
+  "notas": "Existen además las menciones Hidráulica, Sanitaria y Ambiental, y Transporte (no transcritas). Plan Común FCFM semestres I-IV."
+ },
+ "estadisticas": {
+  "asignaturas": 64,
+  "convalidables": 55,
+  "genericas": 9,
+  "inciertas": 0
+ },
+ "semestres": [
+  {
+   "numero": 1,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s1-1",
+     "nombre": "Introducción al Cálculo",
+     "codigo": "MA1001",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s1-2",
+     "nombre": "Introducción al Álgebra",
+     "codigo": "MA1101",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s1-3",
+     "nombre": "Introducción a la Física Clásica",
+     "codigo": "FI1000",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s1-4",
+     "nombre": "Herramientas Computacionales para Ingeniería y Ciencias",
+     "codigo": "CC1000",
+     "creditos": 3,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s1-5",
+     "nombre": "Desafíos de Innovación en Ingeniería y Ciencias",
+     "codigo": "CD1100",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s1-6",
+     "nombre": "Aplicaciones de la Biología a la Ingeniería y Ciencias",
+     "codigo": "BT1211",
+     "creditos": 3,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 2,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s2-1",
+     "nombre": "Cálculo Diferencial e Integral",
+     "codigo": "MA1002",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s2-2",
+     "nombre": "Álgebra Lineal",
+     "codigo": "MA1102",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s2-3",
+     "nombre": "Introducción a la Física Moderna",
+     "codigo": "FI1100",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s2-4",
+     "nombre": "Introducción a la Programación",
+     "codigo": "CC1002",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s2-5",
+     "nombre": "Proyecto de Innovación en Ingeniería y Ciencias",
+     "codigo": "CD1201",
+     "creditos": 3,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s2-6",
+     "nombre": "Formación Integral DR/EH/FG/EI/FT",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 2,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 3,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s3-1",
+     "nombre": "Cálculo en Varias Variables",
+     "codigo": "MA2001",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s3-2",
+     "nombre": "Ecuaciones Diferenciales Ordinarias",
+     "codigo": "MA2601",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s3-3",
+     "nombre": "Mecánica",
+     "codigo": "FI2001",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s3-4",
+     "nombre": "Métodos Experimentales",
+     "codigo": "FI2003",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s3-5",
+     "nombre": "Química",
+     "codigo": "IQ2211",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 4,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s4-1",
+     "nombre": "Cálculo Avanzado y Aplicaciones",
+     "codigo": "MA2002",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s4-2",
+     "nombre": "Economía",
+     "codigo": "IN2201",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s4-3",
+     "nombre": "Electromagnetismo",
+     "codigo": "FI2002",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s4-4",
+     "nombre": "Termodinámica / Termodinámica Química",
+     "codigo": "FI2004/IQ2212",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s4-5",
+     "nombre": "Módulo Interdisciplinario",
+     "codigo": "CD2201",
+     "creditos": 3,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s4-6",
+     "nombre": "Formación Integral DR/EH/FG/EI/FT",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 4,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 5,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s5-1",
+     "nombre": "Probabilidades y Estadística",
+     "codigo": "MA3403",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s5-2",
+     "nombre": "Optimización / Modelamiento y Optimización",
+     "codigo": "MA3701/IN3171",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s5-3",
+     "nombre": "Mecánica Estructural",
+     "codigo": "CI3111",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s5-4",
+     "nombre": "Análisis de Sistemas de Transporte",
+     "codigo": "CI3141",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s5-5",
+     "nombre": "Mecánica de Fluidos",
+     "codigo": "CI3162",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 6,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s6-1",
+     "nombre": "Cálculo Numérico para Ingeniería Civil",
+     "codigo": "CI3251",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s6-2",
+     "nombre": "Ingeniería Hidráulica",
+     "codigo": "CI3262",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s6-3",
+     "nombre": "Ingeniería Estructural",
+     "codigo": "CI3211",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s6-4",
+     "nombre": "Ingeniería Ambiental",
+     "codigo": "CI3261",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s6-5",
+     "nombre": "Topografía",
+     "codigo": "CI3252",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s6-6",
+     "nombre": "Taller de Práctica Profesional I",
+     "codigo": "CI4150",
+     "creditos": 1,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 7,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s7-1",
+     "nombre": "Evaluación de Proyectos",
+     "codigo": "CI4152",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s7-2",
+     "nombre": "Ingeniería Geotécnica",
+     "codigo": "CI4121",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s7-3",
+     "nombre": "Dinámica de Estructuras",
+     "codigo": "CI4111",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s7-4",
+     "nombre": "Ingeniería de Materiales",
+     "codigo": "CI4112",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s7-5",
+     "nombre": "Electivo",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 7,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s7-6",
+     "nombre": "Práctica I Topografía",
+     "codigo": "CI4151",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 8,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s8-1",
+     "nombre": "Construcción",
+     "codigo": "CI4231",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s8-2",
+     "nombre": "Planificación y Gestión de Proyectos",
+     "codigo": "CI4251",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s8-3",
+     "nombre": "Diseño Sísmico de Estructuras",
+     "codigo": "CI4211",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s8-4",
+     "nombre": "Diseño Hormigón Armado",
+     "codigo": "CI4212",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s8-5",
+     "nombre": "Formación Integral EH/FG",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 8,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s8-6",
+     "nombre": "Formación Integral EH/FG",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 8,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s8-7",
+     "nombre": "Taller de Práctica Profesional II",
+     "codigo": "CI5150",
+     "creditos": 1,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s8-8",
+     "nombre": "Examen de Suficiencia en Inglés I",
+     "codigo": "EI1090",
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 9,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s9-1",
+     "nombre": "Diseño Geotécnico",
+     "codigo": "CI5121",
+     "creditos": 6,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s9-2",
+     "nombre": "Diseño de Estructuras de Acero",
+     "codigo": "CI5122",
+     "creditos": 6,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s9-3",
+     "nombre": "Proyecto de Hormigón Armado",
+     "codigo": "CI5123",
+     "creditos": 6,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s9-4",
+     "nombre": "Proyecto de Construcción",
+     "codigo": "CI5131",
+     "creditos": 6,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s9-5",
+     "nombre": "Electivo de Especialidad",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 9,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s9-6",
+     "nombre": "Práctica Profesional II",
+     "codigo": "CI5151",
+     "creditos": 13,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 10,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s10-1",
+     "nombre": "Trabajo de Habilitación Profesional I",
+     "codigo": "CI5909/CI6908",
+     "creditos": 3,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s10-2",
+     "nombre": "Mecánica de Suelos Avanzada",
+     "codigo": "CI5321",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s10-3",
+     "nombre": "Proyectos de Estructuras de Acero",
+     "codigo": "CI5322",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s10-4",
+     "nombre": "Ingeniería Estructural Avanzada",
+     "codigo": "CI5323",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s10-5",
+     "nombre": "Electivo de Especialidad",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s10-6",
+     "nombre": "Electivo de Especialidad",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s10-7",
+     "nombre": "Examen de Suficiencia en Inglés II",
+     "codigo": "EI2090",
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 11,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-estructuras-s11-1",
+     "nombre": "Trabajo de Habilitación Profesional II",
+     "codigo": "CI5910/CI6911",
+     "creditos": 27,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s11-2",
+     "nombre": "Formación Integral de Especialidad",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 11,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-estructuras-s11-3",
+     "nombre": "Práctica Profesional III",
+     "codigo": "CI6161",
+     "creditos": 14,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  }
+ ]
+}

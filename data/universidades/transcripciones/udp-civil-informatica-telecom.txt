@@ -1,0 +1,21 @@
+# universidad: Universidad Diego Portales
+# sigla: UDP
+# carrera: Ingeniería Civil en Informática y Telecomunicaciones
+# area: informatica
+# plan: actualizado noviembre 2025
+# duracion: 11
+# fuente: https://eit.udp.cl/cms/wp-content/uploads/2025/12/INGENIERIA-CIVIL-EN-INFORMATICA-Y-TELECOMUNICACIONES.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: Código DEMRE 38175, SIES I3S1C11J1V1. Pasantía Laboral I entre sem. IV-V y II entre VIII-IX. Malla sujeta a cambios.
+1 | Introducción al Álgebra | Introducción al Cálculo | Química | Programación | Introducción a la Ingeniería
+2 | Álgebra Lineal | Cálculo Diferencial e Integral | Mecánica | Programación Avanzada | ~Curso de Formación General
+3 | Ecuaciones Diferenciales | Cálculo en Varias Variables | Calor y Ondas | Estructuras de Datos y Algoritmos | Redes de Datos
+4 | Probabilidades y Estadísticas | Electrónica y Electrotecnia | Electromagnetismo y Física Moderna | Bases de Datos | Desarrollo Web y Móvil | Inglés General I | Pasantía Laboral I
+5 | Optimización | Taller de Redes y Servicios | Proyectos en TICs I | Big Data | ~Curso de Formación General | Inglés General II
+6 | Gestión Organizacional | Arquitectura y Organización de Computadores | Señales y Sistemas | Sistemas Operativos | Introducción a la Economía | Inglés General III
+7 | Inteligencia Artificial | Fundamentos de Ingeniería y Arquitectura de Software | Comunicaciones Digitales | Sistemas Distribuidos | ~Curso de Formación General | ~Curso de Formación General
+8 | Inteligencia Artificial Avanzada | Tecnologías Inalámbricas | Criptografía y Seguridad en Redes | ~Curso de Formación General | Evaluación de Proyectos TIC | ~Curso de Formación General | Pasantía Laboral II
+9 | ~Electivo Profesional | Redes Avanzadas y Seguridad de la Información | ~Electivo Profesional | Desarrollo Ágil y QA | Data Science
+10 | ~Electivo Profesional | ~Electivo Profesional | ~Electivo Profesional | ~Electivo Profesional | Proyectos en TICs II
+11 | Actividad de Titulación Ingeniería Civil en Informática y Telecomunicaciones

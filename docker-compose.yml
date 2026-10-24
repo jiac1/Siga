@@ -1,0 +1,99 @@
+# Suite UNAB · entorno completo con contenedores (equivalente local de AWS).
+#   cp .env.example .env
+#   docker compose up --build        ->  http://localhost:8080
+# Topología: gateway (nginx = ALB/CloudFront) + core + mapa-calor + estres-malla + PostgreSQL (= RDS)
+name: suite-unab
+
+x-django: &django
+  build: &build
+    context: .
+    dockerfile: deploy/docker/django.Dockerfile
+  restart: unless-stopped
+  environment: &env
+    DEBUG: "False"
+    SECURE_SSL_REDIRECT: "False"          # en local no hay TLS; en AWS lo termina el ALB/CloudFront
+    SUITE_MODE: suite
+    SUITE_SSO_SECRET: ${SUITE_SSO_SECRET:?define SUITE_SSO_SECRET en .env}
+    ALLOWED_HOSTS: localhost,127.0.0.1,core,mapa-calor,estres-malla
+    CSRF_TRUSTED_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: suite
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-suite-local}
+      POSTGRES_DB: core
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U suite"]
+      interval: 5s
+      retries: 10
+
+  core-migrar:
+    <<: *django
+    build: { <<: *build, args: { SERVICIO: core } }
+    restart: "no"
+    command: migrar
+    environment:
+      <<: *env
+      URL_PREFIX: core/
+      SECRET_KEY: ${CORE_SECRET_KEY:-local-core-secret-key-cambiar}
+      DATABASE_URL: postgres://suite:${POSTGRES_PASSWORD:-suite-local}@db:5432/core
+      SUITE_ADMIN_EMAIL: ${SUITE_ADMIN_EMAIL:-}
+      SUITE_ADMIN_PASSWORD: ${SUITE_ADMIN_PASSWORD:-}
+    depends_on: { db: { condition: service_healthy } }
+
+  core:
+    <<: *django
+    build: { <<: *build, args: { SERVICIO: core } }
+    environment:
+      <<: *env
+      URL_PREFIX: core/
+      SECRET_KEY: ${CORE_SECRET_KEY:-local-core-secret-key-cambiar}
+      DATABASE_URL: postgres://suite:${POSTGRES_PASSWORD:-suite-local}@db:5432/core
+    depends_on: { core-migrar: { condition: service_completed_successfully } }
+
+  mapa-calor:
+    <<: *django
+    build: { <<: *build, args: { SERVICIO: mapa-calor } }
+    environment:
+      <<: *env
+      URL_PREFIX: mapa-calor/
+      SECRET_KEY: ${MAPA_SECRET_KEY:-local-mapa-secret-key-cambiar}
+
+  estres-malla-migrar:
+    <<: *django
+    build: { <<: *build, args: { SERVICIO: estres-malla } }
+    restart: "no"
+    command: migrar
+    environment:
+      <<: *env
+      URL_PREFIX: estres-malla/
+      SECRET_KEY: ${ESTRES_SECRET_KEY:-local-estres-secret-key-cambiar}
+      DATABASE_URL: postgres://suite:${POSTGRES_PASSWORD:-suite-local}@db:5432/estres_malla
+    depends_on: { db: { condition: service_healthy } }
+
+  estres-malla:
+    <<: *django
+    build: { <<: *build, args: { SERVICIO: estres-malla } }
+    environment:
+      <<: *env
+      URL_PREFIX: estres-malla/
+      SECRET_KEY: ${ESTRES_SECRET_KEY:-local-estres-secret-key-cambiar}
+      DATABASE_URL: postgres://suite:${POSTGRES_PASSWORD:-suite-local}@db:5432/estres_malla
+    volumes:
+      - media-estres:/app/media
+    depends_on: { estres-malla-migrar: { condition: service_completed_successfully } }
+
+  gateway:
+    build: { context: ., dockerfile: deploy/docker/portal.Dockerfile }
+    restart: unless-stopped
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on: [core, mapa-calor, estres-malla]
+
+volumes:
+  pgdata:
+  media-estres:

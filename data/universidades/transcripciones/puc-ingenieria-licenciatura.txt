@@ -1,0 +1,18 @@
+# universidad: Pontificia Universidad Católica de Chile
+# sigla: PUC
+# carrera: Ingeniería (Licenciatura en Ciencias de la Ingeniería, sistema Major/Minor)
+# area: plan-comun
+# plan: Resolución VRA N° 089/2021
+# duracion: 8
+# fuente: https://admision.uc.cl/htdocs/content/uploads/2021/09/32.-Ingenieria.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (Diagrama Curricular, pág. 2)
+# notas: Código DEMRE 12039. Los cursos específicos dependen del Major/Minor elegido (no publicados en este documento); se registran como cupos genéricos. Continuidad al título de Ingeniero(a) Civil (11 semestres). Termodinámica / Termodinámica Honors y Electricidad y Magnetismo / Fundamentos de Teoría Electromagnética son alternativas.
+1 | Cálculo I | Química para Ingeniería | Álgebra Lineal | Desafíos de la Ingeniería | ~Filosofía: ¿Para Qué?
+2 | Cálculo II | Dinámica | Laboratorio de Dinámica | Introducción a la Economía | Introducción a la Programación | ~Electivo Formación Teológica | Práctica I
+3 | Cálculo III | Termodinámica | Laboratorio de Termodinámica | Ecuaciones Diferenciales | ~Optativo Exploración Major | ~Electivo Formación General
+4 | Probabilidades y Estadística | Electricidad y Magnetismo | Laboratorio de Electricidad y Magnetismo | ~Optativo del Área de la Biología, Medicina o Agronomía | ~Curso Major | ~Electivo Formación General
+5 | ~Curso Major | ~Curso Major | Investigación, Innovación y Emprendimiento | ~Optativos de Fundamentos de Ciencias o Ingeniería | ~Electivo Formación General
+6 | ~Curso Major | ~Curso Major | ~Curso Minor | ~Curso Minor | ~Electivo Formación General | Examen de Competencias Fundamentales
+7 | ~Curso Major | ~Curso Major | ~Curso Major | ~Curso Minor | ~Electivo Formación General
+8 | ~Curso Major (Capstone) | ~Curso Major | ~Curso Minor | ~Curso Minor | ~Electivo Formación General

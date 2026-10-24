@@ -1,0 +1,20 @@
+# universidad: Universidad de Santiago de Chile
+# sigla: USACH
+# carrera: Ingeniería Civil en Informática y Computación (Plan Común Informática 2026)
+# area: informatica
+# plan: Programa de Estudios Resolución N° 4902 año 2026
+# duracion: 10
+# fuente: https://admision.usach.cl/sites/default/files/2026-10/16113_ING%20CIVIL%20INFORMA%CC%81TICA%20PLAN%20COMU%CC%81N_.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (folleto admisión, octubre 2026)
+# notas: Código DEMRE 16113. Nuevo plan común que conduce a Informática y Computación, Ciberseguridad o Inteligencia Artificial. Convive con el plan 2019 (11 semestres) para cohortes anteriores.
+1 | Cálculo I para Ingeniería | Álgebra I para Ingeniería | Física I para Ingeniería | Introducción a la Ingeniería Informática | Introducción al Diseño en Ingeniería
+2 | Cálculo II para Ingeniería | Álgebra II para Ingeniería | Física II para Ingeniería | ~Formación Integral I | Fundamentos de Programación para Informática | Inglés I
+3 | Cálculo III para Ingeniería | Electricidad, Magnetismo y Ondas | Teoría de la Computación | Diseño de Algoritmos y Estructura de Datos | Fundamentos de Economía para Ingeniería | Inglés II
+4 | Ecuaciones Diferenciales y Métodos Numéricos | Seminario Especialidades | Arquitectura de Computadores | Paradigmas de Programación | Taller de Diseño en Ingeniería | Inglés III
+5 | Estadística Computacional | Fundamentos de Ingeniería de Software | Sistemas Operativos | Base de Datos | Taller de Programación | Inglés IV
+6 | Estadística Inferencial para Informática | Redes de Comunicación | Ingeniería Informática y Sostenibilidad | Fundamentos de la Especialidad | Evaluación de Proyectos | ~Formación Integral II
+7 | Fundamentos de Experiencia de Usuario | Sistemas Computacionales de Gran Escala | Bases de Datos Avanzadas | Técnicas de Ingeniería de Software | Innovación y Emprendimiento | Optimización en Ingeniería
+8 | Taller de Experiencia | Calidad y Seguridad de Software | Arquitectura de Soluciones Computacionales | Tópicos de Gestión I | ~Electivo
+9 | Seminario de Titulación | ~Tópicos de Especialidad I | ~Tópicos de Especialidad II | Tópicos de Gestión II | Proyecto de Especialidad
+10 | Trabajo de Titulación | Seminario Laboral

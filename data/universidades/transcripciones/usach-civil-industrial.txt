@@ -1,0 +1,21 @@
+# universidad: Universidad de Santiago de Chile
+# sigla: USACH
+# carrera: Ingeniería Civil Industrial
+# area: industrial
+# plan: Resolución N° 6668 año 2019, modificada por Resolución N° 6124 año 2022
+# duracion: 11
+# fuente: https://admision.usach.cl/sites/default/files/2025-11/16003_ING%20CIVIL%20INDUSTRIAL.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (folleto admisión, noviembre 2025)
+# notas: Código DEMRE 16003. Requisito de titulación: dos prácticas profesionales. Malla sujeta a cambios.
+1 | Cálculo I para Ingeniería | Álgebra I para Ingeniería | Física I para Ingeniería | Introducción a la Ingeniería Industrial | Introducción al Diseño en la Ingeniería
+2 | Cálculo II para Ingeniería | Álgebra II para Ingeniería | Física II para Ingeniería | Química General y Termodinámica | Fundamentos de Programación para Ingeniería
+3 | Cálculo III para Ingeniería | Ecuaciones Diferenciales para Ingeniería | Física Moderna | Programación | Fundamentos de Economía para Ingeniería | Inglés I
+4 | Análisis Estadístico para Ingeniería | Métodos Numéricos para Ingeniería | Ingeniería de Sistemas | Diseño Digital Computacional | Taller de Diseño en Ingeniería | Inglés II
+5 | Estadística Aplicada | Operaciones y Procesos Industriales | Administración | Microeconomía | Taller de Gestión y Liderazgo | Inglés III
+6 | Macroeconomía | Contabilidad y Costos | Investigación de Operaciones | Tecnologías para la Gestión | Introducción a la Innovación | Inglés IV
+7 | Diseño de Productos y Sistemas Productivos | Marketing Estratégico | Modelos Estocásticos | Finanzas | Gestión del Emprendimiento
+8 | Sistemas de Información | Análisis de Decisiones | Modelamiento de Sistemas Complejos | Inteligencia de Negocios | Evaluación de Proyectos
+9 | ~Tópico de Especialidad I | Gestión de Personas | Gestión de Producción de Bienes y Servicios | Gestión Estratégica | ~Electivo I
+10 | ~Tópico de Especialidad II | Proyecto de Ingeniería | Gestión de Cadena de Suministro | ~Tópico de Especialidad III | ~Electivo II
+11 | Trabajo de Titulación

@@ -1,0 +1,620 @@
+{
+ "slug": "uchile-civil-minas",
+ "universidad": "Universidad de Chile",
+ "sigla": "UCHILE",
+ "carrera": "Ingeniería Civil de Minas",
+ "area": "minas",
+ "plan": "Malla 2026 (versión mayo 2025, FCFM)",
+ "regimen": "semestral",
+ "duracion": 11,
+ "unidad_creditos": "UD (unidades docentes FCFM)",
+ "fuente": {
+  "url": "https://ingenieria.uchile.cl/dam/jcr:029329ad-a30f-4bab-aa41-cf44499a984d/Malla%20Minas%202025%20.jpeg",
+  "consultado": "2026-10-21",
+  "metodo": "lectura visual de la imagen oficial publicada en ingenieria.uchile.cl/carreras/4977",
+  "notas": "Plan Común FCFM semestres I-IV."
+ },
+ "estadisticas": {
+  "asignaturas": 60,
+  "convalidables": 54,
+  "genericas": 6,
+  "inciertas": 0
+ },
+ "semestres": [
+  {
+   "numero": 1,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s1-1",
+     "nombre": "Introducción al Cálculo",
+     "codigo": "MA1001",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s1-2",
+     "nombre": "Introducción al Álgebra",
+     "codigo": "MA1101",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s1-3",
+     "nombre": "Introducción a la Física Clásica",
+     "codigo": "FI1000",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s1-4",
+     "nombre": "Herramientas Computacionales para Ingeniería y Ciencias",
+     "codigo": "CC1000",
+     "creditos": 3,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s1-5",
+     "nombre": "Desafíos de Innovación en Ingeniería y Ciencias",
+     "codigo": "CD1100",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s1-6",
+     "nombre": "Aplicaciones de la Biología a la Ingeniería y Ciencias",
+     "codigo": "BT1211",
+     "creditos": 3,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 2,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s2-1",
+     "nombre": "Cálculo Diferencial e Integral",
+     "codigo": "MA1002",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s2-2",
+     "nombre": "Álgebra Lineal",
+     "codigo": "MA1102",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s2-3",
+     "nombre": "Introducción a la Física Moderna",
+     "codigo": "FI1100",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s2-4",
+     "nombre": "Introducción a la Programación",
+     "codigo": "CC1002",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s2-5",
+     "nombre": "Proyecto de Innovación en Ingeniería y Ciencias",
+     "codigo": "CD1201",
+     "creditos": 3,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s2-6",
+     "nombre": "Formación Integral DR/EH/FG/EI/FT",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 2,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 3,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s3-1",
+     "nombre": "Cálculo en Varias Variables",
+     "codigo": "MA2001",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s3-2",
+     "nombre": "Ecuaciones Diferenciales Ordinarias",
+     "codigo": "MA2601",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s3-3",
+     "nombre": "Mecánica",
+     "codigo": "FI2001",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s3-4",
+     "nombre": "Métodos Experimentales",
+     "codigo": "FI2003",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s3-5",
+     "nombre": "Química",
+     "codigo": "IQ2211",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 4,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s4-1",
+     "nombre": "Cálculo Avanzado y Aplicaciones",
+     "codigo": "MA2002",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s4-2",
+     "nombre": "Economía",
+     "codigo": "IN2201",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s4-3",
+     "nombre": "Electromagnetismo",
+     "codigo": "FI2002",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s4-4",
+     "nombre": "Termodinámica / Termodinámica Química",
+     "codigo": "FI2004/IQ2212",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s4-5",
+     "nombre": "Módulo Interdisciplinario",
+     "codigo": "CD2201",
+     "creditos": 3,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s4-6",
+     "nombre": "Formación Integral DR/EH/FG/EI/FT",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 4,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 5,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s5-1",
+     "nombre": "Probabilidades y Estadísticas",
+     "codigo": "MA3403",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s5-2",
+     "nombre": "Química Mineralógica",
+     "codigo": "MI3100",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s5-3",
+     "nombre": "Geología para Ingenieros",
+     "codigo": "MI3105",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s5-4",
+     "nombre": "Minería y Sustentabilidad",
+     "codigo": "MI3110",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s5-5",
+     "nombre": "Mecánica de Rocas I",
+     "codigo": "MI3115",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 6,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s6-1",
+     "nombre": "Optimización / Modelamiento y Optimización",
+     "codigo": "MA3701/IN3171",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s6-2",
+     "nombre": "Fisicoquímica Metalúrgica",
+     "codigo": "MI3230",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s6-3",
+     "nombre": "Introducción a Yacimientos Minerales",
+     "codigo": "MI3210",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s6-4",
+     "nombre": "Fenómenos de Transporte",
+     "codigo": "MI3235",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s6-5",
+     "nombre": "Mecánica de Rocas II",
+     "codigo": "MI3215",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 7,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s7-1",
+     "nombre": "Evaluación de Proyectos",
+     "codigo": "IN3301",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s7-2",
+     "nombre": "Metalurgia Extractiva",
+     "codigo": "MI4135",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s7-3",
+     "nombre": "Análisis Estadístico y Geoestadístico de Datos",
+     "codigo": "MI4040",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s7-4",
+     "nombre": "Fundamentos de Tecnología Minera",
+     "codigo": "MI4070",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s7-5",
+     "nombre": "Procesamiento de Minerales I",
+     "codigo": "MI4150",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s7-6",
+     "nombre": "Práctica Profesional I",
+     "codigo": "MI4901",
+     "creditos": 7,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 8,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s8-1",
+     "nombre": "Economía de Minerales",
+     "codigo": "MI4260",
+     "creditos": 3,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s8-2",
+     "nombre": "Evaluación de Yacimientos",
+     "codigo": "MI4240",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s8-3",
+     "nombre": "Legislación Minera",
+     "codigo": "MI4265",
+     "creditos": 3,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s8-4",
+     "nombre": "Medio Ambiente y Comunidades",
+     "codigo": "MI5160",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s8-5",
+     "nombre": "Procesamiento de Minerales II",
+     "codigo": "MI4250",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s8-6",
+     "nombre": "Formación Integral EH/FG",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 8,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s8-7",
+     "nombre": "Examen de Suficiencia en Inglés I",
+     "codigo": "EI1090",
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 9,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s9-1",
+     "nombre": "Diseño y Planificación de Minas Subterráneas",
+     "codigo": "MI5120",
+     "creditos": 6,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s9-2",
+     "nombre": "Diseño y Planificación de Minas a Cielo Abierto",
+     "codigo": "MI5115",
+     "creditos": 6,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s9-3",
+     "nombre": "Gestión de Operaciones Mineras",
+     "codigo": "MI5110",
+     "creditos": 3,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s9-4",
+     "nombre": "Seguridad Minera",
+     "codigo": "MI5260",
+     "creditos": 3,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s9-5",
+     "nombre": "Aguas y Relaves",
+     "codigo": "MI5170",
+     "creditos": 3,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s9-6",
+     "nombre": "Electivo de Especialidad",
+     "codigo": null,
+     "creditos": 9,
+     "semestre": 9,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s9-7",
+     "nombre": "Práctica Profesional II",
+     "codigo": "MI5902",
+     "creditos": 14,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 10,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s10-1",
+     "nombre": "Introducción al Trabajo de Título",
+     "codigo": "MI6907",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s10-2",
+     "nombre": "Taller de Proyecto Minero",
+     "codigo": "MI5210",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s10-3",
+     "nombre": "Evaluación y Gestión de Proyectos Mineros",
+     "codigo": "MI5265",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s10-4",
+     "nombre": "Electivo de Especialidad",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s10-5",
+     "nombre": "Electivo de Especialidad",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 11,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-minas-s11-1",
+     "nombre": "Trabajo de Título",
+     "codigo": "MI6919",
+     "creditos": 30,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-minas-s11-2",
+     "nombre": "Examen de Suficiencia en Inglés II",
+     "codigo": "EI2090",
+     "creditos": null,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  }
+ ]
+}

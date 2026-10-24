@@ -1,0 +1,21 @@
+# universidad: Universidad de Santiago de Chile
+# sigla: USACH
+# carrera: Ingeniería Civil en Electricidad
+# area: electrica
+# plan: Resolución N° 6670 año 2019, modificada por Resolución N° 6557 año 2022
+# duracion: 11
+# fuente: https://admision.usach.cl/sites/default/files/2025-11/16001_ING%20CIVIL%20EN%20ELECTRICIDAD.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (folleto admisión, noviembre 2025)
+# notas: Código DEMRE 16001. Malla sujeta a cambios.
+1 | Cálculo I para Ingeniería | Álgebra I para Ingeniería | Física I para Ingeniería | Introducción a la Química | Introducción al Diseño en Ingeniería
+2 | Cálculo II para Ingeniería | Álgebra II para Ingeniería | Física II para Ingeniería | Introducción a la Ingeniería Eléctrica | Fundamentos de Programación para Ingeniería | Inglés I
+3 | Cálculo para Ingeniería Eléctrica | Ecuaciones Diferenciales para Ingeniería Eléctrica | Física para Ingeniería Eléctrica | ~Asignatura de Formación Integral I | Fundamentos de Economía para Ingeniería | Inglés II
+4 | Ingeniería Termodinámica y Fluidos | Redes Eléctricas I | Ingeniería Electromagnética | Programación Aplicada en Ingeniería Eléctrica | Taller de Diseño en Ingeniería | Inglés III
+5 | Fundamentos de Probabilidad y Procesos Aleatorios | Redes Eléctricas II | Sostenibilidad en la Ingeniería Eléctrica | Sistemas Electrónicos | Análisis de Señales | Inglés IV
+6 | Métodos Numéricos y Optimización | Conversión Electromecánica de la Energía | Regulación y Seguridad Eléctrica | Sistemas Dinámicos | Sistemas Digitales y Microcontroladores | Inglés Comunicativo I
+7 | Electrónica de Potencia | Sistemas de Comunicaciones | ~Asignatura de Formación Integral II | Sistemas de Control | Sistemas de Energía Eléctrica | Inglés Comunicativo II
+8 | ~Electivo de Especialidad I | ~Electivo de Especialidad II | ~Electivo de Especialidad III | Finanzas | Evaluación de Proyectos | Inglés Comunicativo III
+9 | ~Electivo de Especialidad IV | ~Electivo de Especialidad V | ~Electivo de Especialidad VI | Pasantía Profesional | ~Electivo I | Inglés Comunicativo IV
+10 | ~Electivo de Especialidad VII | ~Electivo de Especialidad VIII | Proyecto de Titulación | Proyecto de Especialidad | ~Electivo II | ~Asignatura de Formación Integral III
+11 | Trabajo de Titulación

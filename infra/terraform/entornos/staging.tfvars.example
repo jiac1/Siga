@@ -1,0 +1,18 @@
+# Copiar como staging.tfvars y ajustar.  terraform apply -var-file=entornos/staging.tfvars
+ambiente           = "staging"
+aws_region         = "sa-east-1"
+dominio            = ""            # p. ej. "staging.suite.unab.cl" (requiere zona en Route 53)
+zona_route53_id    = ""
+rds_clase          = "db.t4g.micro"
+rds_multi_az       = false
+nat_unico          = true
+habilitar_waf      = false
+correo_alertas     = ""
+github_repositorio = ""            # p. ej. "mi-organizacion/Suite-Unab"
+remitente_correo   = ""            # p. ej. "no-responder@suite.unab.cl" (verificado en SES)
+
+servicios = {
+  core           = { cpu = 256, memoria = 512, minimo = 1, maximo = 2 }
+  "mapa-calor"   = { cpu = 512, memoria = 1024, minimo = 1, maximo = 2 }
+  "estres-malla" = { cpu = 256, memoria = 512, minimo = 1, maximo = 2 }
+}
