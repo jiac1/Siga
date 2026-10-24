@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, dev ]
 
 env:
   SUITE_SSO_SECRET: "pruebas-ci-suite-unab-secreto-de-al-menos-32-caracteres"
@@ -65,7 +65,5 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - working-directory: infra/terraform
         run: terraform init -backend=false
-        continue-on-error: true
       - working-directory: infra/terraform
         run: terraform validate
-        continue-on-error: true

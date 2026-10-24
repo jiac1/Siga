@@ -82,6 +82,7 @@ jobs:
             arn=$(nueva_revision "${PROYECTO}-${AMBIENTE}-${svc}-migrar" "$svc")
             echo "migrar_${svc//-/_}=$arn" >> "$GITHUB_OUTPUT"
           done
+          nueva_revision "${PROYECTO}-${AMBIENTE}-core-purga" "core" > /dev/null
 
       - name: Migraciones (tareas únicas)
         run: |

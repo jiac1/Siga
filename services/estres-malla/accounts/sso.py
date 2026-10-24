@@ -23,8 +23,19 @@ def rol_local(roles_suite) -> str:
 
 def sincronizar_usuario(request, identidad):
     actual = request.user if request.user.is_authenticated else None
+    rol_esperado = rol_local(identidad.roles)
+    org_slug = identidad.organizacion or ""
+    es_super = "superadmin" in identidad.roles
+
     if actual and actual.username == identidad.email:
-        return None
+        org_actual = actual.organization.slug if actual.organization else ""
+        if (
+            actual.rol == rol_esperado
+            and org_actual == org_slug
+            and actual.is_staff == es_super
+            and actual.is_superuser == es_super
+        ):
+            return None
 
     org = None
     if identidad.organizacion:
@@ -37,12 +48,13 @@ def sincronizar_usuario(request, identidad):
         username=identidad.email,
         defaults={
             "email": identidad.email, "first_name": nombre[:150], "last_name": apellido[:150],
-            "organization": org, "rol": rol_local(identidad.roles),
-            "is_staff": "superadmin" in identidad.roles, "is_superuser": "superadmin" in identidad.roles,
+            "organization": org, "rol": rol_esperado,
+            "is_staff": es_super, "is_superuser": es_super,
         },
     )
     if usuario.has_usable_password():
         usuario.set_unusable_password()  # en modo suite no se inicia sesión con clave local
         usuario.save(update_fields=["password"])
-    login(request, usuario, backend="django.contrib.auth.backends.ModelBackend")
+    if not actual or actual.pk != usuario.pk:
+        login(request, usuario, backend="django.contrib.auth.backends.ModelBackend")
     return None

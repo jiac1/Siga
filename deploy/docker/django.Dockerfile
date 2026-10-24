@@ -32,7 +32,7 @@ COPY deploy/docker/entrypoint.sh deploy/docker/asegurar_bd.py /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh \
  && DEBUG=True SECRET_KEY=collectstatic SUITE_SSO_SECRET=collectstatic-only-0123456789abcdef0123 \
     python manage.py collectstatic --noinput -v0 \
- && rm -f /app/db.sqlite3 && chown -R app:app /app
+ && mkdir -p /app/media /app/data && rm -f /app/db.sqlite3 && chown -R app:app /app
 USER app
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \

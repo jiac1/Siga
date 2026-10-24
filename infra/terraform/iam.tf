@@ -167,7 +167,7 @@ resource "aws_iam_role_policy" "github_despliegue" {
       },
       {
         Effect   = "Allow"
-        Action   = ["cloudfront:CreateInvalidation"]
+        Action   = ["cloudfront:CreateInvalidation", "cloudfront:GetDistribution"]
         Resource = aws_cloudfront_distribution.suite.arn
       }
     ]

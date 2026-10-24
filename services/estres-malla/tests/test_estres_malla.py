@@ -87,3 +87,24 @@ def test_modo_suite_aprovisiona_usuario_e_institucion(client, carrera):
 def test_modo_suite_sin_cookie_redirige_a_core(client):
     r = client.get("/")
     assert r.status_code == 302 and r["Location"].startswith("/core/ingresar/")
+
+
+@override_settings(SUITE_MODE="suite")
+def test_modo_suite_actualiza_rol_si_cambia_en_sso(client, carrera):
+    # Primera entrada como staff/docente
+    token1 = emitir_token(SuiteIdentity(sub="10", email="carlos@unab.cl", nombre="Carlos Soto", organizacion="unab",
+                                        roles=("staff",), modulos=("estres-malla",)))
+    client.cookies[COOKIE_NAME] = token1
+    r1 = client.get("/")
+    assert r1.status_code == 200
+    u = User.objects.get(username="carlos@unab.cl")
+    assert u.rol == User.Rol.DOCENTE
+
+    # Segunda entrada con rol promovido a admin_institucion
+    token2 = emitir_token(SuiteIdentity(sub="10", email="carlos@unab.cl", nombre="Carlos Soto", organizacion="unab",
+                                        roles=("admin_institucion",), modulos=("estres-malla",)))
+    client.cookies[COOKIE_NAME] = token2
+    r2 = client.get("/")
+    assert r2.status_code == 200
+    u.refresh_from_db()
+    assert u.rol == User.Rol.ORG_ADMIN

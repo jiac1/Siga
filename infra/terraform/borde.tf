@@ -126,7 +126,7 @@ resource "aws_lb_listener_rule" "servicio" {
   }
   condition {
     path_pattern {
-      values = ["/${each.value.prefijo}/*"]
+      values = ["/${each.value.prefijo}", "/${each.value.prefijo}/*"]
     }
   }
   condition {
@@ -229,9 +229,9 @@ resource "aws_cloudfront_distribution" "suite" {
   }
 
   dynamic "ordered_cache_behavior" {
-    for_each = local.servicios
+    for_each = local.patrones_cloudfront
     content {
-      path_pattern               = "/${ordered_cache_behavior.value.prefijo}/*"
+      path_pattern               = ordered_cache_behavior.value
       target_origin_id           = "servicios"
       viewer_protocol_policy     = "redirect-to-https"
       allowed_methods            = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]

@@ -37,4 +37,10 @@ locals {
       prioridad = 30
     }
   }
+
+  # Patrones de ruta para CloudFront (con y sin barra final para enrutar a Django)
+  patrones_cloudfront = merge(
+    { for k, v in local.servicios : "${k}_con_barra" => "/${v.prefijo}/*" },
+    { for k, v in local.servicios : "${k}_sin_barra" => "/${v.prefijo}" }
+  )
 }

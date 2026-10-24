@@ -84,6 +84,7 @@ def main():
         sys.stdout.reconfigure(encoding="utf-8")  # consola de Windows
     ap = argparse.ArgumentParser()
     ap.add_argument("--json", help="guardar resultados detallados en este archivo")
+    ap.add_argument("--min-f1", type=float, default=0.90, help="F1 mínimo requerido para la variante mejorada")
     args = ap.parse_args()
 
     base = cargar_base_unab()
@@ -142,6 +143,14 @@ def main():
             json.dumps({"resumen": resumen, "detalle": resultados, "ms": ms}, ensure_ascii=False, indent=1),
             encoding="utf-8",
         )
+    f1_mejorado = resumen["mejorado"]["f1"]
+    if f1_mejorado < args.min_f1:
+        print(
+            f"\nERROR: Desempeño insuficiente del motor de convalidación: "
+            f"F1={f1_mejorado:.3f} (umbral mínimo requerido: {args.min_f1:.3f})",
+            file=sys.stderr,
+        )
+        sys.exit(1)
 
 
 if __name__ == "__main__":

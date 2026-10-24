@@ -12,13 +12,14 @@ url = os.environ.get("DATABASE_URL", "")
 if not url.startswith(("postgres://", "postgresql://")):
     sys.exit(0)  # SQLite u otro motor: nada que hacer
 
-import psycopg  # noqa: E402
+from psycopg import errors, sql  # noqa: E402
 
 partes = urlparse(url)
 nombre = partes.path.lstrip("/")
 admin = partes._replace(path="/postgres").geturl()
 with psycopg.connect(admin, autocommit=True) as con:
-    existe = con.execute("SELECT 1 FROM pg_database WHERE datname = %s", (nombre,)).fetchone()
-    if not existe:
-        con.execute(f'CREATE DATABASE "{nombre}"')
+    try:
+        con.execute(sql.SQL('CREATE DATABASE {}').format(sql.Identifier(nombre)))
         print(f"Base de datos creada: {nombre}")
+    except errors.DuplicateDatabase:
+        pass
