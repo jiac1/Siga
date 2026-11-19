@@ -140,7 +140,7 @@ HTML_DSS_CICLO = f"""<!DOCTYPE html>
 }}
 </style></head><body>
 <div class="canvas" id="diagram">
-  <div class="title">Arquitectura SIGA-DSS (Suite UNAB) en Ciclo Cerrado</div>
+  <div class="title">Arquitectura SIGA-DSS en Ciclo Cerrado</div>
   <div class="gw-wrap">
     <div class="box box-navy gw-box">
       <h3>Orquestador Central y Gateway Único</h3>
@@ -224,7 +224,7 @@ HTML_C4_CONTENEDORES = f"""<!DOCTYPE html>
 .sso-box p {{ font-size: 13px; color: #1E293B; line-height: 1.4; }}
 </style></head><body>
 <div class="canvas" id="diagram">
-  <div class="title">Modelo C4 · Diagrama de Contenedores de SIGA-DSS (Suite UNAB)</div>
+  <div class="title">Modelo C4 · Diagrama de Contenedores de SIGA-DSS</div>
   <div class="actor-wrap">
     <div class="actor">Estudiante · Postulante · Docente / Jefatura · Secretaría Académica</div>
   </div>

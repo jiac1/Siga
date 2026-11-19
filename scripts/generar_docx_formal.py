@@ -1,4 +1,4 @@
-"""Compila los informes Markdown de SIGA-DSS (Suite UNAB) a Word (.docx) formal."""
+"""Compila los informes Markdown de SIGA-DSS a Word (.docx) formal."""
 
 from __future__ import annotations
 
@@ -60,6 +60,69 @@ def configure_row_pagination(row, is_header: bool = False) -> None:
     tr_pr.append(OxmlElement("w:cantSplit"))
     if is_header:
         tr_pr.append(OxmlElement("w:tblHeader"))
+
+
+def new_restarted_num_id(doc, style_name: str = "List Number") -> int | None:
+    """Crea un nuevo ``numId`` en ``numbering.xml`` reiniciando la numeración en 1."""
+    style = doc.styles[style_name]
+    p_pr = style._element.find(qn("w:pPr"))
+    if p_pr is None:
+        return None
+    num_pr = p_pr.find(qn("w:numPr"))
+    if num_pr is None:
+        return None
+    num_id_el = num_pr.find(qn("w:numId"))
+    if num_id_el is None:
+        return None
+
+    base_num_id = num_id_el.get(qn("w:val"))
+    numbering = doc.part.numbering_part.numbering_definitions._numbering
+    abstract_id = None
+    max_id = 0
+    for num_el in numbering.findall(qn("w:num")):
+        nid = int(num_el.get(qn("w:numId")))
+        max_id = max(max_id, nid)
+        if str(nid) == str(base_num_id):
+            abs_el = num_el.find(qn("w:abstractNumId"))
+            if abs_el is not None:
+                abstract_id = abs_el.get(qn("w:val"))
+
+    if abstract_id is None:
+        return None
+
+    nuevo_id = max_id + 1
+    nuevo_num = OxmlElement("w:num")
+    nuevo_num.set(qn("w:numId"), str(nuevo_id))
+
+    abs_ref = OxmlElement("w:abstractNumId")
+    abs_ref.set(qn("w:val"), str(abstract_id))
+    nuevo_num.append(abs_ref)
+
+    lvl_ov = OxmlElement("w:lvlOverride")
+    lvl_ov.set(qn("w:ilvl"), "0")
+    start_ov = OxmlElement("w:startOverride")
+    start_ov.set(qn("w:val"), "1")
+    lvl_ov.append(start_ov)
+    nuevo_num.append(lvl_ov)
+
+    numbering.append(nuevo_num)
+    return nuevo_id
+
+
+def apply_num_id(paragraph, num_id: int | None) -> None:
+    """Asigna un ``numId`` específico a un párrafo de lista numerada."""
+    if num_id is None:
+        return
+    p_pr = paragraph._p.get_or_add_pPr()
+    num_pr = p_pr.find(qn("w:numPr"))
+    if num_pr is None:
+        num_pr = OxmlElement("w:numPr")
+        p_pr.append(num_pr)
+    num_id_el = num_pr.find(qn("w:numId"))
+    if num_id_el is None:
+        num_id_el = OxmlElement("w:numId")
+        num_pr.append(num_id_el)
+    num_id_el.set(qn("w:val"), str(num_id))
 
 
 def add_page_number_footer(section, header_text: str) -> None:
@@ -262,7 +325,7 @@ def build_docx_from_md(
     integrantes: str | None = None,
     profesor_guia: str | None = None,
     fecha: str | None = None,
-    header_text: str = "SIGA-DSS (Suite UNAB) · Informe Final E3 (CINF200)",
+    header_text: str = "SIGA-DSS · Informe Final E3 (CINF200)",
 ) -> None:
     """Genera un documento Word con portada institucional UNAB desde un Markdown."""
     if integrantes is None:
@@ -358,6 +421,7 @@ def build_docx_from_md(
     in_table = False
     table_rows: list[list[str]] = []
     fig_counter = 0
+    active_list_num_id: int | None = None
 
     def flush_table() -> None:
         nonlocal in_table, table_rows
@@ -461,6 +525,8 @@ def build_docx_from_md(
             flush_table()
 
         if not stripped or stripped == "---":
+            if stripped == "---":
+                active_list_num_id = None
             idx += 1
             continue
 
@@ -532,24 +598,28 @@ def build_docx_from_md(
             continue
 
         if stripped.startswith("# "):
+            active_list_num_id = None
             p = doc.add_paragraph()
             p.paragraph_format.space_before = Pt(20)
             p.paragraph_format.space_after = Pt(8)
             p.paragraph_format.keep_with_next = True
             add_formatted_runs(p, stripped[2:], base_bold=True, font_size=16.5, base_color=NAVY)
         elif stripped.startswith("## "):
+            active_list_num_id = None
             p = doc.add_paragraph()
             p.paragraph_format.space_before = Pt(16)
             p.paragraph_format.space_after = Pt(6)
             p.paragraph_format.keep_with_next = True
             add_formatted_runs(p, stripped[3:], base_bold=True, font_size=13.5, base_color=NAVY)
         elif stripped.startswith("### "):
+            active_list_num_id = None
             p = doc.add_paragraph()
             p.paragraph_format.space_before = Pt(11)
             p.paragraph_format.space_after = Pt(4)
             p.paragraph_format.keep_with_next = True
             add_formatted_runs(p, stripped[4:], base_bold=True, font_size=11.5, base_color=SLATE)
         elif stripped.startswith("#### "):
+            active_list_num_id = None
             p = doc.add_paragraph()
             p.paragraph_format.space_before = Pt(8)
             p.paragraph_format.space_after = Pt(2)
@@ -566,11 +636,14 @@ def build_docx_from_md(
             p.paragraph_format.space_after = Pt(3)
             p.paragraph_format.line_spacing = 1.15
             add_formatted_runs(p, stripped[2:], font_size=10.2)
-        elif re.match(r"^\d+\.\s", stripped):
+        elif m_num := re.match(r"^(\d+)\.\s", stripped):
+            if int(m_num.group(1)) == 1 or active_list_num_id is None:
+                active_list_num_id = new_restarted_num_id(doc, "List Number")
             p = doc.add_paragraph(style="List Number")
+            apply_num_id(p, active_list_num_id)
             p.paragraph_format.space_after = Pt(3)
             p.paragraph_format.line_spacing = 1.15
-            text_num = re.sub(r"^\d+\.\s", "", stripped)
+            text_num = stripped[m_num.end() :]
             add_formatted_runs(p, text_num, font_size=10.2)
         else:
             p = doc.add_paragraph()
@@ -598,7 +671,7 @@ if __name__ == "__main__":
     build_docx_from_md(
         "docs/Memoria_Suite_UNAB_E1_E2_E3_Paper_Final.md",
         "docs/Memoria_Suite_UNAB_E1_E2_E3_Paper_Final.docx",
-        "SIGA-DSS (SUITE UNAB): SISTEMA DE SOPORTE A LA DECISIÓN MODULAR PARA LA "
+        "SIGA-DSS: SISTEMA DE SOPORTE A LA DECISIÓN MODULAR PARA LA "
         "OPTIMIZACIÓN DE TRAYECTORIAS CURRICULARES Y GESTIÓN DE CAPACIDAD ACADÉMICA",
         "INFORME FINAL CONSOLIDADO EN FORMATO PAPER (EVALUACIÓN E3 · E1 + E2 + E3)\n"
         "Formulación, Arquitectura, Optimización UCTP, Evaluación Técnica y Discusión Crítica\n"
@@ -606,5 +679,5 @@ if __name__ == "__main__":
         integrantes=integrantes_oficiales,
         profesor_guia=profesor_guia_oficial,
         fecha=fecha_oficial,
-        header_text="SIGA-DSS (Suite UNAB) · Paper Final E3 (CINF200)",
+        header_text="SIGA-DSS · Paper Final E3 (CINF200)",
     )
