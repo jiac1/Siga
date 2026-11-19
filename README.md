@@ -45,5 +45,6 @@ python -m pytest packages/suite-sso
 python scripts/evaluacion/evaluar_motor.py
 python scripts/evaluacion/evaluar_uctp.py
 python scripts/evaluacion/evaluar_itc2019.py --max-perfiles 30 --json docs/img/metricas_itc2019.json
+python scripts/evaluacion/evaluar_campus_itc2019.py --iteraciones 2500 --json docs/img/metricas_campus_itc2019.json
 python scripts/evaluacion/evaluar_suite.py
 ```
