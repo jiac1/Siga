@@ -108,3 +108,38 @@ def test_modo_suite_actualiza_rol_si_cambia_en_sso(client, carrera):
     assert r2.status_code == 200
     u.refresh_from_db()
     assert u.rol == User.Rol.ORG_ADMIN
+
+
+def test_calcular_metricas_grafo_curricular_analytics():
+    import pandas as pd
+    from malla.engine import calcular_metricas_grafo
+
+    # Cadena A101 -> B201 -> C301 y rama paralela B201 -> D302, más nodo aislado E101
+    df = pd.DataFrame([
+        {"codigo": "MAT101", "prerrequisitos": "—"},
+        {"codigo": "MAT201", "prerrequisitos": "MAT101"},
+        {"codigo": "INF301", "prerrequisitos": "MAT201"},
+        {"codigo": "INF302", "prerrequisitos": "MAT201"},
+        {"codigo": "HUM101", "prerrequisitos": "—"},
+    ])
+    res = calcular_metricas_grafo(df)
+    assert res["tiene_ciclos"] is False
+    assert res["n_aristas"] == 3
+    # MAT101 bloquea 3 cursos (MAT201, INF301, INF302) y está en camino de largo 3 -> c = 6
+    assert res["por_codigo"]["MAT101"] == {"factor_bloqueo": 3, "factor_retraso": 3, "complejidad": 6}
+    # MAT201 bloquea 2 cursos y está en camino de largo 3 -> c = 5
+    assert res["por_codigo"]["MAT201"] == {"factor_bloqueo": 2, "factor_retraso": 3, "complejidad": 5}
+    # HUM101 aislado -> b = 0, d = 1, c = 1
+    assert res["por_codigo"]["HUM101"] == {"factor_bloqueo": 0, "factor_retraso": 1, "complejidad": 1}
+
+
+def test_calcular_metricas_grafo_detecta_ciclo():
+    import pandas as pd
+    from malla.engine import calcular_metricas_grafo
+
+    df = pd.DataFrame([
+        {"codigo": "INF101", "prerrequisitos": "INF102"},
+        {"codigo": "INF102", "prerrequisitos": "INF101"},
+    ])
+    assert calcular_metricas_grafo(df)["tiene_ciclos"] is True
+

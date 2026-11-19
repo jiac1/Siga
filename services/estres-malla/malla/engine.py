@@ -186,13 +186,114 @@ def leer_actas(path) -> pd.DataFrame:
 
 
 # ─────────────────────────────────────────────────────────────────
+# Analítica Curricular sobre Grafos Dirigidos Acíclicos (Heileman et al., 2018)
+# ─────────────────────────────────────────────────────────────────
+_RE_CODIGO_PREREQ = re.compile(r"[A-Za-z]{2,6}\d{2,4}")
+
+
+def calcular_metricas_grafo(df_malla: pd.DataFrame) -> dict:
+    """Calcula métricas estructurales de Curricular Analytics sobre la malla como DAG.
+
+    A partir de la columna ``prerrequisitos`` construye el grafo dirigido ``G = (V, E)``
+    donde una arista ``(u, v)`` indica que ``u`` es prerrequisito de ``v``.
+
+    Args:
+        df_malla: DataFrame con columnas ``codigo`` y ``prerrequisitos``.
+
+    Returns:
+        Diccionario con:
+          - ``por_codigo``: mapa ``codigo -> {factor_bloqueo, factor_retraso, complejidad}``.
+          - ``complejidad_total``: suma ``C(G) = sum(c(v))``.
+          - ``tiene_ciclos``: booleano indicando si el grafo contiene ciclos.
+          - ``n_aristas``: cantidad de relaciones de prerrequisito válidas ``|E|``.
+    """
+    codigos = [str(c).strip().upper() for c in df_malla["codigo"].tolist()]
+    conjunto = set(codigos)
+    pre: dict[str, list[str]] = {c: [] for c in codigos}
+    dep: dict[str, list[str]] = {c: [] for c in codigos}
+
+    n_aristas = 0
+    for row in df_malla.itertuples():
+        cod = str(row.codigo).strip().upper()
+        raw_pre = str(getattr(row, "prerrequisitos", "") or "")
+        for token in dict.fromkeys(m.upper() for m in _RE_CODIGO_PREREQ.findall(raw_pre)):
+            if token in conjunto and token != cod:
+                pre[cod].append(token)
+                dep[token].append(cod)
+                n_aristas += 1
+
+    # Orden topológico de Kahn (O(|V| + |E|)) para verificar aciclicidad y DP de caminos críticos
+    grado_entrada = {c: len(pre[c]) for c in codigos}
+    cola = [c for c in codigos if grado_entrada[c] == 0]
+    orden: list[str] = []
+    idx_q = 0
+    while idx_q < len(cola):
+        u = cola[idx_q]
+        idx_q += 1
+        orden.append(u)
+        for v in dep[u]:
+            grado_entrada[v] -= 1
+            if grado_entrada[v] == 0:
+                cola.append(v)
+
+    tiene_ciclos = len(orden) != len(codigos)
+
+    # Factor de bloqueo b(v): número de descendientes alcanzables desde v
+    bloqueo: dict[str, int] = {}
+    for nodo in codigos:
+        visitados: set[str] = set()
+        pila = list(dep[nodo])
+        while pila:
+            actual = pila.pop()
+            if actual not in visitados:
+                visitados.add(actual)
+                pila.extend(dep[actual])
+        bloqueo[nodo] = len(visitados)
+
+    # Factor de retraso d(v): longitud del camino dirigido más largo que contiene a v
+    if tiene_ciclos:
+        retraso = {c: 1 for c in codigos}
+    else:
+        hasta = {c: 1 for c in codigos}
+        for u in orden:
+            for v in dep[u]:
+                if hasta[u] + 1 > hasta[v]:
+                    hasta[v] = hasta[u] + 1
+
+        desde = {c: 1 for c in codigos}
+        for u in reversed(orden):
+            for v in dep[u]:
+                if desde[v] + 1 > desde[u]:
+                    desde[u] = desde[v] + 1
+
+        retraso = {c: hasta[c] + desde[c] - 1 for c in codigos}
+
+    por_codigo = {
+        c: {
+            "factor_bloqueo": bloqueo[c],
+            "factor_retraso": retraso[c],
+            "complejidad": bloqueo[c] + retraso[c],
+        }
+        for c in codigos
+    }
+    complejidad_total = sum(m["complejidad"] for m in por_codigo.values())
+    return {
+        "por_codigo": por_codigo,
+        "complejidad_total": complejidad_total,
+        "tiene_ciclos": tiene_ciclos,
+        "n_aristas": n_aristas,
+    }
+
+
+# ─────────────────────────────────────────────────────────────────
 # Procesamiento completo
 # ─────────────────────────────────────────────────────────────────
 def procesar(path_malla, path_actas,
              estimaciones: dict = None, df_malla=None) -> dict:
     """
     Orquesta la lectura, unión y cálculo.
-    Retorna un dict con: df, estadisticas, js_data, n_criticas, pct_promedio
+    Retorna un dict con: df, estadisticas, js_data, n_criticas, pct_promedio,
+    complejidad_total y tiene_ciclos.
 
     `df_malla`: si se pasa (ya armado con malla_desde_catalogo), se usa tal
     cual y se ignora `path_malla` — así se puede generar el análisis con una
@@ -205,6 +306,9 @@ def procesar(path_malla, path_actas,
         df_malla = leer_malla(path_malla)
     df_actas  = leer_actas(path_actas)
 
+    metricas_dag = calcular_metricas_grafo(df_malla)
+    por_codigo = metricas_dag["por_codigo"]
+
     df = df_malla.merge(df_actas, on="codigo", how="left")
 
     # Completar sin datos
@@ -215,8 +319,12 @@ def procesar(path_malla, path_actas,
             df.at[idx, "fuente"]      = "Estimado contextual"
             df.at[idx, "es_estimado"] = True
 
-    df["pct_aprob"]   = df["pct_aprob"].astype(float)
-    df["es_estimado"] = df["es_estimado"].fillna(False).astype(bool)
+    df["pct_aprob"] = df["pct_aprob"].astype(float)
+    df["es_estimado"] = [bool(v) if pd.notna(v) else False for v in df["es_estimado"]]
+    df["factor_bloqueo"] = [por_codigo.get(str(c).strip().upper(), {}).get("factor_bloqueo", 0) for c in df["codigo"]]
+    df["factor_retraso"] = [por_codigo.get(str(c).strip().upper(), {}).get("factor_retraso", 1) for c in df["codigo"]]
+    df["complejidad"] = [por_codigo.get(str(c).strip().upper(), {}).get("complejidad", 1) for c in df["codigo"]]
+    df["indice_estres"] = (df["complejidad"] * (100.0 - df["pct_aprob"]) / 100.0).round(2)
 
     df_real    = df[~df["es_estimado"]]
     n_criticas = int((df_real["pct_aprob"] < 55).sum())
@@ -234,17 +342,24 @@ def procesar(path_malla, path_actas,
             "prereq":   str(r.prerrequisitos),
             "fuente":   str(r.fuente),
             "estimado": bool(r.es_estimado),
+            "bloqueo":  int(r.factor_bloqueo),
+            "retraso":  int(r.factor_retraso),
+            "complejidad": int(r.complejidad),
+            "estres":   float(r.indice_estres),
         }
         for r in df.itertuples()
     ]
 
     return {
-        "df":           df,
-        "js_data":      js_data,
-        "n_asignaturas": len(df),
-        "n_con_datos":  int(len(df_real)),
-        "n_criticas":   n_criticas,
-        "pct_promedio": pct_prom,
+        "df":                df,
+        "js_data":           js_data,
+        "n_asignaturas":     len(df),
+        "n_con_datos":       int(len(df_real)),
+        "n_criticas":        n_criticas,
+        "pct_promedio":      pct_prom,
+        "complejidad_total": metricas_dag["complejidad_total"],
+        "tiene_ciclos":      metricas_dag["tiene_ciclos"],
+        "n_aristas":         metricas_dag["n_aristas"],
     }
 
 
@@ -456,6 +571,8 @@ function ts(e,d,c){{
     <div class="tr"><span>Fuente</span><span class="tv">${{d.fuente}}</span></div>
     <div class="tr"><span>Riesgo</span><span class="tv" style="color:${{c.br}}">${{rk}}</span></div>
     <div class="tr"><span>Impacto</span><span class="tv">${{im}}</span></div>
+    <div class="tr"><span>Bloqueo b(v) / Retraso d(v)</span><span class="tv">${{d.bloqueo ?? 0}} / ${{d.retraso ?? 1}}</span></div>
+    <div class="tr"><span>Complejidad c(v)</span><span class="tv">${{d.complejidad ?? 1}} (estrés ${{d.estres ?? 0}})</span></div>
     <div class="tr"><span>Prerrequisitos</span><span class="tv">${{d.prereq}}</span></div>`;
   tt.style.display='block';tm(e);
 }}

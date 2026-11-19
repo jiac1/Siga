@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "identidad",
     "catalogo",
     "convalidaciones",
+    "horarios",
 ]
 
 MIDDLEWARE = [

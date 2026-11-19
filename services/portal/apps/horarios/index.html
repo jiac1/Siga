@@ -214,6 +214,25 @@ https://github.com/nodeca/pako/blob/main/LICENSE
     background:#fdf6e6;border:1px solid #efe2bf;color:#8a6d2a;border-radius:10px;
     padding:11px 14px;font-size:12.5px;margin-bottom:14px;display:none;
   }
+  .audit-box{
+    background:#fff4f2;border:1px solid #f0c2bb;color:#7a2318;border-radius:10px;
+    padding:11px 14px;font-size:12.5px;margin-bottom:14px;display:none;line-height:1.5;
+  }
+  .audit-box.ok{background:#edf7f2;border-color:#b8dfc9;color:#1b5c3a;}
+  .uctp-bar{
+    display:none;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;
+    padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+    font-size:12px;color:var(--text);
+  }
+  .uctp-pill{
+    display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;
+    background:var(--surface);border:1px solid var(--border);font-weight:600;font-size:11.5px;
+  }
+  .uctp-pill.opt{background:#e7f4ee;border-color:#a8d9be;color:#145a36;}
+  .btn:focus-visible,.tab:focus-visible,select:focus-visible,input:focus-visible{
+    outline:2px solid var(--teal);outline-offset:2px;
+  }
+  @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0.01ms!important;animation-duration:0.01ms!important;}}
 
   /* Toast */
   .toast{
@@ -235,6 +254,7 @@ https://github.com/nodeca/pako/blob/main/LICENSE
 <script>SuiteAuth.requireLogin({modulo: "horarios"});</script>
 <script src="../../shared/suite-bar.js" data-app="Generador de Horarios"></script>
 <script src="../../shared/malla-picker.js"></script>
+<script src="uctp-solver.js"></script>
 <div class="wrap">
 
   <header class="app">
@@ -289,22 +309,41 @@ https://github.com/nodeca/pako/blob/main/LICENSE
         <label for="selRango">Rango de fechas</label>
         <select id="selRango" disabled><option value="TODOS">Todos</option></select>
       </div>
-      <button class="btn btn-primary" id="btnGen" disabled>Generar horarios</button>
+      <div class="field">
+        <label for="selModoUCTP">Criterio UCTP</label>
+        <select id="selModoUCTP">
+          <option value="optimo" selected>Minimizar ventanas (Branch &amp; Bound)</option>
+          <option value="disjunto">Secciones disjuntas (óptimo por ronda)</option>
+          <option value="aleatorio">Línea base aleatoria (sin optimizar)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="selJornada">Preferencia jornada</label>
+        <select id="selJornada">
+          <option value="cualquiera" selected>Cualquiera</option>
+          <option value="manana">Mañana (M1–M6)</option>
+          <option value="tarde">Tarde (M7–M14)</option>
+          <option value="vespertino">Vespertino (M15–M20)</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary" id="btnGen" disabled>Generar horarios</button>
     </div>
     <div class="hint" id="hint">Esperando el archivo de datos…</div>
   </div>
 
   <div id="results">
-    <div class="note" id="note"></div>
+    <div class="note" id="note" role="status" aria-live="polite"></div>
+    <div class="audit-box" id="auditBox" role="status" aria-live="polite"></div>
     <div class="toolbar">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input type="text" id="search" placeholder="Buscar curso, profesor, sala o NRC…">
+        <input type="text" id="search" aria-label="Buscar curso, profesor, sala o NRC" placeholder="Buscar curso, profesor, sala o NRC…">
       </div>
       <div class="spacer"></div>
-      <button class="btn btn-ghost" id="btnExport">Descargar Excel</button>
+      <button type="button" class="btn btn-ghost" id="btnExport">Descargar Excel</button>
     </div>
     <div class="tabs" id="tabs"></div>
+    <div class="uctp-bar" id="uctpBar"></div>
     <div class="legend" id="legend"></div>
     <div class="grid-scroll"><div id="gridHost"></div></div>
   </div>
@@ -931,10 +970,10 @@ function opcionesPorCurso(secciones){
         if(results.length>=MAX_RESULTS_POR_CURSO) return;
         if(used.has(s.nrc)) continue;
         if(!s.acts.has(act)) continue;
-        // la sección no debe aportar actividades ya cubiertas por otra
+        // la sección no debe aportar actividades ya cubiertas ni chocar con bloques ya elegidos del mismo curso
         let conflictoAct=false;
         for(const a of s.acts) if(a!==act && chosen.some(c=>c.acts.has(a))) {conflictoAct=true;break;}
-        if(conflictoAct) continue;
+        if(conflictoAct || disjoint(s.slots, coveredSlots)) continue;
         used.add(s.nrc); chosen.push(s);
         const merged = new Set(coveredSlots); s.slots.forEach(x=>merged.add(x));
         bt(idx+1, used, chosen, merged);
@@ -976,18 +1015,53 @@ function construirHorarioSinTopes(cursos, dispoPorCurso){
   return bt(0,new Set()) ? sel : null;
 }
 
-// Genera varios horarios alumno reutilizando NRC lo menos posible (disjuntos).
-function generarHorariosAlumno(filas){
+function gridDeSeleccion(cursos, sel){
+  const g = grillaVacia();
+  for(const c of cursos){
+    const op = sel[c];
+    for(const s of op.secs){
+      for(const row of s.rows){
+        for(const seg of segmentosDeFila(row)){
+          const label = etiquetaDeFila(row, salaEdifTxt(seg));
+          for(const sl of seg.slots){ const [d,k]=sl.split("|"); g[d][+k].push(label); }
+        }
+      }
+    }
+  }
+  return g;
+}
+
+// Genera horarios de alumno sin topes (H1 = 0) optimizando restricciones blandas con SuiteUCTP.
+function generarHorariosAlumno(filas, modoUCTP, jornada){
   const secciones = construirSecciones(filas);
-  if(!secciones.length) return {horarios:[], maxH:0};
+  if(!secciones.length) return {horarios:[], maxH:0, stats:null};
   const opciones = opcionesPorCurso(secciones);
   const cursos = Object.keys(opciones).filter(c=>opciones[c].length>0);
-  if(!cursos.length) return {horarios:[], maxH:0};
+  if(!cursos.length) return {horarios:[], maxH:0, stats:null};
 
-  // cuello de botella: min de opciones disjuntas por curso (aprox = nº de opciones)
   const maxH = Math.min(...cursos.map(c=>opciones[c].length));
+  const modo = modoUCTP || "optimo";
+  const prefJornada = jornada || "cualquiera";
 
-  // copia de disponibilidad (consumimos NRC al usarlos)
+  if(modo !== "aleatorio" && window.SuiteUCTP){
+    const res = window.SuiteUCTP.optimizarBranchAndBound(cursos, opciones, {
+      jornada: prefJornada,
+      maxHorarios: modo === "disjunto" ? Math.min(maxH, 12) : 8,
+      disjuntos: modo === "disjunto",
+      maxNodos: 60000
+    });
+    const horarios = res.soluciones.map(sol => ({
+      grid: gridDeSeleccion(cursos, sol.sel),
+      metricas: sol.metricas
+    }));
+    return {
+      horarios,
+      maxH: modo === "disjunto" ? maxH : horarios.length,
+      stats: { nodosExplorados: res.nodosExplorados, nodosPodados: res.nodosPodados, modo }
+    };
+  }
+
+  // Línea base aleatoria (sin optimización de ventanas)
   const usadosNRC = new Set();
   const dispo = {};
   cursos.forEach(c=> dispo[c] = opciones[c].slice());
@@ -995,7 +1069,6 @@ function generarHorariosAlumno(filas){
   const horarios = [];
   const TOPE = Math.min(maxH, 12);
   for(let h=0; h<TOPE; h++){
-    // disponibilidad filtrada por NRC ya usados
     const disp = {};
     let viable = true;
     for(const c of cursos){
@@ -1010,23 +1083,16 @@ function generarHorariosAlumno(filas){
     }
     if(!sel) break;
 
-    // construir grilla del horario alumno
-    const g = grillaVacia();
+    const slotsUnion = new Set();
     for(const c of cursos){
       const op = sel[c];
       op.secs.forEach(s=> s.nrc && usadosNRC.add(s.nrc));
-      for(const s of op.secs){
-        for(const row of s.rows){
-          for(const seg of segmentosDeFila(row)){
-            const label = etiquetaDeFila(row, salaEdifTxt(seg));
-            for(const sl of seg.slots){ const [d,k]=sl.split("|"); g[d][+k].push(label); }
-          }
-        }
-      }
+      op.slots.forEach(x=> slotsUnion.add(x));
     }
-    horarios.push(g);
+    const metricas = window.SuiteUCTP ? window.SuiteUCTP.evaluarSlots(slotsUnion, { jornada: prefJornada }) : null;
+    horarios.push({ grid: gridDeSeleccion(cursos, sel), metricas });
   }
-  return {horarios, maxH};
+  return {horarios, maxH, stats: { nodosExplorados: 0, nodosPodados: 0, modo: "aleatorio" }};
 }
 
 // ============================================================
@@ -1211,7 +1277,24 @@ function renderTabs(){
 }
 function paintActive(){
   document.querySelectorAll(".tab").forEach((b,i)=>b.classList.toggle("active",i===activeTab));
-  document.getElementById("gridHost").innerHTML = gridToHTML(TABS[activeTab].grid);
+  const cur = TABS[activeTab];
+  document.getElementById("gridHost").innerHTML = gridToHTML(cur.grid);
+  const bar = document.getElementById("uctpBar");
+  if(bar){
+    if(cur.metricas){
+      const m = cur.metricas;
+      bar.style.display = "flex";
+      bar.innerHTML =
+        `<span class="uctp-pill opt">H1: 0 topes</span>` +
+        `<span class="uctp-pill">Ventanas: ${m.ventanas} mód.</span>` +
+        `<span class="uctp-pill">Días activos: ${m.diasActivos}</span>` +
+        (m.fueraJornada ? `<span class="uctp-pill">Fuera de jornada: ${m.fueraJornada}</span>` : "") +
+        `<span class="uctp-pill">Penalización f(x): ${m.penalizacion.toFixed(1)}</span>`;
+    } else {
+      bar.style.display = "none";
+      bar.innerHTML = "";
+    }
+  }
   aplicarBusqueda();
 }
 
@@ -1480,11 +1563,33 @@ function generar(){
 
       const especifico = MALLA && /^\d+$/.test(String(sem));
       const gCompleta = construirGrillaCompleta(filas);
-      let horarios = [], maxH = 0;
-      if(especifico){ ({horarios, maxH} = generarHorariosAlumno(filas)); }
+      const modoUCTP = document.getElementById("selModoUCTP")?.value || "optimo";
+      const jornada  = document.getElementById("selJornada")?.value || "cualquiera";
+      let horarios = [], maxH = 0, stats = null;
+      if(especifico){ ({horarios, maxH, stats} = generarHorariosAlumno(filas, modoUCTP, jornada)); }
 
-      TABS = [{name:"Horario completo", grid:gCompleta}];
-      horarios.forEach((g,i)=> TABS.push({name:`Horario alumno ${i+1}`, grid:g}));
+      // Auditoría de restricciones duras institucionales (H2 salas, H3 docentes)
+      const auditBox = document.getElementById("auditBox");
+      if(auditBox && window.SuiteUCTP){
+        const aud = window.SuiteUCTP.auditarConflictosOferta(filas, segmentosDeFila);
+        const nSalas = aud.salas.length, nDoc = aud.docentes.length;
+        if(nSalas === 0 && nDoc === 0){
+          auditBox.className = "audit-box ok";
+          auditBox.style.display = "block";
+          auditBox.textContent = "Auditoría UCTP (oferta filtrada): 0 conflictos de sala (H2) y 0 conflictos de docente (H3).";
+        } else {
+          auditBox.className = "audit-box";
+          auditBox.style.display = "block";
+          const resumen = [
+            ...aud.salas.slice(0, 4).map(c => `Sala ${c.recurso} (${c.dia} M${c.modulo}: NRCs ${c.nrcs.join(", ")})`),
+            ...aud.docentes.slice(0, 4).map(c => `Docente ${c.recurso} (${c.dia} M${c.modulo}: NRCs ${c.nrcs.join(", ")})`)
+          ].join(" · ");
+          auditBox.textContent = `Auditoría UCTP: ${nSalas} conflicto(s) de sala (H2) y ${nDoc} conflicto(s) de docente (H3) detectados. ${resumen}`;
+        }
+      }
+
+      TABS = [{name:"Horario completo", grid:gCompleta, metricas:null}];
+      horarios.forEach((h,i)=> TABS.push({name:`Horario alumno ${i+1}`, grid:h.grid, metricas:h.metricas}));
       activeTab = 0;
 
       renderLegend(filas, mencion);
@@ -1509,8 +1614,12 @@ function generar(){
       }
 
       document.getElementById("results").style.display="block";
+      const extraOpt = (especifico && horarios.length && horarios[0].metricas)
+        ? ` · Mejor opción: ${horarios[0].metricas.ventanas} ventana(s), ${horarios[0].metricas.diasActivos} día(s), f(x)=${horarios[0].metricas.penalizacion.toFixed(1)}` +
+          (stats && stats.nodosPodados ? ` (${stats.nodosPodados} nodos podados)` : "")
+        : "";
       hint.textContent = especifico
-        ? `Listo: ${nCursos} curso(s), ${horarios.length} horario(s) de alumno generado(s).`
+        ? `Listo: ${nCursos} curso(s), ${horarios.length} horario(s) de alumno generado(s)${extraOpt}.`
         : `Listo: horario completo de ${nCursos} curso(s).`;
       toast("Horarios generados.");
       sumarContador();

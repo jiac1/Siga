@@ -8,6 +8,7 @@ from suite_sso.views import salud
 
 from catalogo import views as catalogo
 from convalidaciones import views as conval
+from horarios import views as horarios_views
 from identidad.urls import api_urlpatterns as identidad_api
 
 api_v1 = identidad_api + [
@@ -17,6 +18,7 @@ api_v1 = identidad_api + [
     path("convalidaciones/sugerencias", conval.SugerenciasView.as_view(), name="api-sugerencias"),
     path("convalidaciones/solicitudes", conval.SolicitudesView.as_view(), name="api-solicitudes"),
     path("convalidaciones/solicitudes/<str:folio>", conval.EstadoSolicitudView.as_view(), name="api-solicitud-estado"),
+    path("horarios/optimizar", horarios_views.OptimizarHorariosView.as_view(), name="api-horarios-optimizar"),
     path("esquema", SpectacularAPIView.as_view(), name="api-esquema"),
     path("docs", SpectacularRedocView.as_view(url_name="api-esquema"), name="api-docs"),
 ]
