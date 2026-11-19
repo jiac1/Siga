@@ -466,9 +466,9 @@ En cumplimiento de las exigencias de integridad académica y transparencia de la
 ## 9. Referencias Bibliográficas
 
 * Bello, F. A., Köhler, J., Hinrechsen, K., Araya, V., Hidalgo, L., & Jara, J. L. (2020). Using machine learning methods to identify significant variables for the prediction of first-year Informatics Engineering students dropout. En *2020 39th International Conference of the Chilean Computer Science Society (SCCC)* (pp. 1–5). IEEE. https://doi.org/10.1109/SCCC51225.2020.9281280
+* Biblioteca del Congreso Nacional de Chile. (2024). *Ley N.º 21.719: Regula la protección y el tratamiento de los datos personales y crea la Agencia de Protección de Datos Personales*. Diario Oficial de la República de Chile.
 * Brooke, J. (1996). SUS: A "quick and dirty" usability scale. En P. W. Jordan, B. Thomas, I. L. McClelland, & B. Weerdmeester (Eds.), *Usability Evaluation in Industry* (pp. 189–194). Taylor & Francis.
 * Burke, E. K., McCollum, B., Meisels, A., Petrovic, S., & Qu, R. (2007). A graph-based hyper-heuristic for educational timetabling problems. *European Journal of Operational Research*, 176(1), 177–192. https://doi.org/10.1016/j.ejor.2005.08.012
-* Biblioteca del Congreso Nacional de Chile. (2024). *Ley N.º 21.719: Regula la protección y el tratamiento de los datos personales y crea la Agencia de Protección de Datos Personales*. Diario Oficial de la República de Chile.
 * Complete College America. (2018). *Guided Pathways to Success: Boosting On-Time Graduation and Reducing Excess Credits*. Complete College America Reports.
 * Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2022). *Introduction to Algorithms* (4th ed.). MIT Press.
 * González, L. E., & Uribe, D. (2018). Estimación del impacto financiero y social del abandono en la educación superior en Chile. *Revista Calidad en la Educación*, (48), 125–156.
