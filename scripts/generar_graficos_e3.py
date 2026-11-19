@@ -38,98 +38,138 @@ plt.rcParams.update(
 
 
 def _graficar_convalidacion(conv: dict, salida: Path) -> None:
-    """Genera el gráfico comparativo del motor de convalidación IA (2 paneles)."""
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.2, 4.8), dpi=300)
+    """Genera el gráfico comparativo del motor de convalidación IA (ablación, CV, IC95% y sensibilidad)."""
+    det_path = salida.parent / "metricas_convalidacion_detalladas.json"
+    if not det_path.exists():
+        return
+    det = json.loads(det_path.read_text(encoding="utf-8"))
+    res = det["resumen"]
+    cv = det["validacion_cruzada"]
+    sens = det["sensibilidad_umbral"]
 
-    metricas = ["Precisión", "Exhaust.\n(Recall)", "F1-Score", "Especif.", "Top-3"]
-    claves = ["precision", "exhaustividad", "f1", "especificidad", "acierto_top3"]
-    vals_base = [conv["global"]["base"][k] for k in claves]
-    vals_mej = [conv["global"]["mejorado"][k] for k in claves]
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.6, 5.0), dpi=300)
 
-    x = np.arange(len(metricas))
-    w = 0.36
-    b1 = ax1.bar(x - w / 2, vals_base, w, label="Línea base (solo contenido)", color=SLATE, edgecolor=NAVY, lw=0.6)
-    b2 = ax1.bar(x + w / 2, vals_mej, w, label="Motor híbrido mejorado", color=BLUE, edgecolor=NAVY, lw=0.6)
-    ax1.axhline(0.90, color=CRIMSON, linestyle="--", linewidth=1.2, label="Umbral CI (F1 ≥ 0,90)")
+    etiquetas = [
+        "Base\n(Contenidos)",
+        "LSA / SVD\nDenso (k=32)",
+        "Char n-gram\n(3–5 gramas)",
+        "Ablación\n(0 Conceptos)",
+        "LOPO CV\n(Poda Conc.)",
+        "LOPO CV\n(3 Pares)",
+        "Híbrido\nProducción",
+    ]
+    f1_vals = [
+        res["base"]["f1"],
+        res["lsa_svd"]["f1"],
+        res["char_ngram"]["f1"],
+        res["sin_conceptos"]["f1"],
+        cv["lopo_conceptos_podados"]["f1"],
+        cv["lopo_global"]["f1"],
+        res["mejorado"]["f1"],
+    ]
+    p_vals = [
+        res["base"]["precision"],
+        res["lsa_svd"]["precision"],
+        res["char_ngram"]["precision"],
+        res["sin_conceptos"]["precision"],
+        cv["lopo_conceptos_podados"]["precision"],
+        cv["lopo_global"]["precision"],
+        res["mejorado"]["precision"],
+    ]
+    r_vals = [
+        res["base"]["exhaustividad"],
+        res["lsa_svd"]["exhaustividad"],
+        res["char_ngram"]["exhaustividad"],
+        res["sin_conceptos"]["exhaustividad"],
+        cv["lopo_conceptos_podados"]["exhaustividad"],
+        cv["lopo_global"]["exhaustividad"],
+        res["mejorado"]["exhaustividad"],
+    ]
 
-    for bars in (b1, b2):
-        for bar in bars:
-            h = bar.get_height()
-            ax1.text(
-                bar.get_x() + bar.get_width() / 2,
-                min(h + 0.025, 1.04),
-                f"{h:.3f}",
-                ha="center",
-                va="bottom",
-                fontsize=7.8,
-                fontweight="bold",
-                color=NAVY,
+    x = np.arange(len(etiquetas))
+    w = 0.26
+    ax1.bar(x - w, p_vals, w, label="Precisión", color=TEAL, edgecolor=NAVY, lw=0.6)
+    ax1.bar(x, r_vals, w, label="Exhaustividad (Recall)", color=BLUE, edgecolor=NAVY, lw=0.6)
+    b_f1 = ax1.bar(x + w, f1_vals, w, label="F1-Score (con IC 95%)", color=NAVY, edgecolor=NAVY, lw=0.6)
+    ax1.axhline(0.90, color=CRIMSON, linestyle="--", linewidth=1.1, label="Compuerta CI (F1 ≥ 0,90)")
+
+    # Barras de error IC95% Bootstrap para las 5 variantes principales
+    claves_ic = ["base", "lsa_svd", "char_ngram", "sin_conceptos", None, None, "mejorado"]
+    for idx, k_ic in enumerate(claves_ic):
+        if k_ic is not None:
+            lo, hi = res[k_ic]["ic95"]["f1"]
+            val = f1_vals[idx]
+            ax1.errorbar(
+                x[idx] + w,
+                val,
+                yerr=[[max(0.0, val - lo)], [max(0.0, hi - val)]],
+                fmt="none",
+                ecolor=CRIMSON,
+                elinewidth=1.3,
+                capsize=3,
             )
+
+    for idx, (bar, v) in enumerate(zip(b_f1, f1_vals, strict=True)):
+        k_ic = claves_ic[idx]
+        top_y = max(v, res[k_ic]["ic95"]["f1"][1]) if k_ic is not None else v
+        ax1.text(
+            bar.get_x() + bar.get_width() / 2,
+            min(top_y + 0.022, 1.07),
+            f"{v:.3f}",
+            ha="center",
+            va="bottom",
+            fontsize=7.3,
+            fontweight="bold",
+            color=NAVY,
+        )
 
     ax1.set_xticks(x)
-    ax1.set_xticklabels(metricas, fontsize=8.8, color=NAVY)
-    ax1.set_ylim(0, 1.18)
-    ax1.set_ylabel("Puntaje (0 – 1)", fontsize=9.2, color=NAVY)
-    ax1.set_title("A. Desempeño Global (n = 112 asignaturas)", fontsize=10.5, fontweight="bold", color=NAVY, pad=28)
+    ax1.set_xticklabels(etiquetas, fontsize=7.6, color=NAVY)
+    ax1.set_ylim(0, 1.16)
+    ax1.set_ylabel("Puntaje (0 – 1)", fontsize=9.0, color=NAVY)
+    ax1.set_title(
+        "A. Comparativa Semántica, Ablación y Validación Cruzada (n = 112)",
+        fontsize=10.1,
+        fontweight="bold",
+        color=NAVY,
+        pad=10,
+    )
     ax1.grid(axis="y", linestyle="--", alpha=0.45)
-    ax1.legend(
-        loc="upper center",
-        bbox_to_anchor=(0.5, 1.13),
-        ncol=3,
-        fontsize=7.6,
-        frameon=True,
-        facecolor=BG_PANEL,
+    ax1.legend(loc="upper left", fontsize=7.6, frameon=True, facecolor=BG_PANEL)
+
+    taus = [s["umbral_tau"] for s in sens]
+    ax2.plot(taus, [s["f1"] for s in sens], marker="o", lw=2.2, color=NAVY, label="F1 Híbrido (con conceptos)")
+    ax2.plot(taus, [s["precision"] for s in sens], marker="s", lw=1.6, color=TEAL, label="Precisión Híbrido")
+    ax2.plot(taus, [s["exhaustividad"] for s in sens], marker="^", lw=1.6, color=BLUE, label="Exhaustividad Híbrido")
+    ax2.plot(taus, [s["especificidad"] for s in sens], marker="d", lw=1.6, color=AMBER, label="Especificidad (TN rate)")
+    ax2.plot(
+        taus,
+        [s["f1_sin_conceptos"] for s in sens],
+        marker="x",
+        lw=1.6,
+        linestyle=":",
+        color=SLATE,
+        label="F1 Ablación (sin conceptos)",
     )
+    ax2.axvline(0.45, color=CRIMSON, linestyle="--", lw=1.2, label="Umbral operativo τ = 0,45")
 
-    pares = list(conv["por_par"].keys())
-    etiquetas_par = [
-        "USACH Inf\n→ UNAB Inf\n(n=38)",
-        "UCHILE Comp\n→ UNAB Inf\n(n=32)",
-        "USACH Ind\n→ UNAB Ind\n(n=42)",
-    ]
-    p_vals = [conv["por_par"][p]["mejorado"]["precision"] for p in pares]
-    r_vals = [conv["por_par"][p]["mejorado"]["exhaustividad"] for p in pares]
-    f1_vals = [conv["por_par"][p]["mejorado"]["f1"] for p in pares]
-
-    x2 = np.arange(len(pares))
-    w2 = 0.25
-    g1 = ax2.bar(x2 - w2, p_vals, w2, label="Precisión", color=TEAL, edgecolor=NAVY, lw=0.6)
-    g2 = ax2.bar(x2, r_vals, w2, label="Exhaustividad", color=BLUE, edgecolor=NAVY, lw=0.6)
-    g3 = ax2.bar(x2 + w2, f1_vals, w2, label="F1-Score", color=NAVY, edgecolor=NAVY, lw=0.6)
-    ax2.axhline(0.90, color=CRIMSON, linestyle="--", linewidth=1.2)
-
-    for bars in (g1, g2, g3):
-        for bar in bars:
-            h = bar.get_height()
-            ax2.text(
-                bar.get_x() + bar.get_width() / 2,
-                h + 0.015,
-                f"{h:.2f}",
-                ha="center",
-                va="bottom",
-                fontsize=7.5,
-                fontweight="bold",
-                color=NAVY,
-            )
-
-    ax2.set_xticks(x2)
-    ax2.set_xticklabels(etiquetas_par, fontsize=8.5, color=NAVY)
-    ax2.set_ylim(0.75, 1.08)
-    ax2.set_ylabel("Puntaje (0,75 – 1,00)", fontsize=9.2, color=NAVY)
-    ax2.set_title("B. Motor Mejorado por Par de Carreras", fontsize=10.5, fontweight="bold", color=NAVY, pad=28)
-    ax2.grid(axis="y", linestyle="--", alpha=0.45)
-    ax2.legend(
-        loc="upper center",
-        bbox_to_anchor=(0.5, 1.13),
-        ncol=3,
-        fontsize=7.8,
-        frameon=True,
-        facecolor=BG_PANEL,
+    ax2.set_xlim(0.23, 0.62)
+    ax2.set_ylim(0.25, 1.05)
+    ax2.set_xlabel("Umbral de decisión τ (score mínimo para convalidar)", fontsize=8.8, color=NAVY)
+    ax2.set_ylabel("Puntaje (0,25 – 1,00)", fontsize=9.0, color=NAVY)
+    ax2.set_title(
+        "B. Sensibilidad al Umbral τ y Estabilidad del Punto Operativo",
+        fontsize=10.1,
+        fontweight="bold",
+        color=NAVY,
+        pad=10,
     )
+    ax2.grid(True, linestyle="--", alpha=0.45)
+    ax2.legend(loc="lower left", fontsize=7.6, frameon=True, facecolor=BG_PANEL)
 
     fig.suptitle(
-        "Evaluación del Motor Híbrido de Convalidación sobre Gold Standard (112 Asignaturas)",
-        fontsize=11.8,
+        "Evaluación Estadística del Motor de Convalidación: Alternativas Semánticas, Ablación, LOPO CV y Sensibilidad",
+        fontsize=11.3,
         fontweight="bold",
         color=NAVY,
         y=0.99,

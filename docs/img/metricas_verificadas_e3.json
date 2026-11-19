@@ -1,6 +1,6 @@
 {
   "curricular_analytics": {
-    "tiempo_total_ms": 21.2,
+    "tiempo_total_ms": 15.1,
     "mallas": [
       {
         "slug": "automatizacion-robotica",
@@ -268,14 +268,17 @@
   },
   "convalidacion": {
     "conceptos_version": "2026-10-21",
-    "tiempo_ambas_variantes_ms": 1150.4,
-    "tiempo_solo_mejorado_ms": 736.3,
+    "tiempo_ambas_variantes_ms": 1072.9,
+    "tiempo_solo_mejorado_ms": 719.3,
     "global": {
       "base": {
         "n": 112,
         "positivos": 69,
+        "negativos": 43,
         "tp": 1,
         "fp": 0,
+        "tn": 43,
+        "fn": 68,
         "precision": 1.0,
         "exhaustividad": 0.014,
         "f1": 0.029,
@@ -285,8 +288,11 @@
       "mejorado": {
         "n": 112,
         "positivos": 69,
+        "negativos": 43,
         "tp": 67,
         "fp": 4,
+        "tn": 39,
+        "fn": 2,
         "precision": 0.944,
         "exhaustividad": 0.971,
         "f1": 0.957,
@@ -299,8 +305,11 @@
         "base": {
           "n": 38,
           "positivos": 25,
+          "negativos": 13,
           "tp": 0,
           "fp": 0,
+          "tn": 13,
+          "fn": 25,
           "precision": 0.0,
           "exhaustividad": 0.0,
           "f1": 0.0,
@@ -310,8 +319,11 @@
         "mejorado": {
           "n": 38,
           "positivos": 25,
+          "negativos": 13,
           "tp": 25,
           "fp": 2,
+          "tn": 11,
+          "fn": 0,
           "precision": 0.926,
           "exhaustividad": 1.0,
           "f1": 0.962,
@@ -323,8 +335,11 @@
         "base": {
           "n": 32,
           "positivos": 17,
+          "negativos": 15,
           "tp": 0,
           "fp": 0,
+          "tn": 15,
+          "fn": 17,
           "precision": 0.0,
           "exhaustividad": 0.0,
           "f1": 0.0,
@@ -334,8 +349,11 @@
         "mejorado": {
           "n": 32,
           "positivos": 17,
+          "negativos": 15,
           "tp": 17,
           "fp": 1,
+          "tn": 14,
+          "fn": 0,
           "precision": 0.944,
           "exhaustividad": 1.0,
           "f1": 0.971,
@@ -347,8 +365,11 @@
         "base": {
           "n": 42,
           "positivos": 27,
+          "negativos": 15,
           "tp": 1,
           "fp": 0,
+          "tn": 15,
+          "fn": 26,
           "precision": 1.0,
           "exhaustividad": 0.037,
           "f1": 0.071,
@@ -358,8 +379,11 @@
         "mejorado": {
           "n": 42,
           "positivos": 27,
+          "negativos": 15,
           "tp": 25,
           "fp": 1,
+          "tn": 14,
+          "fn": 2,
           "precision": 0.962,
           "exhaustividad": 0.926,
           "f1": 0.943,
@@ -441,7 +465,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 25,
           "nodos_podados": 0,
-          "tiempo_ms": 0.551
+          "tiempo_ms": 0.57
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -451,7 +475,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 155,
           "nodos_podados": 2,
-          "tiempo_ms": 7.242
+          "tiempo_ms": 7.297
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -461,7 +485,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 2505,
           "nodos_podados": 0,
-          "tiempo_ms": 26.315
+          "tiempo_ms": 27.492
         }
       }
     },
@@ -480,7 +504,7 @@
           "exceso_carga": 2,
           "nodos_explorados": 40,
           "nodos_podados": 0,
-          "tiempo_ms": 1.053
+          "tiempo_ms": 1.081
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -490,7 +514,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 663,
           "nodos_podados": 13,
-          "tiempo_ms": 39.537
+          "tiempo_ms": 39.98
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -500,7 +524,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 2510,
           "nodos_podados": 0,
-          "tiempo_ms": 28.09
+          "tiempo_ms": 26.997
         }
       }
     },
@@ -519,7 +543,7 @@
           "exceso_carga": 6,
           "nodos_explorados": 35,
           "nodos_podados": 0,
-          "tiempo_ms": 1.323
+          "tiempo_ms": 1.306
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -529,7 +553,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 3564,
           "nodos_podados": 490,
-          "tiempo_ms": 205.668
+          "tiempo_ms": 192.824
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -539,7 +563,7 @@
           "exceso_carga": 10,
           "nodos_explorados": 2507,
           "nodos_podados": 0,
-          "tiempo_ms": 33.221
+          "tiempo_ms": 21.992
         }
       }
     },
@@ -558,7 +582,7 @@
           "exceso_carga": 2,
           "nodos_explorados": 30,
           "nodos_podados": 0,
-          "tiempo_ms": 0.885
+          "tiempo_ms": 0.793
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -568,7 +592,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 416,
           "nodos_podados": 8,
-          "tiempo_ms": 26.904
+          "tiempo_ms": 23.003
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -578,7 +602,7 @@
           "exceso_carga": 4,
           "nodos_explorados": 2506,
           "nodos_podados": 0,
-          "tiempo_ms": 23.15
+          "tiempo_ms": 21.099
         }
       }
     }
@@ -586,16 +610,16 @@
   "eficiencia_servicios": {
     "sso_hs256": {
       "iteraciones": 1000,
-      "us_por_emision_y_verificacion": 130.9
+      "us_por_emision_y_verificacion": 130.4
     },
     "mapa_calor": {
-      "tiempo_ms": 437.0,
+      "tiempo_ms": 285.3,
       "total_salas": 4,
       "total_edificios": 2,
       "total_registros": 4
     },
     "estres_malla": {
-      "tiempo_ms": 45.1,
+      "tiempo_ms": 20.6,
       "n_asignaturas": 10,
       "n_con_datos": 4,
       "n_criticas": 0,

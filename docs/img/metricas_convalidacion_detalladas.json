@@ -1,0 +1,2368 @@
+{
+  "resumen": {
+    "base": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 1,
+      "fp": 0,
+      "tn": 43,
+      "fn": 68,
+      "precision": 1.0,
+      "exhaustividad": 0.014,
+      "f1": 0.029,
+      "especificidad": 1.0,
+      "acierto_top3": 0.913,
+      "umbral": 0.45,
+      "ic95": {
+        "precision": [
+          0.0,
+          1.0
+        ],
+        "exhaustividad": [
+          0.0,
+          0.047
+        ],
+        "f1": [
+          0.0,
+          0.09
+        ],
+        "especificidad": [
+          1.0,
+          1.0
+        ],
+        "acierto_top3": [
+          0.841,
+          0.972
+        ]
+      }
+    },
+    "char_ngram": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 23,
+      "fp": 9,
+      "tn": 38,
+      "fn": 46,
+      "precision": 0.719,
+      "exhaustividad": 0.333,
+      "f1": 0.455,
+      "especificidad": 0.884,
+      "acierto_top3": 0.942,
+      "umbral": 0.18,
+      "ic95": {
+        "precision": [
+          0.562,
+          0.875
+        ],
+        "exhaustividad": [
+          0.228,
+          0.452
+        ],
+        "f1": [
+          0.333,
+          0.577
+        ],
+        "especificidad": [
+          0.778,
+          0.975
+        ],
+        "acierto_top3": [
+          0.878,
+          0.986
+        ]
+      }
+    },
+    "lsa_svd": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 38,
+      "fp": 70,
+      "tn": 4,
+      "fn": 31,
+      "precision": 0.352,
+      "exhaustividad": 0.551,
+      "f1": 0.429,
+      "especificidad": 0.093,
+      "acierto_top3": 0.913,
+      "umbral": 0.38,
+      "ic95": {
+        "precision": [
+          0.266,
+          0.445
+        ],
+        "exhaustividad": [
+          0.433,
+          0.671
+        ],
+        "f1": [
+          0.331,
+          0.531
+        ],
+        "especificidad": [
+          0.021,
+          0.194
+        ],
+        "acierto_top3": [
+          0.841,
+          0.973
+        ]
+      }
+    },
+    "sin_conceptos": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 48,
+      "fp": 7,
+      "tn": 39,
+      "fn": 21,
+      "precision": 0.873,
+      "exhaustividad": 0.696,
+      "f1": 0.774,
+      "especificidad": 0.907,
+      "acierto_top3": 0.986,
+      "umbral": 0.45,
+      "ic95": {
+        "precision": [
+          0.784,
+          0.949
+        ],
+        "exhaustividad": [
+          0.587,
+          0.803
+        ],
+        "f1": [
+          0.687,
+          0.853
+        ],
+        "especificidad": [
+          0.81,
+          0.979
+        ],
+        "acierto_top3": [
+          0.953,
+          1.0
+        ]
+      }
+    },
+    "mejorado": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 67,
+      "fp": 4,
+      "tn": 39,
+      "fn": 2,
+      "precision": 0.944,
+      "exhaustividad": 0.971,
+      "f1": 0.957,
+      "especificidad": 0.907,
+      "acierto_top3": 1.0,
+      "umbral": 0.45,
+      "ic95": {
+        "precision": [
+          0.886,
+          0.987
+        ],
+        "exhaustividad": [
+          0.925,
+          1.0
+        ],
+        "f1": [
+          0.919,
+          0.987
+        ],
+        "especificidad": [
+          0.81,
+          0.979
+        ],
+        "acierto_top3": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "validacion_cruzada": {
+    "lopo_global": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 66,
+      "fp": 2,
+      "tn": 41,
+      "fn": 3,
+      "precision": 0.971,
+      "exhaustividad": 0.957,
+      "f1": 0.964,
+      "especificidad": 0.953,
+      "acierto_top3": 1.0
+    },
+    "lopo_conceptos_podados": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 62,
+      "fp": 3,
+      "tn": 41,
+      "fn": 7,
+      "precision": 0.954,
+      "exhaustividad": 0.899,
+      "f1": 0.925,
+      "especificidad": 0.953,
+      "acierto_top3": 1.0
+    },
+    "lopo_por_par": [
+      {
+        "par_test": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "n_test": 38,
+        "tau_calibrado_en_train": 0.52,
+        "conceptos_activos_train": 32,
+        "f1_test": 0.98,
+        "precision_test": 0.962,
+        "exhaustividad_test": 1.0,
+        "f1_test_conceptos_podados": 0.898,
+        "precision_podados": 0.917,
+        "exhaustividad_podados": 0.88
+      },
+      {
+        "par_test": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "n_test": 32,
+        "tau_calibrado_en_train": 0.48,
+        "conceptos_activos_train": 35,
+        "f1_test": 0.971,
+        "precision_test": 0.944,
+        "exhaustividad_test": 1.0,
+        "f1_test_conceptos_podados": 0.971,
+        "precision_podados": 0.944,
+        "exhaustividad_podados": 1.0
+      },
+      {
+        "par_test": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "n_test": 42,
+        "tau_calibrado_en_train": 0.52,
+        "conceptos_activos_train": 30,
+        "f1_test": 0.941,
+        "precision_test": 1.0,
+        "exhaustividad_test": 0.889,
+        "f1_test_conceptos_podados": 0.92,
+        "precision_podados": 1.0,
+        "exhaustividad_podados": 0.852
+      }
+    ],
+    "cv5_global": {
+      "n": 112,
+      "positivos": 69,
+      "negativos": 43,
+      "tp": 66,
+      "fp": 3,
+      "tn": 40,
+      "fn": 3,
+      "precision": 0.957,
+      "exhaustividad": 0.957,
+      "f1": 0.957,
+      "especificidad": 0.93,
+      "acierto_top3": 1.0
+    },
+    "cv5_f1_media": 0.956,
+    "cv5_f1_std": 0.033
+  },
+  "sensibilidad_umbral": [
+    {
+      "umbral_tau": 0.25,
+      "precision": 0.684,
+      "exhaustividad": 0.971,
+      "f1": 0.802,
+      "especificidad": 0.302,
+      "f1_sin_conceptos": 0.675
+    },
+    {
+      "umbral_tau": 0.3,
+      "precision": 0.77,
+      "exhaustividad": 0.971,
+      "f1": 0.859,
+      "especificidad": 0.558,
+      "f1_sin_conceptos": 0.73
+    },
+    {
+      "umbral_tau": 0.35,
+      "precision": 0.798,
+      "exhaustividad": 0.971,
+      "f1": 0.876,
+      "especificidad": 0.605,
+      "f1_sin_conceptos": 0.736
+    },
+    {
+      "umbral_tau": 0.4,
+      "precision": 0.87,
+      "exhaustividad": 0.971,
+      "f1": 0.918,
+      "especificidad": 0.767,
+      "f1_sin_conceptos": 0.776
+    },
+    {
+      "umbral_tau": 0.45,
+      "precision": 0.944,
+      "exhaustividad": 0.971,
+      "f1": 0.957,
+      "especificidad": 0.907,
+      "f1_sin_conceptos": 0.774
+    },
+    {
+      "umbral_tau": 0.5,
+      "precision": 0.957,
+      "exhaustividad": 0.957,
+      "f1": 0.957,
+      "especificidad": 0.93,
+      "f1_sin_conceptos": 0.741
+    },
+    {
+      "umbral_tau": 0.55,
+      "precision": 0.985,
+      "exhaustividad": 0.942,
+      "f1": 0.963,
+      "especificidad": 0.977,
+      "f1_sin_conceptos": 0.721
+    },
+    {
+      "umbral_tau": 0.6,
+      "precision": 0.985,
+      "exhaustividad": 0.928,
+      "f1": 0.955,
+      "especificidad": 0.977,
+      "f1_sin_conceptos": 0.648
+    }
+  ],
+  "detalle": {
+    "base": [
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo I para Ingeniería",
+        "gold": "FMMP112",
+        "pred": null,
+        "score": 0.1275,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Álgebra I para Ingeniería",
+        "gold": "FMMP012",
+        "pred": null,
+        "score": 0.2076,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Física I para Ingeniería",
+        "gold": "CFIS310",
+        "pred": null,
+        "score": 0.1866,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Ingeniería y Sustentabilidad",
+        "gold": null,
+        "pred": null,
+        "score": 0.0536,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Diseño en Ingeniería",
+        "gold": "TDFI101",
+        "pred": null,
+        "score": 0.1598,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo II para Ingeniería",
+        "gold": "FMMP212",
+        "pred": null,
+        "score": 0.1275,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Álgebra II para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.2076,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Ingeniería Informática",
+        "gold": "TDFI101",
+        "pred": null,
+        "score": 0.2412,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Fundamentos de Programación para Ingeniería",
+        "gold": "TDFI102",
+        "pred": null,
+        "score": 0.1395,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo y Optimización Multivariable",
+        "gold": null,
+        "pred": null,
+        "score": 0.1057,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Estructura de Datos",
+        "gold": "PTEC101",
+        "pred": null,
+        "score": 0.156,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Electricidad, Magnetismo y Ondas",
+        "gold": "CFIS344",
+        "pred": null,
+        "score": 0.3427,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Diseño de Algoritmos",
+        "gold": "CINF101",
+        "pred": null,
+        "score": 0.418,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Fundamentos de Economía",
+        "gold": null,
+        "pred": null,
+        "score": 0.0741,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés I",
+        "gold": "ING119",
+        "pred": null,
+        "score": 0.1206,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés II",
+        "gold": "ING129",
+        "pred": null,
+        "score": 0.1206,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés III",
+        "gold": "ING239",
+        "pred": null,
+        "score": 0.1233,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés IV",
+        "gold": "ING249",
+        "pred": null,
+        "score": 0.1206,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Ecuaciones Diferenciales y Métodos Numéricos",
+        "gold": "FMMP312",
+        "pred": null,
+        "score": 0.2859,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Diseño de Bases de Datos",
+        "gold": "TDFI103",
+        "pred": null,
+        "score": 0.2366,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Paradigmas de Programación",
+        "gold": "PTEC102",
+        "pred": null,
+        "score": 0.3729,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Taller de Diseño en Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.2348,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Teoría de la Computación",
+        "gold": null,
+        "pred": null,
+        "score": 0.1952,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Fundamentos de Ingeniería de Software",
+        "gold": "PTEC105",
+        "pred": null,
+        "score": 0.2766,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Bases de Datos Avanzadas",
+        "gold": null,
+        "pred": null,
+        "score": 0.1181,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Procesamiento de Señales e Imágenes",
+        "gold": null,
+        "pred": null,
+        "score": 0.1863,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Técnicas de Ingeniería de Software",
+        "gold": "PTEC106",
+        "pred": null,
+        "score": 0.2745,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Modelos y Simulación",
+        "gold": null,
+        "pred": null,
+        "score": 0.0552,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Métodos de Optimización",
+        "gold": "CINF105",
+        "pred": null,
+        "score": 0.1752,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Redes de Comunicación",
+        "gold": "PTEC104",
+        "pred": null,
+        "score": 0.1114,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Gestión de Proyectos TI",
+        "gold": "CINF108",
+        "pred": null,
+        "score": 0.2168,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Innovación y Emprendimiento",
+        "gold": "ACAD101",
+        "pred": null,
+        "score": 0.2976,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Ciberseguridad",
+        "gold": "PTEC107",
+        "pred": null,
+        "score": 0.2823,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Gestión de Empresas TI",
+        "gold": null,
+        "pred": null,
+        "score": 0.1296,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Proyecto de Ingeniería de Software",
+        "gold": null,
+        "pred": null,
+        "score": 0.2787,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Aprendizaje Automático",
+        "gold": "CINF104",
+        "pred": null,
+        "score": 0.2269,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Seminario de Informática",
+        "gold": null,
+        "pred": null,
+        "score": 0.2136,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Trabajo de Titulación",
+        "gold": null,
+        "pred": null,
+        "score": 0.0401,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Cálculo",
+        "gold": "FMMP012",
+        "pred": null,
+        "score": 0.1302,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Álgebra",
+        "gold": "FMMP012",
+        "pred": null,
+        "score": 0.209,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Física Clásica",
+        "gold": "CFIS310",
+        "pred": null,
+        "score": 0.1292,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Aplicaciones de la Biología a la Ingeniería y Ciencias",
+        "gold": null,
+        "pred": null,
+        "score": 0.1506,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo Diferencial e Integral",
+        "gold": [
+          "FMMP112",
+          "FMMP212"
+        ],
+        "pred": null,
+        "score": 0.2589,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Álgebra Lineal",
+        "gold": null,
+        "pred": null,
+        "score": 0.2381,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Física Moderna",
+        "gold": null,
+        "pred": null,
+        "score": 0.1424,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Programación",
+        "gold": "TDFI102",
+        "pred": null,
+        "score": 0.1809,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo en Varias Variables",
+        "gold": null,
+        "pred": null,
+        "score": 0.2752,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Ecuaciones Diferenciales Ordinarias",
+        "gold": "FMMP312",
+        "pred": null,
+        "score": 0.3049,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Mecánica",
+        "gold": "CFIS332",
+        "pred": null,
+        "score": 0.272,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Métodos Experimentales",
+        "gold": "CFIS328",
+        "pred": null,
+        "score": 0.2873,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Química",
+        "gold": "QUIM090",
+        "pred": null,
+        "score": 0.2942,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo Avanzado y Aplicaciones",
+        "gold": null,
+        "pred": null,
+        "score": 0.1169,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Economía",
+        "gold": null,
+        "pred": null,
+        "score": 0.044,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Electromagnetismo",
+        "gold": "CFIS344",
+        "pred": null,
+        "score": 0.0799,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Termodinámica / Termodinámica Química",
+        "gold": null,
+        "pred": null,
+        "score": 0.2086,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Módulo Interdisciplinario",
+        "gold": null,
+        "pred": null,
+        "score": 0.0602,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Modelación y Computación Gráfica para Ingenieros",
+        "gold": null,
+        "pred": null,
+        "score": 0.1542,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Algoritmos y Estructuras de Datos",
+        "gold": "PTEC101",
+        "pred": null,
+        "score": 0.3628,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Matemáticas Discretas para la Computación",
+        "gold": null,
+        "pred": null,
+        "score": 0.1668,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Bases de Datos",
+        "gold": "TDFI103",
+        "pred": null,
+        "score": 0.2262,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Teoría de la Computación",
+        "gold": null,
+        "pred": null,
+        "score": 0.1952,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Minería de Datos",
+        "gold": "TDFI105",
+        "pred": null,
+        "score": 0.3723,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Ingeniería de Software",
+        "gold": "PTEC105",
+        "pred": null,
+        "score": 0.267,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Diseño y Análisis de Algoritmos",
+        "gold": "CINF101",
+        "pred": null,
+        "score": 0.4268,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Lenguajes de Programación",
+        "gold": "PTEC102",
+        "pred": null,
+        "score": 0.1609,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Redes",
+        "gold": "PTEC104",
+        "pred": null,
+        "score": 0.121,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Núcleo Gestión para Ingenieros",
+        "gold": null,
+        "pred": null,
+        "score": 0.0525,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Trabajo de Título",
+        "gold": null,
+        "pred": null,
+        "score": 0.2255,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Proyecto de Software",
+        "gold": null,
+        "pred": null,
+        "score": 0.2552,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Trabajo de Título",
+        "gold": null,
+        "pred": null,
+        "score": 0.2369,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Cálculo I para Ingeniería",
+        "gold": "FMMP112",
+        "pred": null,
+        "score": 0.1477,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Álgebra I para Ingeniería",
+        "gold": "FMMP012",
+        "pred": null,
+        "score": 0.2213,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Física I para Ingeniería",
+        "gold": "CFIS310",
+        "pred": null,
+        "score": 0.1968,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Introducción a la Ingeniería Industrial",
+        "gold": "TDFI101",
+        "pred": null,
+        "score": 0.1556,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Introducción al Diseño en la Ingeniería",
+        "gold": "TDFI101",
+        "pred": null,
+        "score": 0.1605,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Cálculo II para Ingeniería",
+        "gold": "FMMP212",
+        "pred": null,
+        "score": 0.1477,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Álgebra II para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.2213,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Química General y Termodinámica",
+        "gold": "QUIM090",
+        "pred": null,
+        "score": 0.3744,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Fundamentos de Programación para Ingeniería",
+        "gold": "TDFI102",
+        "pred": null,
+        "score": 0.2252,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Cálculo III para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.1464,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Ecuaciones Diferenciales para Ingeniería",
+        "gold": "FMMP312",
+        "pred": null,
+        "score": 0.3275,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Física Moderna",
+        "gold": null,
+        "pred": null,
+        "score": 0.147,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Fundamentos de Economía para Ingeniería",
+        "gold": "CIND110",
+        "pred": null,
+        "score": 0.2378,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés I",
+        "gold": "ING119",
+        "pred": null,
+        "score": 0.1365,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés II",
+        "gold": "ING129",
+        "pred": null,
+        "score": 0.1365,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés III",
+        "gold": "ING239",
+        "pred": null,
+        "score": 0.1454,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés IV",
+        "gold": "ING249",
+        "pred": null,
+        "score": 0.1365,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Métodos Numéricos para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.1895,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Ingeniería de Sistemas",
+        "gold": null,
+        "pred": null,
+        "score": 0.1482,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Diseño Digital Computacional",
+        "gold": null,
+        "pred": null,
+        "score": 0.2326,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Taller de Diseño en Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.2348,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Operaciones y Procesos Industriales",
+        "gold": "CIND100",
+        "pred": null,
+        "score": 0.1396,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Administración",
+        "gold": null,
+        "pred": null,
+        "score": 0.209,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Microeconomía",
+        "gold": "CIND110",
+        "pred": null,
+        "score": 0.2308,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Taller de Gestión y Liderazgo",
+        "gold": null,
+        "pred": null,
+        "score": 0.3375,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Macroeconomía",
+        "gold": null,
+        "pred": null,
+        "score": 0.2375,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Contabilidad y Costos",
+        "gold": "IIND412",
+        "pred": null,
+        "score": 0.3209,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Investigación de Operaciones",
+        "gold": "CIND112",
+        "pred": null,
+        "score": 0.2734,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Introducción a la Innovación",
+        "gold": "ACAD101",
+        "pred": null,
+        "score": 0.164,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Marketing Estratégico",
+        "gold": "CIND218",
+        "pred": null,
+        "score": 0.3372,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Modelos Estocásticos",
+        "gold": "CIND211",
+        "pred": null,
+        "score": 0.3094,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Finanzas",
+        "gold": "CIND216",
+        "pred": null,
+        "score": 0.3507,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Sistemas de Información",
+        "gold": null,
+        "pred": null,
+        "score": 0.1241,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Análisis de Decisiones",
+        "gold": "CIND212",
+        "pred": null,
+        "score": 0.1072,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Modelamiento de Sistemas Complejos",
+        "gold": null,
+        "pred": null,
+        "score": 0.1904,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inteligencia de Negocios",
+        "gold": "CIND217",
+        "pred": null,
+        "score": 0.1635,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Evaluación de Proyectos",
+        "gold": "IIND414",
+        "pred": null,
+        "score": 0.2305,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Gestión de Personas",
+        "gold": null,
+        "pred": null,
+        "score": 0.1314,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Gestión Estratégica",
+        "gold": "CIND219",
+        "pred": null,
+        "score": 0.2708,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Proyecto de Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.1763,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Gestión de Cadena de Suministro",
+        "gold": "CIND113",
+        "pred": "CIND113",
+        "score": 0.454,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Trabajo de Titulación",
+        "gold": null,
+        "pred": null,
+        "score": 0.0414,
+        "ok": true,
+        "top3": false
+      }
+    ],
+    "mejorado": [
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo I para Ingeniería",
+        "gold": "FMMP112",
+        "pred": "FMMP112",
+        "score": 0.9583,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Álgebra I para Ingeniería",
+        "gold": "FMMP012",
+        "pred": "FMMP012",
+        "score": 0.9,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Física I para Ingeniería",
+        "gold": "CFIS310",
+        "pred": "CFIS310",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Ingeniería y Sustentabilidad",
+        "gold": null,
+        "pred": null,
+        "score": 0.2957,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Diseño en Ingeniería",
+        "gold": "TDFI101",
+        "pred": "TDFI101",
+        "score": 0.98,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo II para Ingeniería",
+        "gold": "FMMP212",
+        "pred": "FMMP212",
+        "score": 0.9593,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Álgebra II para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.2076,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Ingeniería Informática",
+        "gold": "TDFI101",
+        "pred": "TDFI101",
+        "score": 0.9614,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Fundamentos de Programación para Ingeniería",
+        "gold": "TDFI102",
+        "pred": "TDFI102",
+        "score": 0.9565,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo y Optimización Multivariable",
+        "gold": null,
+        "pred": null,
+        "score": 0.3573,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Estructura de Datos",
+        "gold": "PTEC101",
+        "pred": "PTEC101",
+        "score": 0.97,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Electricidad, Magnetismo y Ondas",
+        "gold": "CFIS344",
+        "pred": "CFIS344",
+        "score": 0.9775,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Diseño de Algoritmos",
+        "gold": "CINF101",
+        "pred": "CINF101",
+        "score": 0.9875,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Fundamentos de Economía",
+        "gold": null,
+        "pred": null,
+        "score": 0.274,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés I",
+        "gold": "ING119",
+        "pred": "ING119",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés II",
+        "gold": "ING129",
+        "pred": "ING129",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés III",
+        "gold": "ING239",
+        "pred": "ING239",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Inglés IV",
+        "gold": "ING249",
+        "pred": "ING249",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Ecuaciones Diferenciales y Métodos Numéricos",
+        "gold": "FMMP312",
+        "pred": "FMMP312",
+        "score": 0.9566,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Diseño de Bases de Datos",
+        "gold": "TDFI103",
+        "pred": "TDFI103",
+        "score": 0.9786,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Paradigmas de Programación",
+        "gold": "PTEC102",
+        "pred": "PTEC102",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Taller de Diseño en Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.3703,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Teoría de la Computación",
+        "gold": null,
+        "pred": null,
+        "score": 0.3549,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Fundamentos de Ingeniería de Software",
+        "gold": "PTEC105",
+        "pred": "PTEC105",
+        "score": 0.98,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Bases de Datos Avanzadas",
+        "gold": null,
+        "pred": "TDFI103",
+        "score": 0.4788,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Procesamiento de Señales e Imágenes",
+        "gold": null,
+        "pred": null,
+        "score": 0.1863,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Técnicas de Ingeniería de Software",
+        "gold": "PTEC106",
+        "pred": "PTEC106",
+        "score": 0.9856,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Modelos y Simulación",
+        "gold": null,
+        "pred": null,
+        "score": 0.0552,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Métodos de Optimización",
+        "gold": "CINF105",
+        "pred": "CINF105",
+        "score": 0.9757,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Redes de Comunicación",
+        "gold": "PTEC104",
+        "pred": "PTEC104",
+        "score": 0.9,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Gestión de Proyectos TI",
+        "gold": "CINF108",
+        "pred": "CINF108",
+        "score": 0.9386,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Innovación y Emprendimiento",
+        "gold": "ACAD101",
+        "pred": "ACAD101",
+        "score": 0.9762,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Ciberseguridad",
+        "gold": "PTEC107",
+        "pred": "PTEC107",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Gestión de Empresas TI",
+        "gold": null,
+        "pred": null,
+        "score": 0.2925,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Proyecto de Ingeniería de Software",
+        "gold": null,
+        "pred": "PTEC105",
+        "score": 0.678,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Aprendizaje Automático",
+        "gold": "CINF104",
+        "pred": "CINF104",
+        "score": 0.9,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Seminario de Informática",
+        "gold": null,
+        "pred": null,
+        "score": 0.3094,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Trabajo de Titulación",
+        "gold": null,
+        "pred": null,
+        "score": 0.0401,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Cálculo",
+        "gold": "FMMP012",
+        "pred": "FMMP012",
+        "score": 0.9377,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Álgebra",
+        "gold": "FMMP012",
+        "pred": "FMMP012",
+        "score": 0.933,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Física Clásica",
+        "gold": "CFIS310",
+        "pred": "CFIS310",
+        "score": 0.9531,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Aplicaciones de la Biología a la Ingeniería y Ciencias",
+        "gold": null,
+        "pred": null,
+        "score": 0.2797,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo Diferencial e Integral",
+        "gold": [
+          "FMMP112",
+          "FMMP212"
+        ],
+        "pred": "FMMP212",
+        "score": 0.9768,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Álgebra Lineal",
+        "gold": null,
+        "pred": null,
+        "score": 0.2569,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Física Moderna",
+        "gold": null,
+        "pred": null,
+        "score": 0.4279,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción a la Programación",
+        "gold": "TDFI102",
+        "pred": "TDFI102",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo en Varias Variables",
+        "gold": null,
+        "pred": null,
+        "score": 0.325,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Ecuaciones Diferenciales Ordinarias",
+        "gold": "FMMP312",
+        "pred": "FMMP312",
+        "score": 0.9591,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Mecánica",
+        "gold": "CFIS332",
+        "pred": "CFIS332",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Métodos Experimentales",
+        "gold": "CFIS328",
+        "pred": "CFIS328",
+        "score": 0.5215,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Química",
+        "gold": "QUIM090",
+        "pred": "QUIM090",
+        "score": 0.9689,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Cálculo Avanzado y Aplicaciones",
+        "gold": null,
+        "pred": null,
+        "score": 0.2879,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Economía",
+        "gold": null,
+        "pred": null,
+        "score": 0.044,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Electromagnetismo",
+        "gold": "CFIS344",
+        "pred": "CFIS344",
+        "score": 0.9,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Termodinámica / Termodinámica Química",
+        "gold": null,
+        "pred": null,
+        "score": 0.4097,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Módulo Interdisciplinario",
+        "gold": null,
+        "pred": null,
+        "score": 0.0602,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Modelación y Computación Gráfica para Ingenieros",
+        "gold": null,
+        "pred": null,
+        "score": 0.2516,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Algoritmos y Estructuras de Datos",
+        "gold": "PTEC101",
+        "pred": "PTEC101",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Matemáticas Discretas para la Computación",
+        "gold": null,
+        "pred": null,
+        "score": 0.2906,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Bases de Datos",
+        "gold": "TDFI103",
+        "pred": "TDFI103",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Teoría de la Computación",
+        "gold": null,
+        "pred": null,
+        "score": 0.3549,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Minería de Datos",
+        "gold": "TDFI105",
+        "pred": "TDFI105",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Ingeniería de Software",
+        "gold": "PTEC105",
+        "pred": "PTEC105",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Diseño y Análisis de Algoritmos",
+        "gold": "CINF101",
+        "pred": "CINF101",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Lenguajes de Programación",
+        "gold": "PTEC102",
+        "pred": "PTEC102",
+        "score": 0.9384,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Redes",
+        "gold": "PTEC104",
+        "pred": "PTEC104",
+        "score": 0.9,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Núcleo Gestión para Ingenieros",
+        "gold": null,
+        "pred": null,
+        "score": 0.168,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Introducción al Trabajo de Título",
+        "gold": null,
+        "pred": null,
+        "score": 0.3654,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Proyecto de Software",
+        "gold": null,
+        "pred": "PTEC105",
+        "score": 0.5117,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Trabajo de Título",
+        "gold": null,
+        "pred": null,
+        "score": 0.4026,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Cálculo I para Ingeniería",
+        "gold": "FMMP112",
+        "pred": "FMMP112",
+        "score": 0.9583,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Álgebra I para Ingeniería",
+        "gold": "FMMP012",
+        "pred": "FMMP012",
+        "score": 0.9,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Física I para Ingeniería",
+        "gold": "CFIS310",
+        "pred": "CFIS310",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Introducción a la Ingeniería Industrial",
+        "gold": "TDFI101",
+        "pred": "TDFI101",
+        "score": 0.9747,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Introducción al Diseño en la Ingeniería",
+        "gold": "TDFI101",
+        "pred": "TDFI101",
+        "score": 0.6083,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Cálculo II para Ingeniería",
+        "gold": "FMMP212",
+        "pred": "FMMP212",
+        "score": 0.9593,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Álgebra II para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.2213,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Química General y Termodinámica",
+        "gold": "QUIM090",
+        "pred": "QUIM090",
+        "score": 0.9505,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Fundamentos de Programación para Ingeniería",
+        "gold": "TDFI102",
+        "pred": "TDFI102",
+        "score": 0.9565,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Cálculo III para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.4112,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Ecuaciones Diferenciales para Ingeniería",
+        "gold": "FMMP312",
+        "pred": "FMMP312",
+        "score": 0.9767,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Física Moderna",
+        "gold": null,
+        "pred": "CFIS310",
+        "score": 0.5014,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Fundamentos de Economía para Ingeniería",
+        "gold": "CIND110",
+        "pred": "CIND110",
+        "score": 0.9712,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés I",
+        "gold": "ING119",
+        "pred": "ING119",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés II",
+        "gold": "ING129",
+        "pred": "ING129",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés III",
+        "gold": "ING239",
+        "pred": "ING239",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inglés IV",
+        "gold": "ING249",
+        "pred": "ING249",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Métodos Numéricos para Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.2948,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Ingeniería de Sistemas",
+        "gold": null,
+        "pred": null,
+        "score": 0.4033,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Diseño Digital Computacional",
+        "gold": null,
+        "pred": null,
+        "score": 0.2346,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Taller de Diseño en Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.3703,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Operaciones y Procesos Industriales",
+        "gold": "CIND100",
+        "pred": "CIND100",
+        "score": 0.5698,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Administración",
+        "gold": null,
+        "pred": null,
+        "score": 0.209,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Microeconomía",
+        "gold": "CIND110",
+        "pred": "CIND110",
+        "score": 0.9,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Taller de Gestión y Liderazgo",
+        "gold": null,
+        "pred": null,
+        "score": 0.3785,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Macroeconomía",
+        "gold": null,
+        "pred": null,
+        "score": 0.2375,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Contabilidad y Costos",
+        "gold": "IIND412",
+        "pred": "IIND412",
+        "score": 0.9423,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Investigación de Operaciones",
+        "gold": "CIND112",
+        "pred": "CIND112",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Introducción a la Innovación",
+        "gold": "ACAD101",
+        "pred": null,
+        "score": 0.3324,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Marketing Estratégico",
+        "gold": "CIND218",
+        "pred": "CIND218",
+        "score": 0.9781,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Modelos Estocásticos",
+        "gold": "CIND211",
+        "pred": "CIND211",
+        "score": 0.4814,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Finanzas",
+        "gold": "CIND216",
+        "pred": "CIND216",
+        "score": 0.9692,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Sistemas de Información",
+        "gold": null,
+        "pred": null,
+        "score": 0.2838,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Análisis de Decisiones",
+        "gold": "CIND212",
+        "pred": null,
+        "score": 0.2251,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Modelamiento de Sistemas Complejos",
+        "gold": null,
+        "pred": null,
+        "score": 0.1904,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Inteligencia de Negocios",
+        "gold": "CIND217",
+        "pred": "CIND217",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Evaluación de Proyectos",
+        "gold": "IIND414",
+        "pred": "IIND414",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Gestión de Personas",
+        "gold": null,
+        "pred": null,
+        "score": 0.2944,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Gestión Estratégica",
+        "gold": "CIND219",
+        "pred": "CIND219",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Proyecto de Ingeniería",
+        "gold": null,
+        "pred": null,
+        "score": 0.4054,
+        "ok": true,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Gestión de Cadena de Suministro",
+        "gold": "CIND113",
+        "pred": "CIND113",
+        "score": 1.0,
+        "ok": true,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Trabajo de Titulación",
+        "gold": null,
+        "pred": null,
+        "score": 0.0414,
+        "ok": true,
+        "top3": false
+      }
+    ]
+  },
+  "ms": 2762.96
+}

@@ -35,7 +35,7 @@ deploy/ infra/         Docker, nginx, Terraform (AWS)
 ## Pruebas y evaluación reproducible
 
 ```bash
-# Suite automatizada (65 pruebas: suite-sso, core, mapa-calor, estres-malla)
+# Suite automatizada (69 pruebas: suite-sso, core, mapa-calor, estres-malla)
 python -m pytest packages/suite-sso
 (cd services/core && python -m pytest)
 (cd services/mapa-calor && python -m pytest)
