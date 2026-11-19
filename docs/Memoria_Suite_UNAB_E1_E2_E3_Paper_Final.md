@@ -314,18 +314,18 @@ Los resultados sobre datos reales internacionales confirman las ventajas estruct
 
 #### 5.3.3. Asignación Global de Campus (*Master Timetabling*) sobre ITC-2019
 
-Además de la toma de horarios individual por estudiante, `services/core/horarios/campus.py` extiende el motor para construir la **tabla maestra completa de un campus** (decidiendo simultáneamente bloque horario y sala física para todas las clases). La evaluación mediante `scripts/evaluacion/evaluar_campus_itc2019.py` sobre los tres campus completos ITC-2019 (garantizando $H_2=0$, capacidad física respetada y restricciones duras `NotOverlap` / `SameAttendees`) demuestra mejoras sustanciales frente a la asignación constructiva aleatoria:
+Además de la toma de horarios individual por estudiante (síncrona sub-segundo), `services/core/horarios/campus.py` y los endpoints asíncronos `/core/api/v1/horarios/campus/planificar` + `trabajos/<uuid>` (`TrabajoPlanificacionCampus`) extienden el motor para construir la **tabla maestra completa de un campus** con presupuesto configurable de hasta **300 segundos** y **notificación automática por correo** al término. La evaluación mediante `scripts/evaluacion/evaluar_campus_itc2019.py` sobre los tres campus completos ITC-2019 (garantizando $H_2=0$, capacidad física respetada y restricciones duras `NotOverlap` / `SameAttendees`) demuestra mejoras sustanciales frente a la asignación constructiva aleatoria:
 
 | Campus ITC-2019 (Clases · Salas · Estudiantes) | Algoritmo | Clases Asignadas | $H_2$ / Cap. / Dist. | Conflictos Est. ($\Delta$) | Objetivo Global ($\Delta$) | Tiempo (ms) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Masaryk Univ. · Informática** (`muni-fi-spr16`) · 574 clases · 35 salas · 1.543 est. | Aleatorio (base) | 501/574 (87,3%) | 0 / 0 / 0 | 10.949 | 62.758,0 | 82,0 |
-| | **Global MRV + SA** | **521/574 (90,8%)** | **0 / 0 / 0** | **6.583 (-39,9%)** | **41.975,0 (-33,1%)** | 2.895,1 |
-| **Masaryk Univ. · Cs. Deporte** (`muni-fsps-spr17`) · 519 clases · 44 salas · 865 est. | Aleatorio (base) | 447/519 (86,1%) | 0 / 0 / 0 | 5.437 | 47.415,0 | 56,9 |
-| | **Global MRV + SA** | **470/519 (90,6%)** | **0 / 0 / 0** | **1.264 (-76,8%)** | **27.360,0 (-42,3%)** | 504,1 |
-| **Yachay Tech · Pregrado** (`yach-fal17`) · 415 clases · 33 salas · 821 est. | Aleatorio (base) | 352/415 (84,8%) | 0 / 0 / 0 | 6.985 | 46.522,0 | 120,4 |
-| | **Global MRV + SA** | **371/415 (89,4%)** | **0 / 0 / 0** | **2.780 (-60,2%)** | **28.512,0 (-38,7%)** | 651,4 |
+| **Masaryk Univ. · Informática** (`muni-fi-spr16`) · 574 clases · 35 salas · 1.543 est. | Aleatorio (base) | 501/574 (87,3%) | 0 / 0 / 0 | 10.949 | 62.758,0 | 90,6 |
+| | **Global MRV + SA** | **521/574 (90,8%)** | **0 / 0 / 0** | **6.602 (-39,7%)** | **41.982,0 (-33,1%)** | 3.910,6 |
+| **Masaryk Univ. · Cs. Deporte** (`muni-fsps-spr17`) · 519 clases · 44 salas · 865 est. | Aleatorio (base) | 447/519 (86,1%) | 0 / 0 / 0 | 5.437 | 47.415,0 | 68,0 |
+| | **Global MRV + SA** | **470/519 (90,6%)** | **0 / 0 / 0** | **1.227 (-77,4%)** | **27.271,0 (-42,5%)** | 695,2 |
+| **Yachay Tech · Pregrado** (`yach-fal17`) · 415 clases · 33 salas · 821 est. | Aleatorio (base) | 352/415 (84,8%) | 0 / 0 / 0 | 6.985 | 46.522,0 | 135,0 |
+| | **Global MRV + SA** | **370/415 (89,2%)** | **0 / 0 / 0** | **2.802 (-59,9%)** | **29.012,0 (-37,6%)** | 956,9 |
 
-En los tres campus reales, la combinación de constructivo MRV con reubicación 1-a-1 y *Simulated Annealing* global incrementa la cobertura de clases programadas hasta **89,4%–90,8%** sin violar ninguna restricción física o de distribución, reduciendo simultáneamente los **conflictos estudiantiles agregados entre 39,9% y 76,8%** en tiempos entre **0,50 s y 2,90 s**.
+En los tres campus reales, la combinación de constructivo MRV con reubicación 1-a-1 (*bumping*), *swap* de pares y *Simulated Annealing* global incrementa la cobertura de clases programadas hasta **89,2%–90,8%** sin violar ninguna restricción física o de distribución, reduciendo simultáneamente los **conflictos estudiantiles agregados entre 39,7% y 77,4%** en tiempos entre **0,70 s y 3,91 s**.
 
 ### 5.4. Calidad de Software, Pruebas Automatizadas y Reproducibilidad
 
@@ -336,10 +336,10 @@ La Tabla 5 detalla la cobertura de pruebas automatizadas verificada localmente y
 | `packages/suite-sso` | 6 | Firma JWT HS256, expiración, rechazo de otra audiencia, rechazo `alg=none`, longitud mínima secreto (≥32 chars). | ✅ 6/6 |
 | `services/core` (Identidad & Convalid.) | 24 | Login SSO `HttpOnly`, RBAC por rol, licencias parciales/vencidas, *Open Redirect*, validación RUT mod-11, recálculo server-side, precedentes, purga Ley 21.719. | ✅ 24/24 |
 | `services/core` (Motor IA & DAG) | 9 | Stemming/tokenización, conceptos, simetría Dice-IDF, umbral CI ($F_1 \ge 0,85$/$0,90$), aciclicidad y cascada en las 10 mallas UNAB. | ✅ 9/9 |
-| `services/core` (Motor UCTP, Campus & API) | 12 | Auditoría $H_2/H_3$, cobertura exacta sin choque interno, optimalidad B&B vs. fuerza bruta, SA, vacantes sin tope, infactibilidad, modo disjunto, API `/horarios/optimizar` con auth SSO y solver global de campus (`H2=0`, `H3=0`, capacidad, `NotOverlap` y adaptador Banner). | ✅ 12/12 |
+| `services/core` (Motor UCTP, Campus & API) | 13 | Auditoría $H_2/H_3$, B&B vs. fuerza bruta, SA, vacantes sin tope, modo disjunto, API `/horarios/optimizar`, solver global de campus (`H2=0`, `H3=0`, capacidad, `NotOverlap`) y API asíncrona `/horarios/campus/planificar` con envío de correo. | ✅ 13/13 |
 | `services/mapa-calor` | 6 | Salud *stateless*, parseo Banner/Syaproa `.xlsx`, rechazo extensiones inválidas, exigencia SSO y licencia en modo suite. | ✅ 6/6 |
 | `services/estres-malla` | 11 | Multi-tenant isolation (404 cross-org), *Open Redirect*, catálogo JSON, sincronización dinámica de rol SSO, cálculo exacto $b(v), d(v), c(v)$ y detección de ciclos. | ✅ 11/11 |
-| **Total Suite Automatizada** | **68** | **Pruebas unitarias, integración, seguridad, DAG, IA y optimización UCTP/Campus + Ruff 0 errores** | **✅ 68/68** |
+| **Total Suite Automatizada** | **69** | **Pruebas unitarias, integración, seguridad, DAG, IA y optimización UCTP/Campus + Ruff 0 errores** | **✅ 69/69** |
 
 ### 5.5. Evaluación de Ciberseguridad y Privacidad
 

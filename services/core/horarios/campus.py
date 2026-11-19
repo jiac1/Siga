@@ -470,8 +470,9 @@ def resolver_campus_global(
     temp_inicial: float = 25.0,
     enfriamiento: float = 0.998,
     semilla: int = 42,
+    presupuesto_segundos: float = 30.0,
 ) -> ResultadoCampus:
-    """Resuelve la tabla maestra de campus mediante constructivo MRV + Simulated Annealing global."""
+    """Resuelve la tabla maestra de campus mediante MRV + reubicación + Simulated Annealing."""
     t0 = time.perf_counter()
     rng = random.Random(semilla)
     salas_map = {s.id_sala: s for s in salas}
@@ -527,74 +528,50 @@ def resolver_campus_global(
                 slots_por_curso,
             )
 
-    # Fase 1b: Reubicación 1-a-1 (bumping) para insertar clases no asignadas
-    no_asignadas = [c for c in orden if c.id_clase not in estado and dominios[c.id_clase]]
-    for cls in no_asignadas:
-        insertada = False
-        for cand in dominios[cls.id_clase]:
-            bloqueantes: set[str] = set()
-            if cand.id_sala:
-                for d, m in cand.slots:
-                    occ = uso_sala.get((cand.id_sala, d, m))
-                    if occ:
-                        bloqueantes.add(occ)
-            if cls.docente:
-                for d, m in cand.slots:
-                    occ = uso_docente.get((cls.docente, d, m))
-                    if occ:
-                        bloqueantes.add(occ)
-            if len(bloqueantes) != 1:
-                continue
-            blk_id = next(iter(bloqueantes))
-            blk_cls = clases_map[blk_id]
-            if blk_id in vecinos_no_overlap.get(cls.id_clase, ()):
-                continue
-            prev_blk = estado[blk_id]
-            _aplicar_asignacion(
-                blk_id,
-                None,
-                blk_cls.docente,
-                estado,
-                uso_sala,
-                uso_docente,
-                clases_por_curso,
-                blk_cls.curso,
-                slots_por_curso,
-            )
-            reubicado = False
-            if _es_factible_asignar(cls.id_clase, cand, cls.docente, uso_sala, uso_docente, estado, vecinos_no_overlap):
+    # Fase 1b: Reubicación 1-a-1 iterativa (bumping) para insertar clases no asignadas
+    while time.perf_counter() - t0 < presupuesto_segundos:
+        hubo_mejora = False
+        no_asignadas = [c for c in orden if c.id_clase not in estado and dominios[c.id_clase]]
+        for cls in no_asignadas:
+            if time.perf_counter() - t0 >= presupuesto_segundos:
+                break
+            for cand in dominios[cls.id_clase]:
+                bloqueantes: set[str] = set()
+                if cand.id_sala:
+                    for d, m in cand.slots:
+                        occ = uso_sala.get((cand.id_sala, d, m))
+                        if occ:
+                            bloqueantes.add(occ)
+                if cls.docente:
+                    for d, m in cand.slots:
+                        occ = uso_docente.get((cls.docente, d, m))
+                        if occ:
+                            bloqueantes.add(occ)
+                if len(bloqueantes) != 1:
+                    continue
+                blk_id = next(iter(bloqueantes))
+                blk_cls = clases_map[blk_id]
+                if blk_id in vecinos_no_overlap.get(cls.id_clase, ()):
+                    continue
+                prev_blk = estado[blk_id]
                 _aplicar_asignacion(
-                    cls.id_clase,
-                    cand,
-                    cls.docente,
+                    blk_id,
+                    None,
+                    blk_cls.docente,
                     estado,
                     uso_sala,
                     uso_docente,
                     clases_por_curso,
-                    cls.curso,
+                    blk_cls.curso,
                     slots_por_curso,
                 )
-                for alt_blk in dominios[blk_id]:
-                    if alt_blk != prev_blk and _es_factible_asignar(
-                        blk_id, alt_blk, blk_cls.docente, uso_sala, uso_docente, estado, vecinos_no_overlap
-                    ):
-                        _aplicar_asignacion(
-                            blk_id,
-                            alt_blk,
-                            blk_cls.docente,
-                            estado,
-                            uso_sala,
-                            uso_docente,
-                            clases_por_curso,
-                            blk_cls.curso,
-                            slots_por_curso,
-                        )
-                        reubicado = True
-                        break
-                if not reubicado:
+                reubicado = False
+                if _es_factible_asignar(
+                    cls.id_clase, cand, cls.docente, uso_sala, uso_docente, estado, vecinos_no_overlap
+                ):
                     _aplicar_asignacion(
                         cls.id_clase,
-                        None,
+                        cand,
                         cls.docente,
                         estado,
                         uso_sala,
@@ -603,32 +580,188 @@ def resolver_campus_global(
                         cls.curso,
                         slots_por_curso,
                     )
-            if reubicado:
-                insertada = True
-                break
-            _aplicar_asignacion(
-                blk_id,
-                prev_blk,
-                blk_cls.docente,
-                estado,
-                uso_sala,
-                uso_docente,
-                clases_por_curso,
-                blk_cls.curso,
-                slots_por_curso,
-            )
-        if insertada:
-            continue
+                    for alt_blk in dominios[blk_id]:
+                        if alt_blk != prev_blk and _es_factible_asignar(
+                            blk_id, alt_blk, blk_cls.docente, uso_sala, uso_docente, estado, vecinos_no_overlap
+                        ):
+                            _aplicar_asignacion(
+                                blk_id,
+                                alt_blk,
+                                blk_cls.docente,
+                                estado,
+                                uso_sala,
+                                uso_docente,
+                                clases_por_curso,
+                                blk_cls.curso,
+                                slots_por_curso,
+                            )
+                            reubicado = True
+                            break
+                    if not reubicado:
+                        _aplicar_asignacion(
+                            cls.id_clase,
+                            None,
+                            cls.docente,
+                            estado,
+                            uso_sala,
+                            uso_docente,
+                            clases_por_curso,
+                            cls.curso,
+                            slots_por_curso,
+                        )
+                if reubicado:
+                    hubo_mejora = True
+                    break
+                _aplicar_asignacion(
+                    blk_id,
+                    prev_blk,
+                    blk_cls.docente,
+                    estado,
+                    uso_sala,
+                    uso_docente,
+                    clases_por_curso,
+                    blk_cls.curso,
+                    slots_por_curso,
+                )
+        if not hubo_mejora:
+            break
 
     mejor_estado = dict(estado)
     mejor_metricas, mejor_obj = _evaluar_campus(clases, mejor_estado, salas_map, co_estudiantes, restricciones)
     actual_obj = mejor_obj
 
-    # Fase 2: Simulated Annealing sobre relocalizaciones factibles (incluye insertar no asignadas)
+    # Fase 2: Simulated Annealing con relocalización y swap de pares bajo presupuesto de tiempo
     candidatos_movibles = [c for c in clases if len(dominios[c.id_clase]) > 1 or c.id_clase not in estado]
     if candidatos_movibles and iteraciones > 0:
         temp = temp_inicial
-        for _ in range(iteraciones):
+        for it in range(iteraciones):
+            if (it & 15) == 0 and (time.perf_counter() - t0) >= presupuesto_segundos:
+                break
+
+            # Con probabilidad 25% intentar swap entre dos clases asignadas cuando hay suficientes clases
+            if len(estado) >= 2 and rng.random() < 0.25:
+                ids_asig = list(estado.keys())
+                id_a = rng.choice(ids_asig)
+                id_b = rng.choice(ids_asig)
+                if id_a == id_b:
+                    temp *= enfriamiento
+                    continue
+                cls_a, cls_b = clases_map[id_a], clases_map[id_b]
+                prev_a, prev_b = estado[id_a], estado[id_b]
+                cands_a = [c for c in dominios[id_a] if c.slots == prev_b.slots and c.id_sala == prev_b.id_sala]
+                cands_b = [c for c in dominios[id_b] if c.slots == prev_a.slots and c.id_sala == prev_a.id_sala]
+                if not cands_a or not cands_b:
+                    temp *= enfriamiento
+                    continue
+                _aplicar_asignacion(
+                    id_a,
+                    None,
+                    cls_a.docente,
+                    estado,
+                    uso_sala,
+                    uso_docente,
+                    clases_por_curso,
+                    cls_a.curso,
+                    slots_por_curso,
+                )
+                _aplicar_asignacion(
+                    id_b,
+                    None,
+                    cls_b.docente,
+                    estado,
+                    uso_sala,
+                    uso_docente,
+                    clases_por_curso,
+                    cls_b.curso,
+                    slots_por_curso,
+                )
+                cand_a, cand_b = cands_a[0], cands_b[0]
+                ok_swap = False
+                if _es_factible_asignar(id_a, cand_a, cls_a.docente, uso_sala, uso_docente, estado, vecinos_no_overlap):
+                    _aplicar_asignacion(
+                        id_a,
+                        cand_a,
+                        cls_a.docente,
+                        estado,
+                        uso_sala,
+                        uso_docente,
+                        clases_por_curso,
+                        cls_a.curso,
+                        slots_por_curso,
+                    )
+                    if _es_factible_asignar(
+                        id_b, cand_b, cls_b.docente, uso_sala, uso_docente, estado, vecinos_no_overlap
+                    ):
+                        _aplicar_asignacion(
+                            id_b,
+                            cand_b,
+                            cls_b.docente,
+                            estado,
+                            uso_sala,
+                            uso_docente,
+                            clases_por_curso,
+                            cls_b.curso,
+                            slots_por_curso,
+                        )
+                        ok_swap = True
+                if ok_swap:
+                    nueva_metrica, nuevo_obj = _evaluar_campus(clases, estado, salas_map, co_estudiantes, restricciones)
+                    delta = nuevo_obj - actual_obj
+                    if delta <= 0 or (temp > 1e-6 and rng.random() < math.exp(-delta / temp)):
+                        actual_obj = nuevo_obj
+                        if nuevo_obj < mejor_obj:
+                            mejor_obj = nuevo_obj
+                            mejor_estado = dict(estado)
+                            mejor_metricas = nueva_metrica
+                        temp *= enfriamiento
+                        continue
+                _aplicar_asignacion(
+                    id_a,
+                    None,
+                    cls_a.docente,
+                    estado,
+                    uso_sala,
+                    uso_docente,
+                    clases_por_curso,
+                    cls_a.curso,
+                    slots_por_curso,
+                )
+                _aplicar_asignacion(
+                    id_b,
+                    None,
+                    cls_b.docente,
+                    estado,
+                    uso_sala,
+                    uso_docente,
+                    clases_por_curso,
+                    cls_b.curso,
+                    slots_por_curso,
+                )
+                _aplicar_asignacion(
+                    id_a,
+                    prev_a,
+                    cls_a.docente,
+                    estado,
+                    uso_sala,
+                    uso_docente,
+                    clases_por_curso,
+                    cls_a.curso,
+                    slots_por_curso,
+                )
+                _aplicar_asignacion(
+                    id_b,
+                    prev_b,
+                    cls_b.docente,
+                    estado,
+                    uso_sala,
+                    uso_docente,
+                    clases_por_curso,
+                    cls_b.curso,
+                    slots_por_curso,
+                )
+                temp *= enfriamiento
+                continue
+
             cls = rng.choice(candidatos_movibles)
             dom = dominios[cls.id_clase]
             if not dom:

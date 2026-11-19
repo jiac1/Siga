@@ -1,5 +1,9 @@
 """Pruebas unitarias e integración para el solver global de asignación de campus."""
 
+import pytest
+from django.core import mail
+from suite_sso import COOKIE_NAME, SuiteIdentity, emitir_token
+
 from horarios.campus import (
     CandidatoSala,
     CandidatoTemporal,
@@ -127,3 +131,67 @@ def test_construir_campus_desde_secciones_resuelve_choques_banner():
     assert res.metricas.conflictos_sala_h2 == 0
     assert res.metricas.conflictos_docente_h3 == 0
     assert res.metricas.conflictos_capacidad == 0
+
+
+@pytest.mark.django_db
+def test_api_planificar_campus_genera_tabla_y_envia_correo(client, suite, crear_usuario):
+    """El endpoint de planificación global resuelve choques, persiste trabajo y envía correo."""
+    payload = {
+        "presupuesto_segundos": 5.0,
+        "iteraciones": 300,
+        "email_notificacion": "coordinacion@unab.cl",
+        "ejecucion_sincrona": True,
+        "salas": [
+            {"id_sala": "A101", "capacidad": 45, "edificio": "C1"},
+            {"id_sala": "A102", "capacidad": 45, "edificio": "C1"},
+        ],
+        "secciones": [
+            {
+                "nrc": "1001",
+                "curso": "TDFI102",
+                "actividad": "TEO",
+                "cupos": 35,
+                "rut_docente": "11.111.111-1",
+                "bloques": [{"dia": "Lunes", "modulo": 1, "sala": "A101", "edificio": "C1"}],
+            },
+            {
+                "nrc": "1002",
+                "curso": "FMMP012",
+                "actividad": "TEO",
+                "cupos": 35,
+                "rut_docente": "11.111.111-1",
+                "bloques": [{"dia": "Lunes", "modulo": 1, "sala": "A101", "edificio": "C1"}],
+            },
+        ],
+    }
+
+    r_anon = client.post("/core/api/v1/horarios/campus/planificar", payload, content_type="application/json")
+    assert r_anon.status_code in (401, 403)
+
+    usuario = crear_usuario()
+    client.cookies[COOKIE_NAME] = emitir_token(
+        SuiteIdentity(
+            sub=str(usuario.pk),
+            email=usuario.email,
+            nombre=usuario.nombre_visible,
+            organizacion="unab",
+            roles=("director",),
+            modulos=("horarios",),
+        )
+    )
+
+    r = client.post("/core/api/v1/horarios/campus/planificar", payload, content_type="application/json")
+    assert r.status_code == 200, r.content
+    data = r.json()
+    assert data["estado"] == "completado"
+    assert data["clases_asignadas"] == 2
+    assert data["conflictos_h2"] == 0
+    assert data["conflictos_h3"] == 0
+
+    assert len(mail.outbox) == 1
+    assert "coordinacion@unab.cl" in mail.outbox[0].to
+    assert "2/2" in mail.outbox[0].subject
+
+    r_get = client.get(f"/core/api/v1/horarios/campus/trabajos/{data['trabajo_id']}")
+    assert r_get.status_code == 200
+    assert r_get.json()["estado"] == "completado"

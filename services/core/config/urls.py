@@ -19,6 +19,16 @@ api_v1 = identidad_api + [
     path("convalidaciones/solicitudes", conval.SolicitudesView.as_view(), name="api-solicitudes"),
     path("convalidaciones/solicitudes/<str:folio>", conval.EstadoSolicitudView.as_view(), name="api-solicitud-estado"),
     path("horarios/optimizar", horarios_views.OptimizarHorariosView.as_view(), name="api-horarios-optimizar"),
+    path(
+        "horarios/campus/planificar",
+        horarios_views.PlanificarCampusView.as_view(),
+        name="api-horarios-campus-planificar",
+    ),
+    path(
+        "horarios/campus/trabajos/<uuid:trabajo_id>",
+        horarios_views.EstadoPlanificacionCampusView.as_view(),
+        name="api-horarios-campus-trabajo",
+    ),
     path("esquema", SpectacularAPIView.as_view(), name="api-esquema"),
     path("docs", SpectacularRedocView.as_view(url_name="api-esquema"), name="api-docs"),
 ]

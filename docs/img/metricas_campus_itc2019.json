@@ -17,7 +17,7 @@
       "conflictos_estudiantes": 10949,
       "penalizacion_total": 62758.0,
       "tasa_asignacion_pct": 87.3,
-      "tiempo_ms": 81.97
+      "tiempo_ms": 90.61
     },
     "campus_global_sa": {
       "total_clases": 574,
@@ -26,12 +26,12 @@
       "conflictos_docente_h3": 0,
       "conflictos_capacidad": 0,
       "conflictos_distribucion_dura": 0,
-      "penalizacion_tiempo": 956,
-      "penalizacion_sala": 1353,
-      "conflictos_estudiantes": 6583,
-      "penalizacion_total": 41975.0,
+      "penalizacion_tiempo": 974,
+      "penalizacion_sala": 1304,
+      "conflictos_estudiantes": 6602,
+      "penalizacion_total": 41982.0,
       "tasa_asignacion_pct": 90.8,
-      "tiempo_ms": 2895.09
+      "tiempo_ms": 3910.58
     }
   },
   {
@@ -52,7 +52,7 @@
       "conflictos_estudiantes": 5437,
       "penalizacion_total": 47415.0,
       "tasa_asignacion_pct": 86.1,
-      "tiempo_ms": 56.91
+      "tiempo_ms": 68.05
     },
     "campus_global_sa": {
       "total_clases": 519,
@@ -61,12 +61,12 @@
       "conflictos_docente_h3": 0,
       "conflictos_capacidad": 0,
       "conflictos_distribucion_dura": 0,
-      "penalizacion_tiempo": 68,
-      "penalizacion_sala": 264,
-      "conflictos_estudiantes": 1264,
-      "penalizacion_total": 27360.0,
+      "penalizacion_tiempo": 62,
+      "penalizacion_sala": 255,
+      "conflictos_estudiantes": 1227,
+      "penalizacion_total": 27271.0,
       "tasa_asignacion_pct": 90.6,
-      "tiempo_ms": 504.13
+      "tiempo_ms": 695.19
     }
   },
   {
@@ -87,21 +87,21 @@
       "conflictos_estudiantes": 6985,
       "penalizacion_total": 46522.0,
       "tasa_asignacion_pct": 84.8,
-      "tiempo_ms": 120.37
+      "tiempo_ms": 134.98
     },
     "campus_global_sa": {
       "total_clases": 415,
-      "clases_asignadas": 371,
+      "clases_asignadas": 370,
       "conflictos_sala_h2": 0,
       "conflictos_docente_h3": 0,
       "conflictos_capacidad": 0,
       "conflictos_distribucion_dura": 0,
       "penalizacion_tiempo": 8,
-      "penalizacion_sala": 944,
-      "conflictos_estudiantes": 2780,
-      "penalizacion_total": 28512.0,
-      "tasa_asignacion_pct": 89.4,
-      "tiempo_ms": 651.35
+      "penalizacion_sala": 900,
+      "conflictos_estudiantes": 2802,
+      "penalizacion_total": 29012.0,
+      "tasa_asignacion_pct": 89.2,
+      "tiempo_ms": 956.94
     }
   }
 ]
