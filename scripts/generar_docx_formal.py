@@ -189,6 +189,57 @@ def split_markdown_table_row(line: str) -> list[str]:
     return [c.replace("__ESC_PIPE__", "|") for c in partes]
 
 
+_RE_INLINE = re.compile(r"(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*[^*\n]+?\*|`[^`\n]+?`)")
+
+
+def _emit_run(
+    paragraph,
+    text: str,
+    bold: bool,
+    italic: bool,
+    font_size: float,
+    color: RGBColor,
+    font_name: str,
+) -> None:
+    """Agrega un segmento de texto plano manejando posibles saltos de línea."""
+    partes = text.split("\n")
+    for idx, parte in enumerate(partes):
+        if parte:
+            run = paragraph.add_run(parte)
+            run.bold = bold
+            run.italic = italic
+            run.font.name = font_name
+            run.font.size = Pt(font_size)
+            run.font.color.rgb = color
+        if idx < len(partes) - 1:
+            paragraph.add_run().add_break()
+
+
+def _emit_inline_tokens(
+    paragraph,
+    text: str,
+    bold: bool,
+    italic: bool,
+    font_size: float,
+    base_color: RGBColor,
+    font_name: str,
+) -> None:
+    """Parsea recursivamente negrita, cursiva y código inline sin dejar asteriscos literales."""
+    for token in _RE_INLINE.split(text):
+        if not token:
+            continue
+        if token.startswith("***") and token.endswith("***") and len(token) > 6:
+            _emit_inline_tokens(paragraph, token[3:-3], True, True, font_size, base_color, font_name)
+        elif token.startswith("**") and token.endswith("**") and len(token) > 4:
+            _emit_inline_tokens(paragraph, token[2:-2], True, italic, font_size, base_color, font_name)
+        elif token.startswith("*") and token.endswith("*") and len(token) > 2:
+            _emit_inline_tokens(paragraph, token[1:-1], bold, True, font_size, base_color, font_name)
+        elif token.startswith("`") and token.endswith("`") and len(token) > 2:
+            _emit_run(paragraph, token[1:-1], bold, italic, font_size - 1, CODE_COLOR, "Consolas")
+        else:
+            _emit_run(paragraph, token, bold, italic, font_size, base_color, font_name)
+
+
 def add_formatted_runs(
     paragraph,
     text: str,
@@ -200,36 +251,7 @@ def add_formatted_runs(
 ) -> None:
     """Agrega segmentos con negrita, cursiva y código inline a un párrafo Word."""
     clean_text = clean_math_text(text)
-    tokens = re.split(r"(\*\*.*?\*\*|\*.*?\*|`.*?`)", clean_text)
-    for token in tokens:
-        if not token:
-            continue
-        if token.startswith("**") and token.endswith("**"):
-            run = paragraph.add_run(token[2:-2])
-            run.bold = True
-            run.italic = base_italic
-            run.font.name = font_name
-            run.font.size = Pt(font_size)
-            run.font.color.rgb = base_color
-        elif token.startswith("*") and token.endswith("*"):
-            run = paragraph.add_run(token[1:-1])
-            run.bold = base_bold
-            run.italic = True
-            run.font.name = font_name
-            run.font.size = Pt(font_size)
-            run.font.color.rgb = base_color
-        elif token.startswith("`") and token.endswith("`"):
-            run = paragraph.add_run(token[1:-1])
-            run.font.name = "Consolas"
-            run.font.size = Pt(font_size - 1)
-            run.font.color.rgb = CODE_COLOR
-        else:
-            run = paragraph.add_run(token)
-            run.bold = base_bold
-            run.italic = base_italic
-            run.font.name = font_name
-            run.font.size = Pt(font_size)
-            run.font.color.rgb = base_color
+    _emit_inline_tokens(paragraph, clean_text, base_bold, base_italic, font_size, base_color, font_name)
 
 
 def build_docx_from_md(
@@ -271,42 +293,52 @@ def build_docx_from_md(
     r_inst.font.size = Pt(13)
     r_inst.font.color.rgb = NAVY
 
-    p_fac = doc.add_paragraph()
-    p_fac.paragraph_format.space_after = Pt(44)
-    r_fac = p_fac.add_run("FACULTAD DE INGENIERÍA · ESCUELA DE INFORMÁTICA\nCARRERA DE INGENIERÍA CIVIL INFORMÁTICA")
-    r_fac.font.name = "Calibri"
-    r_fac.font.size = Pt(10)
-    r_fac.font.color.rgb = MUTED
+    for idx_fac, fac_line in enumerate(
+        [
+            "FACULTAD DE INGENIERÍA · ESCUELA DE INFORMÁTICA",
+            "CARRERA DE INGENIERÍA CIVIL INFORMÁTICA",
+        ]
+    ):
+        p_fac = doc.add_paragraph()
+        p_fac.paragraph_format.space_before = Pt(0)
+        p_fac.paragraph_format.space_after = Pt(36 if idx_fac == 1 else 2)
+        r_fac = p_fac.add_run(fac_line)
+        r_fac.font.name = "Calibri"
+        r_fac.font.size = Pt(10)
+        r_fac.font.color.rgb = MUTED
 
     p_title = doc.add_paragraph()
-    p_title.paragraph_format.space_before = Pt(28)
-    p_title.paragraph_format.space_after = Pt(12)
+    p_title.paragraph_format.space_before = Pt(20)
+    p_title.paragraph_format.space_after = Pt(14)
     r_title = p_title.add_run(title_text)
     r_title.bold = True
     r_title.font.name = "Calibri"
-    r_title.font.size = Pt(21)
+    r_title.font.size = Pt(20.5)
     r_title.font.color.rgb = NAVY
 
-    p_sub = doc.add_paragraph()
-    p_sub.paragraph_format.space_after = Pt(64)
-    r_sub = p_sub.add_run(subtitle_text)
-    r_sub.font.name = "Calibri"
-    r_sub.font.size = Pt(12.5)
-    r_sub.font.color.rgb = SLATE
+    sub_lines = [s.strip() for s in subtitle_text.splitlines() if s.strip()]
+    for idx_sub, sub_line in enumerate(sub_lines):
+        p_sub = doc.add_paragraph()
+        p_sub.paragraph_format.space_before = Pt(0)
+        p_sub.paragraph_format.space_after = Pt(48 if idx_sub == len(sub_lines) - 1 else 4)
+        r_sub = p_sub.add_run(sub_line)
+        r_sub.font.name = "Calibri"
+        r_sub.font.size = Pt(12.5)
+        r_sub.font.color.rgb = SLATE
 
-    p_meta = doc.add_paragraph()
-    p_meta.paragraph_format.space_before = Pt(88)
-    p_meta.paragraph_format.space_after = Pt(4)
-    p_meta.paragraph_format.line_spacing = 1.35
-    add_formatted_runs(
-        p_meta,
-        f"**Asignatura:** INTEGRADOR II: SEM LIC EN CS (CINF200)\n"
-        f"**Integrantes:** {integrantes}\n"
-        f"**Profesor Guía:** {profesor_guia}\n"
-        f"**Fecha de Entrega:** {fecha}\n"
-        f"**Santiago de Chile**",
-        font_size=10.5,
-    )
+    meta_lines = [
+        "**Asignatura:** INTEGRADOR II: SEM LIC EN CS (CINF200)",
+        f"**Integrantes:** {integrantes}",
+        f"**Profesor Guía:** {profesor_guia}",
+        f"**Fecha de Entrega:** {fecha}",
+        "**Santiago de Chile**",
+    ]
+    for idx_meta, meta_line in enumerate(meta_lines):
+        p_meta = doc.add_paragraph()
+        p_meta.paragraph_format.space_before = Pt(72 if idx_meta == 0 else 0)
+        p_meta.paragraph_format.space_after = Pt(4)
+        p_meta.paragraph_format.line_spacing = 1.25
+        add_formatted_runs(p_meta, meta_line, font_size=10.5)
 
     doc.add_page_break()
 
@@ -372,19 +404,21 @@ def build_docx_from_md(
             in_code_block = False
             return
 
-        code_text = "".join(code_lines)
+        lineas_codigo = "".join(code_lines).rstrip().splitlines()
         table = doc.add_table(rows=1, cols=1)
         table.alignment = WD_TABLE_ALIGNMENT.CENTER
         cell = table.cell(0, 0)
         set_cell_background(cell, "F1F5F9")
         set_cell_margins(cell, top=130, bottom=130, left=180, right=180)
-        p = cell.paragraphs[0]
-        p.paragraph_format.line_spacing = 1.15
-        p.paragraph_format.space_after = Pt(2)
-        r = p.add_run(code_text.rstrip())
-        r.font.name = "Consolas"
-        r.font.size = Pt(8.8)
-        r.font.color.rgb = DARK_TEXT
+        for idx_line, code_line in enumerate(lineas_codigo):
+            p = cell.paragraphs[0] if idx_line == 0 else cell.add_paragraph()
+            p.paragraph_format.space_before = Pt(0)
+            p.paragraph_format.space_after = Pt(1.5)
+            p.paragraph_format.line_spacing = 1.1
+            r = p.add_run(code_line if code_line else " ")
+            r.font.name = "Consolas"
+            r.font.size = Pt(8.6)
+            r.font.color.rgb = DARK_TEXT
 
         p_space = doc.add_paragraph()
         p_space.paragraph_format.space_after = Pt(4)
