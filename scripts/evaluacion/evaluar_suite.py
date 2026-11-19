@@ -1,4 +1,4 @@
-"""Evaluación técnica integral y reproducible de SIGA-DSS / Suite UNAB (E3).
+"""Evaluación técnica integral y reproducible de SIGA-DSS (E3).
 
 Ejecuta y registra métricas verificables reales de todos los módulos:
   1. Curricular Analytics (DAG) sobre las 10 mallas oficiales de Ingeniería UNAB.

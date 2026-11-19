@@ -157,7 +157,7 @@ resource "random_password" "django" {
 
 resource "aws_secretsmanager_secret" "app" {
   name                    = "${local.nombre}/aplicacion"
-  description             = "Secretos de Suite UNAB (SSO y SECRET_KEY de cada servicio)"
+  description             = "Secretos de SIGA-DSS (SSO y SECRET_KEY de cada servicio)"
   recovery_window_in_days = var.ambiente == "produccion" ? 30 : 0
 }
 

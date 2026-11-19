@@ -583,7 +583,7 @@ document.getElementById('foot').innerHTML =
 
 // ----- tracker de aprobación -----
 let STORE_KEY='malla_aprob_DUN14-2022_IAUT';
-// Suite UNAB: separar el progreso por usuario logueado, para que no se
+// SIGA-DSS: separar el progreso por usuario logueado, para que no se
 // mezcle si varias personas usan el mismo navegador (antes era una sola
 // clave fija por carrera para cualquier visitante).
 try{const _u=window.SuiteAuth&&SuiteAuth.getUser&&SuiteAuth.getUser();if(_u&&_u.nombre) STORE_KEY+='_'+encodeURIComponent(_u.nombre);}catch(_e){}

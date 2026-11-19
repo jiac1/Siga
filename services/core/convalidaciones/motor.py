@@ -1,4 +1,4 @@
-"""Motor de convalidación de Suite UNAB (versión servidor).
+"""Motor de convalidación de SIGA-DSS (versión servidor).
 
 Port fiel del motor que corre en el navegador (apps/convalidacion): mismo
 tokenizador, stemming conservador, IDF global sobre todo el catálogo UNAB

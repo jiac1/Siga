@@ -1,4 +1,4 @@
-# Suite UNAB · entorno completo con contenedores (equivalente local de AWS).
+# SIGA-DSS · entorno completo con contenedores (equivalente local de AWS).
 #   cp .env.example .env
 #   docker compose up --build        ->  http://localhost:8080
 # Topología: gateway (nginx = ALB/CloudFront) + core + mapa-calor + estres-malla + PostgreSQL (= RDS)

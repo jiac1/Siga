@@ -1,4 +1,4 @@
-/* Suite UNAB — barra superior compartida, inyectada sin tocar el HTML/CSS/JS
+/* SIGA-DSS — barra superior compartida, inyectada sin tocar el HTML/CSS/JS
    propio de cada app. Requiere antes:
      <script>window.SUITE_APP_DEPTH = 2;</script>      // niveles bajo la raíz
      <link rel="stylesheet" href="RUTA/tokens.css">
@@ -9,7 +9,7 @@
      <script src="RUTA/suite-bar.js" data-app="Malla curricular"></script>    */
 (function () {
   const thisScript = document.currentScript;
-  const appName = thisScript.getAttribute("data-app") || "Suite UNAB";
+  const appName = thisScript.getAttribute("data-app") || "SIGA-DSS";
   const root = "../".repeat(window.SUITE_APP_DEPTH || 0);
 
   function esc(s) {
@@ -29,7 +29,7 @@
     const salir = usuario ? `<a class="suite-bar-link" href="#" id="suite-bar-logout">Salir</a>` : "";
     bar.innerHTML = `
       <div class="suite-bar-left">
-        <a class="suite-bar-brand" href="${root}index.html"><span class="dot"></span>Suite UNAB</a>
+        <a class="suite-bar-brand" href="${root}index.html"><span class="dot"></span>SIGA-DSS</a>
         <span class="suite-bar-sep">/</span>
         <span class="suite-bar-app">${esc(appName)}</span>
       </div>

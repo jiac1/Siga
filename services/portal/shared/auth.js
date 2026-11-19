@@ -1,4 +1,4 @@
-/* Suite UNAB — autenticación del front-end estático.
+/* SIGA-DSS — autenticación del front-end estático.
 
    Modo suite: la sesión real vive en el servicio core (cookie HttpOnly
    `suite_sso`, invisible para JS). Aquí solo se consulta /auth/me y se guarda

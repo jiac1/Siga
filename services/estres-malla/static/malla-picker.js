@@ -1,4 +1,4 @@
-/* Suite UNAB — selector de malla existente (evita tener que descargar y
+/* SIGA-DSS — selector de malla existente (evita tener que descargar y
    volver a subir la malla de tu carrera cuando ya está cargada en la Suite).
    Uso:
      SuiteMallaPicker.open({

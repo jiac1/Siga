@@ -1,5 +1,5 @@
 /**
- * Motor cliente de optimización combinatoria UCTP (Suite UNAB).
+ * Motor cliente de optimización combinatoria UCTP (SIGA-DSS).
  *
  * Espejo fiel de ``services/core/horarios/motor.py``: evalúa restricciones
  * blandas (ventanas horarias, días activos, preferencia de jornada y sobrecarga),

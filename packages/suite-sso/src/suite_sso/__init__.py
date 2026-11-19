@@ -1,4 +1,4 @@
-"""suite_sso — identidad compartida entre los módulos de Suite UNAB.
+"""suite_sso — identidad compartida entre los módulos de SIGA-DSS.
 
 El servicio `core` emite un JWT firmado (HS256) en la cookie `suite_sso`
 cuando el usuario inicia sesión. Cada módulo valida esa cookie localmente,

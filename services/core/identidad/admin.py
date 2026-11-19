@@ -3,8 +3,8 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import EventoAuditoria, Licencia, Modulo, Organizacion, Usuario
 
-admin.site.site_header = "Suite UNAB · Administración"
-admin.site.site_title = "Suite UNAB"
+admin.site.site_header = "SIGA-DSS · Administración"
+admin.site.site_title = "SIGA-DSS"
 admin.site.index_title = "Backoffice de la Suite"
 
 

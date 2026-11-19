@@ -190,7 +190,7 @@ data "aws_cloudfront_response_headers_policy" "seguridad" {
 resource "aws_cloudfront_distribution" "suite" {
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "Suite UNAB (${var.ambiente})"
+  comment             = "SIGA-DSS (${var.ambiente})"
   default_root_object = "index.html"
   price_class         = "PriceClass_All" # incluye nodos en Sudamérica (Santiago)
   aliases             = local.usa_dominio ? [var.dominio] : []

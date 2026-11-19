@@ -1,6 +1,6 @@
-# Siga — Suite UNAB
+# SIGA-DSS
 
-Plataforma web unificada de aplicaciones de apoyo académico (Facultad de Ingeniería, Universidad Andrés Bello, sede Santiago): Malla curricular, Convalidación de asignaturas, Generador de horarios, Mapa de calor de salas, Estrés de malla y SIGA. Cada módulo funciona por sí solo o como suite, con inicio de sesión único y licencias por módulo.
+Plataforma web unificada (Sistema de Soporte a la Decisión Curricular y Logística, Facultad de Ingeniería, Universidad Andrés Bello, sede Santiago): Malla curricular DAG, Convalidación de asignaturas con IA, Generador de horarios (UCTP), Mapa de calor de salas, Estrés de malla (*MallaIQ*) y SIGA. Cada módulo funciona por sí solo o como suite, con inicio de sesión único y licencias por módulo.
 
 ---
 

@@ -1,4 +1,4 @@
-# Servicio core de Suite UNAB (identidad, licencias, catálogo, convalidaciones)
+# Servicio core de SIGA-DSS (identidad, licencias, catálogo, convalidaciones)
 Django>=5.2,<6.0
 djangorestframework>=3.16
 drf-spectacular>=0.28

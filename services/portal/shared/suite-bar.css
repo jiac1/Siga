@@ -1,4 +1,4 @@
-/* Suite UNAB — barra superior compartida entre todas las apps integradas */
+/* SIGA-DSS — barra superior compartida entre todas las apps integradas */
 #suite-bar{
   position:sticky; top:0; z-index:1000;
   height:var(--su-bar-height);

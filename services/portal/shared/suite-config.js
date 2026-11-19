@@ -1,4 +1,4 @@
-/* Suite UNAB — configuración del front-end.
+/* SIGA-DSS — configuración del front-end.
 
    modo:
      "auto"        detecta si existe el servicio core (Suite completa) y, si no,

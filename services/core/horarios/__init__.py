@@ -1,1 +1,1 @@
-"""Módulo UCTP (University Course Timetabling Problem) de Suite UNAB."""
+"""Módulo UCTP (University Course Timetabling Problem) de SIGA-DSS."""

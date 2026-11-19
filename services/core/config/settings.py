@@ -1,4 +1,4 @@
-"""Configuración del servicio core de Suite UNAB.
+"""Configuración del servicio core de SIGA-DSS.
 
 Toda la configuración sensible o dependiente del ambiente viene de variables
 de entorno (12-factor). Ver services/core/.env.example.
@@ -136,7 +136,7 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ["rest_framework.renderers.JSONRenderer"],
 }
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Suite UNAB · API core",
+    "TITLE": "SIGA-DSS · API core",
     "DESCRIPTION": "Identidad, licencias por módulo, catálogo de mallas y convalidaciones.",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
@@ -144,7 +144,7 @@ SPECTACULAR_SETTINGS = {
 
 # ── Correo (SES en AWS; consola en desarrollo) ─────────────────────
 EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="Suite UNAB <no-responder@suite-unab.cl>")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="SIGA-DSS <no-responder@suite-unab.cl>")
 EMAIL_HOST = config("EMAIL_HOST", default="")
 EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")

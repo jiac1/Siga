@@ -115,7 +115,7 @@ def registro(request):
             token = signing.dumps({"u": usuario.pk}, salt=SAL_VERIFICACION)
             enlace = request.build_absolute_uri(reverse("identidad:verificar", args=[token]))
             send_mail(
-                "Activa tu cuenta de Suite UNAB",
+                "Activa tu cuenta de SIGA-DSS",
                 f"Hola {usuario.first_name}:\n\nActiva tu cuenta ingresando a:\n{enlace}\n\n"
                 "El enlace vence en 48 horas.",
                 None,

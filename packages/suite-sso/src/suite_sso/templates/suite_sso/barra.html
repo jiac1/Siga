@@ -1,5 +1,5 @@
 {% comment %}
-Barra superior común de Suite UNAB para módulos Django. Única fuente para
+Barra superior común de SIGA-DSS para módulos Django. Única fuente para
 todos los servicios Python (antes estaba copiada a mano en cada app).
 Se dibuja solo en modo suite. Uso: {% include "suite_sso/barra.html" %}
 justo después de <body>. La altura queda en --su-bar-height para que cada
@@ -23,9 +23,9 @@ app ajuste su layout si tiene elementos fijos.
   #suite-bar .sb-link:hover{background:rgba(255,255,255,.12)}
   @media (max-width:560px){#suite-bar .sb-user{display:none}}
 </style>
-<nav id="suite-bar" aria-label="Suite UNAB">
+<nav id="suite-bar" aria-label="SIGA-DSS">
   <div class="sb-left">
-    <a class="sb-brand" href="{{ suite.portal_url }}"><span class="sb-dot"></span>Suite UNAB</a>
+    <a class="sb-brand" href="{{ suite.portal_url }}"><span class="sb-dot"></span>SIGA-DSS</a>
     <span class="sb-sep">/</span>
     <span class="sb-app">{{ suite.modulo_nombre }}</span>
   </div>

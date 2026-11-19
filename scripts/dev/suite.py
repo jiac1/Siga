@@ -1,4 +1,4 @@
-"""Orquestador de desarrollo local de Suite UNAB (sin Docker; Windows, macOS o Linux).
+"""Orquestador de desarrollo local de SIGA-DSS (sin Docker; Windows, macOS o Linux).
 
 Replica en una sola máquina la topología de AWS: un único dominio
 (http://localhost:8080) que enruta por prefijo igual que el ALB/CloudFront:
@@ -182,7 +182,7 @@ def iniciar(args):
     servidor = http.server.ThreadingHTTPServer(("127.0.0.1", PUERTO_GATEWAY), handler)
     cerrar = _esperar_y_cerrar(procesos, servidor)
     url = f"http://localhost:{PUERTO_GATEWAY}/"
-    print(f"\nSuite UNAB disponible en {url}   (Ctrl+C para detener)\n")
+    print(f"\nSIGA-DSS disponible en {url}   (Ctrl+C para detener)\n")
     if not args.sin_navegador:
         time.sleep(2)
         webbrowser.open(url)
@@ -226,7 +226,7 @@ def independiente(args):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Suite UNAB · entorno de desarrollo local")
+    ap = argparse.ArgumentParser(description="SIGA-DSS · entorno de desarrollo local")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("preparar").set_defaults(fn=preparar)
     for nombre, fn in (("iniciar", iniciar), ("independiente", independiente)):

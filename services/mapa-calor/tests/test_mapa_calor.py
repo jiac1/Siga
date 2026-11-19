@@ -52,4 +52,4 @@ def test_modo_suite_exige_licencia(client):
                                               roles=("staff",), modulos=("mapa-calor",)))
     client.cookies[COOKIE_NAME] = con_licencia
     r = client.get("/")
-    assert r.status_code == 200 and "Suite UNAB" in r.content.decode()
+    assert r.status_code == 200 and "SIGA-DSS" in r.content.decode()
