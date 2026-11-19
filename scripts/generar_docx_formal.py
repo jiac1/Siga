@@ -670,7 +670,7 @@ if __name__ == "__main__":
 
     build_docx_from_md(
         "docs/Memoria_Suite_UNAB_E1_E2_E3_Paper_Final.md",
-        "docs/Memoria_Suite_UNAB_E1_E2_E3_Paper_Final.docx",
+        "docs/Memoria_Siga_DSS_E1_E2_E3_Paper_Final.docx",
         "SIGA-DSS: SISTEMA DE SOPORTE A LA DECISIÓN MODULAR PARA LA "
         "OPTIMIZACIÓN DE TRAYECTORIAS CURRICULARES Y GESTIÓN DE CAPACIDAD ACADÉMICA",
         "INFORME FINAL CONSOLIDADO EN FORMATO PAPER (EVALUACIÓN E3 · E1 + E2 + E3)\n"

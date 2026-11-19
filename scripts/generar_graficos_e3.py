@@ -295,6 +295,87 @@ def _graficar_uctp(uctp: list[dict], salida: Path) -> None:
     plt.close()
 
 
+def _graficar_itc2019(itc: list[dict], salida: Path) -> None:
+    """Genera el gráfico comparativo sobre los benchmarks estándar ITC-2019 (2 paneles)."""
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.2, 4.8), dpi=300)
+
+    etiquetas = []
+    for ds in itc:
+        res_bb = ds["resultados"]["branch_and_bound"]
+        etiqueta_corta = (
+            ds["etiqueta"].replace("Masaryk Univ. · ", "Masaryk\n").replace("Yachay Tech · ", "Yachay Tech\n")
+        )
+        etiquetas.append(f"{etiqueta_corta}\n({res_bb['factibles']}/{res_bb['evaluados']} fact.)")
+
+    x = np.arange(len(itc))
+    w = 0.26
+    algs = [
+        ("aleatorio", "Línea base aleatoria", SLATE),
+        ("branch_and_bound", "Branch & Bound exacto", NAVY),
+        ("recocido_simulado", "Recocido Simulado (SA)", TEAL),
+    ]
+
+    max_f = max((ds["resultados"][clave]["f_promedio"] or 0.0) for ds in itc for clave, _, _ in algs)
+    max_w = max((ds["resultados"][clave]["ventanas_promedio"] or 0.0) for ds in itc for clave, _, _ in algs)
+
+    for idx, (clave, label, col) in enumerate(algs):
+        vals = [ds["resultados"][clave]["f_promedio"] or 0.0 for ds in itc]
+        bars = ax1.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=NAVY, lw=0.6)
+        for bar, v in zip(bars, vals, strict=True):
+            ax1.text(
+                bar.get_x() + bar.get_width() / 2,
+                v + max_f * 0.018,
+                f"{v:.1f}",
+                ha="center",
+                va="bottom",
+                fontsize=7.8,
+                fontweight="bold",
+                color=NAVY,
+            )
+
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(etiquetas, fontsize=8.3, color=NAVY)
+    ax1.set_ylabel("Penalización blanda promedio f(x)  (menor es mejor)", fontsize=8.8, color=NAVY)
+    ax1.set_ylim(0, max_f * 1.18)
+    ax1.set_title("A. Función Objetivo Compuesta f(x) · ITC-2019", fontsize=10.3, fontweight="bold", color=NAVY, pad=10)
+    ax1.grid(axis="y", linestyle="--", alpha=0.45)
+    ax1.legend(loc="upper left", fontsize=8, frameon=True, facecolor=BG_PANEL)
+
+    for idx, (clave, label, col) in enumerate(algs):
+        vals = [ds["resultados"][clave]["ventanas_promedio"] or 0.0 for ds in itc]
+        bars = ax2.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=NAVY, lw=0.6)
+        for bar, v in zip(bars, vals, strict=True):
+            ax2.text(
+                bar.get_x() + bar.get_width() / 2,
+                v + max_w * 0.018,
+                f"{v:.2f}",
+                ha="center",
+                va="bottom",
+                fontsize=7.8,
+                fontweight="bold",
+                color=NAVY,
+            )
+
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(etiquetas, fontsize=8.3, color=NAVY)
+    ax2.set_ylabel("Ventanas horarias promedio (H1 = 0)", fontsize=8.8, color=NAVY)
+    ax2.set_ylim(0, max_w * 1.18)
+    ax2.set_title("B. Reducción de Ventanas Horarias · ITC-2019", fontsize=10.3, fontweight="bold", color=NAVY, pad=10)
+    ax2.grid(axis="y", linestyle="--", alpha=0.45)
+    ax2.legend(loc="upper left", fontsize=8, frameon=True, facecolor=BG_PANEL)
+
+    fig.suptitle(
+        "Evaluación Externa UCTP sobre Benchmarks Estándar ITC-2019 (Perfiles Estudiantiles Reales)",
+        fontsize=11.4,
+        fontweight="bold",
+        color=NAVY,
+        y=0.99,
+    )
+    plt.tight_layout()
+    plt.savefig(salida, dpi=300, bbox_inches="tight")
+    plt.close()
+
+
 def main() -> None:
     """Ejecuta la evaluación vigente y renderiza las figuras E3 en ``docs/img/``."""
     out_dir = RAIZ / "docs" / "img"
@@ -310,6 +391,11 @@ def main() -> None:
     _graficar_convalidacion(datos["convalidacion"], out_dir / "fig_eval_convalidacion.png")
     _graficar_curricular_analytics(datos["curricular_analytics"], out_dir / "fig_curricular_analytics.png")
     _graficar_uctp(datos["uctp"], out_dir / "fig_benchmark_uctp.png")
+
+    itc_json = out_dir / "metricas_itc2019.json"
+    if itc_json.exists():
+        itc_datos = json.loads(itc_json.read_text(encoding="utf-8"))
+        _graficar_itc2019(itc_datos, out_dir / "fig_benchmark_itc2019.png")
 
     (out_dir / "metricas_verificadas_e3.json").write_text(
         json.dumps(datos, ensure_ascii=False, indent=2),
