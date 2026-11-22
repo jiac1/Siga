@@ -1,0 +1,9 @@
+# Mapa de Calor de salas (servicio sin estado)
+Django>=5.2,<6.0
+pandas>=2.2
+numpy>=1.26
+openpyxl>=3.1
+xlsxwriter>=3.2
+whitenoise>=6.7
+python-decouple>=3.8
+gunicorn>=23.0

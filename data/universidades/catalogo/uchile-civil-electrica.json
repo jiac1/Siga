@@ -1,0 +1,611 @@
+{
+ "slug": "uchile-civil-electrica",
+ "universidad": "Universidad de Chile",
+ "sigla": "UCHILE",
+ "carrera": "Ingeniería Civil Eléctrica",
+ "area": "electrica",
+ "plan": "Malla 2021 (FCFM)",
+ "regimen": "semestral",
+ "duracion": 11,
+ "unidad_creditos": "UD (unidades docentes FCFM)",
+ "fuente": {
+  "url": "https://ingenieria.uchile.cl/dam/jcr:f0bb9f53-fd8e-45c3-a10b-2497b639ccd5/MALLACIVILELECTRICA2021.jpg",
+  "consultado": "2026-10-21",
+  "metodo": "lectura visual de la imagen oficial publicada en ingenieria.uchile.cl/carreras/4972",
+  "notas": "Plan Común FCFM semestres I-IV."
+ },
+ "estadisticas": {
+  "asignaturas": 59,
+  "convalidables": 47,
+  "genericas": 12,
+  "inciertas": 0
+ },
+ "semestres": [
+  {
+   "numero": 1,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s1-1",
+     "nombre": "Introducción al Cálculo",
+     "codigo": "MA1001",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s1-2",
+     "nombre": "Introducción al Álgebra",
+     "codigo": "MA1101",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s1-3",
+     "nombre": "Introducción a la Física Clásica",
+     "codigo": "FI1000",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s1-4",
+     "nombre": "Herramientas Computacionales para Ingeniería y Ciencias",
+     "codigo": "CC1000",
+     "creditos": 3,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s1-5",
+     "nombre": "Desafíos de Innovación en Ingeniería y Ciencias",
+     "codigo": "CD1100",
+     "creditos": 6,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s1-6",
+     "nombre": "Aplicaciones de la Biología a la Ingeniería y Ciencias",
+     "codigo": "BT1211",
+     "creditos": 3,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 2,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s2-1",
+     "nombre": "Cálculo Diferencial e Integral",
+     "codigo": "MA1002",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s2-2",
+     "nombre": "Álgebra Lineal",
+     "codigo": "MA1102",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s2-3",
+     "nombre": "Introducción a la Física Moderna",
+     "codigo": "FI1100",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s2-4",
+     "nombre": "Introducción a la Programación",
+     "codigo": "CC1002",
+     "creditos": 6,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s2-5",
+     "nombre": "Proyecto de Innovación en Ingeniería y Ciencias",
+     "codigo": "CD1201",
+     "creditos": 3,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s2-6",
+     "nombre": "Formación Integral DR/EH/FG/EI/FT",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 2,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 3,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s3-1",
+     "nombre": "Cálculo en Varias Variables",
+     "codigo": "MA2001",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s3-2",
+     "nombre": "Ecuaciones Diferenciales Ordinarias",
+     "codigo": "MA2601",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s3-3",
+     "nombre": "Mecánica",
+     "codigo": "FI2001",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s3-4",
+     "nombre": "Métodos Experimentales",
+     "codigo": "FI2003",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s3-5",
+     "nombre": "Química",
+     "codigo": "IQ2211",
+     "creditos": 6,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 4,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s4-1",
+     "nombre": "Cálculo Avanzado y Aplicaciones",
+     "codigo": "MA2002",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s4-2",
+     "nombre": "Economía",
+     "codigo": "IN2201",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s4-3",
+     "nombre": "Electromagnetismo",
+     "codigo": "FI2002",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s4-4",
+     "nombre": "Termodinámica / Termodinámica Química",
+     "codigo": "FI2004/IQ2212",
+     "creditos": 6,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s4-5",
+     "nombre": "Módulo Interdisciplinario",
+     "codigo": "CD2201",
+     "creditos": 3,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s4-6",
+     "nombre": "Formación Integral DR/EH/FG/EI/FT",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 4,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 5,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s5-1",
+     "nombre": "Análisis y Diseño de Circuitos Eléctricos",
+     "codigo": "EL3101",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s5-2",
+     "nombre": "Sistemas Digitales",
+     "codigo": "EL3102",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s5-3",
+     "nombre": "Electromagnetismo Aplicado",
+     "codigo": "EL3103",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s5-4",
+     "nombre": "Probabilidad y Procesos Estocásticos",
+     "codigo": "EL3104",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s5-5",
+     "nombre": "Seminario de Ingeniería Eléctrica e Innovación Tecnológica",
+     "codigo": "EL3105",
+     "creditos": 6,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 6,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s6-1",
+     "nombre": "Laboratorio de Ingeniería Eléctrica",
+     "codigo": "EL3201",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s6-2",
+     "nombre": "Circuitos Eléctricos Analógicos",
+     "codigo": "EL3202",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s6-3",
+     "nombre": "Análisis de Señales",
+     "codigo": "EL3203",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s6-4",
+     "nombre": "Análisis de Sistemas Dinámicos y Estimación",
+     "codigo": "EL3204",
+     "creditos": 6,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s6-5",
+     "nombre": "Formación Integral EH/FG",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 6,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s6-6",
+     "nombre": "Formación Integral EH/FG",
+     "codigo": null,
+     "creditos": 3,
+     "semestre": 6,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 7,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s7-1",
+     "nombre": "Conversión de la Energía y Sistemas Eléctricos",
+     "codigo": "EL4111",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s7-2",
+     "nombre": "Principios de Comunicaciones",
+     "codigo": "EL4112",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s7-3",
+     "nombre": "Fundamentos de Control de Sistemas",
+     "codigo": "EL4113",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s7-4",
+     "nombre": "Optimización",
+     "codigo": "EL4114",
+     "creditos": 6,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s7-5",
+     "nombre": "Electivo",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 7,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s7-6",
+     "nombre": "Práctica Profesional I",
+     "codigo": "EL4115",
+     "creditos": 7,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 8,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s8-1",
+     "nombre": "Núcleo Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s8-2",
+     "nombre": "Laboratorio de Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s8-3",
+     "nombre": "Programación Avanzada",
+     "codigo": "EL4203",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s8-4",
+     "nombre": "Formulación y Evaluación de Proyectos",
+     "codigo": "EL4204",
+     "creditos": 6,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s8-5",
+     "nombre": "Electivo",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 8,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s8-6",
+     "nombre": "Examen de Suficiencia en Inglés I",
+     "codigo": "EI1090",
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 9,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s9-1",
+     "nombre": "Taller de Proyectos Tecnológicos",
+     "codigo": "EL6101",
+     "creditos": 12,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s9-2",
+     "nombre": "Electivo de Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 9,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s9-3",
+     "nombre": "Electivo de Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 9,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s9-4",
+     "nombre": "Electivo de Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 9,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s9-5",
+     "nombre": "Práctica Profesional II",
+     "codigo": "EL5115",
+     "creditos": 14,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 10,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s10-1",
+     "nombre": "Taller de Emprendimiento e Innovación",
+     "codigo": "EL6201",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s10-2",
+     "nombre": "Introducción al Trabajo de Título",
+     "codigo": "EL6908",
+     "creditos": 6,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s10-3",
+     "nombre": "Electivo de Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s10-4",
+     "nombre": "Electivo de Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s10-5",
+     "nombre": "Electivo de Línea de Especialización",
+     "codigo": null,
+     "creditos": 6,
+     "semestre": 10,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 11,
+   "asignaturas": [
+    {
+     "id": "uchile-civil-electrica-s11-1",
+     "nombre": "Taller de Desempeño Profesional",
+     "codigo": "EL6301",
+     "creditos": 3,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s11-2",
+     "nombre": "Trabajo de Título",
+     "codigo": "EL6919",
+     "creditos": 27,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "uchile-civil-electrica-s11-3",
+     "nombre": "Examen de Suficiencia en Inglés II",
+     "codigo": "EI2090",
+     "creditos": null,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  }
+ ]
+}

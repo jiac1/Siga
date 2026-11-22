@@ -1,9 +1,2 @@
-# Dependencias generales para Suite UNAB (Django apps: Mapa de Calor y Estrés de Malla)
-django>=4.2,<5.0
-pandas>=2.1.4
-openpyxl>=3.1
-whitenoise>=6.6
-python-decouple>=3.8
-pillow>=10.0
-xlsxwriter>=3.2.0
-dj-database-url>=2.1
+# Se mantiene por compatibilidad con el prototipo: instala todo el entorno de desarrollo.
+-r requirements-dev.txt

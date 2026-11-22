@@ -1,89 +1,50 @@
-# Siga — Proyecto de Título
+# SIGA-DSS
 
-**Diseño e implementación de Suite UNAB:** una plataforma web unificada para la integración de aplicaciones de apoyo académico de la carrera de Ingeniería Civil Informática (Universidad Andrés Bello), preparada para despliegue en infraestructura AWS.
+Plataforma web unificada (Sistema de Soporte a la Decisión Curricular y Logística, Facultad de Ingeniería, Universidad Andrés Bello, sede Santiago): Malla curricular DAG, Convalidación de asignaturas con IA, Generador de horarios (UCTP), Mapa de calor de salas, Estrés de malla (*MallaIQ*) y SIGA. Cada módulo funciona por sí solo o como suite, con inicio de sesión único y licencias por módulo.
 
 ---
 
-## 📁 Estructura del Repositorio
+## Ejecutar la demo
 
-El repositorio se encuentra organizado de la siguiente manera:
-
-```text
-.
-├── iniciar-suite.bat         # Script para levantar todos los servidores locales con 1 clic
-├── detener-suite.bat         # Script para detener los servidores activos
-├── requirements.txt          # Dependencias consolidadas de Python (Django, Pandas, etc.)
-├── README.md                 # Este archivo (guía principal del repositorio)
-├── .gitignore                # Reglas de exclusión de Git (caché, entornos, logs)
-│
-├── docs/                     # Documentación oficial del proyecto y tesis
-│   ├── Suite_UNAB_Proyecto_actualizado.docx  # Documento marco de la tesis
-│   ├── Suite_UNAB_Proyecto.docx              # Versión previa del documento de tesis
-│   ├── FORMATOS_DE_ARCHIVOS.md               # Especificación técnica de columnas y formatos (.xlsx)
-│   └── ejemplos/                             # Archivos de ejemplo para pruebas
-│       └── Horario_ICINF_2SEM.xlsx
-│
-├── suite-unab/               # Código fuente de la plataforma integrada
-│   ├── index.html            # Dashboard principal (Shell de la Suite)
-│   ├── login.html            # Acceso y autenticación
-│   ├── shared/               # Recursos compartidos (barra superior, estilos, tokens, auth)
-│   ├── scripts/              # Utilidades y scripts de extracción
-│   └── apps/                 # Módulos y aplicaciones integradas
-│       ├── malla/            # Malla Curricular interactiva (HTML/JS)
-│       ├── horarios/         # Generador de Horarios Syaproa (HTML/JS)
-│       ├── siga/             # SIGA - Visión de producto (HTML/JS)
-│       ├── convalidacion/    # Convalidación de Asignaturas con IA (HTML/JS)
-│       ├── mapa-calor/       # Mapa de Calor de ocupación (Django - Backend)
-│       └── estres-malla/     # Estrés de Malla MallaIQ multi-tenant (Django - Backend)
-│
-└── archive/                  # Archivos comprimidos originales de respaldo (.zip)
+```bash
+python -m venv .venv
+.venv\Scripts\activate                 # macOS/Linux: source .venv/bin/activate
+pip install -r requirements-dev.txt
+cp .env.example .env
+python scripts/dev/suite.py preparar   # migraciones, datos demo y catálogo
+python scripts/dev/suite.py iniciar    # http://localhost:8080
 ```
 
+En Windows también: doble clic en `iniciar-suite.bat`. Con Docker: `docker compose up --build`. Usuarios de prueba en `.env.example`.
+
 ---
 
-## 🚀 Cómo ejecutar la Suite en Local
+## Estructura
 
-### 1. Requisitos previos
-- **Python 3.10+** instalado.
-- Instalar dependencias requeridas para los módulos Django:
-  ```bash
-  pip install -r requirements.txt
-  ```
-
-### 2. Inicio rápido (Recomendado en Windows)
-Haz doble clic en:
 ```text
-iniciar-suite.bat
-```
-Esto levantará automáticamente en ventanas de consola independientes:
-1. **Suite UNAB Shell** en `http://localhost:8791/index.html` (Servidor HTTP estático)
-2. **Mapa de Calor** en `http://127.0.0.1:8792/` (Django)
-3. **Estrés de Malla** en `http://127.0.0.1:8793/` (Django)
-
-Y abrirá automáticamente tu navegador en la Suite.
-
-### 3. Detener los servidores
-Para cerrar todos los procesos asociados a la Suite de una sola vez, haz doble clic en:
-```text
-detener-suite.bat
+services/portal        front-ends estáticos (portal, Malla DAG, Horarios UCTP, Convalidación, SIGA)
+services/core          Django 5.2 + DRF: identidad, licencias, catálogo, convalidaciones IA, motor UCTP
+services/mapa-calor    Django sin estado (analítica espacial Banner/Syaproa)
+services/estres-malla  Django multi-institución (MallaIQ + Curricular Analytics DAG b/d/c)
+packages/suite-sso     librería compartida de SSO (JWT HS256)
+data/                  catálogo curricular (10 mallas UNAB + 27 mallas de 11 universidades + Gold Standard)
+scripts/               catálogo, evaluación de motores (convalidación, UCTP, suite) y compilación de informes
+deploy/ infra/         Docker, nginx, Terraform (AWS)
 ```
 
----
+## Pruebas y evaluación reproducible
 
-## 🧩 Estado de los Módulos Integrados
+```bash
+# Suite automatizada (69 pruebas: suite-sso, core, mapa-calor, estres-malla)
+python -m pytest packages/suite-sso
+(cd services/core && python -m pytest)
+(cd services/mapa-calor && python -m pytest)
+(cd services/estres-malla && python -m pytest)
 
-| Módulo | Tipo / Stack | Puerto / URL Local | Estado |
-|---|---|---|---|
-| **Shell & Dashboard** | HTML5 / CSS3 / Vanilla JS | `http://localhost:8791/index.html` | ✅ Integrado |
-| **Malla Curricular** | Estática (JS / LocalStorage) | `http://localhost:8791/apps/malla/index.html` | ✅ Integrado (10 mallas) |
-| **Generador de Horarios** | Estática (JS / Excel parsing) | `http://localhost:8791/apps/horarios/index.html` | ✅ Integrado |
-| **SIGA** | Estática (Landing institucional) | `http://localhost:8791/apps/siga/index.html` | ✅ Integrado |
-| **Convalidación con IA** | Estática / Client-side DB | `http://localhost:8791/apps/convalidacion/index.html` | 🟡 Extraído en `apps/convalidacion` |
-| **Mapa de Calor** | Django 4.2 / Pandas / OpenPyXL | `http://localhost:8792/` | ✅ Integrado con backend |
-| **Estrés de Malla (MallaIQ)** | Django 4.2 / Multi-tenant | `http://localhost:8793/` | ✅ Integrado con backend |
-
----
-
-## 📚 Documentación adicional
-- Revisa [`docs/Suite_UNAB_Proyecto_actualizado.docx`](docs/Suite_UNAB_Proyecto_actualizado.docx) para el alcance, marco teórico y objetivos de la tesis.
-- Revisa [`docs/FORMATOS_DE_ARCHIVOS.md`](docs/FORMATOS_DE_ARCHIVOS.md) para conocer las columnas requeridas en los archivos Excel (`.xlsx`) de entrada.
+# Benchmarks algorítmicos y auditoría técnica integral
+python scripts/evaluacion/evaluar_motor.py
+python scripts/evaluacion/evaluar_uctp.py
+python scripts/evaluacion/evaluar_itc2019.py --max-perfiles 30 --json docs/img/metricas_itc2019.json
+python scripts/evaluacion/evaluar_campus_itc2019.py --iteraciones 2500 --json docs/img/metricas_campus_itc2019.json
+python scripts/evaluacion/evaluar_suite.py
+```

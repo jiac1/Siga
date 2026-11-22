@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block titulo %}SIGA-DSS{% endblock %}</title>
+<style>
+  :root{--navy:#102338;--navy-2:#1d3e63;--red:#d8232a;--bg:#eaeef3;--ink:#0d1a2c;--soft:#566276;--faint:#8794a6;--line:#dde3ec;--ok:#1e7a42;--err:#b3261e}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+  .card{background:#fff;border-radius:14px;box-shadow:0 14px 44px rgba(16,35,56,.18);padding:34px 32px;width:100%;max-width:400px}
+  .brand{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--red)}
+  .brand span{font-weight:700;font-size:19px;color:var(--navy)}
+  h1{font-size:18px;margin:4px 0 6px}
+  p.sub{color:var(--soft);font-size:13.5px;margin:0 0 22px;line-height:1.5}
+  label{display:block;font-size:12.5px;font-weight:600;color:var(--soft);margin-bottom:6px}
+  input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font-size:14px;margin-bottom:6px;font-family:inherit}
+  input:focus{outline:2px solid var(--navy-2);outline-offset:1px}
+  .campo{margin-bottom:14px}
+  .errorlist{list-style:none;margin:2px 0 0;padding:0;color:var(--err);font-size:12.5px}
+  .alerta{background:#fbeceb;color:var(--err);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:16px}
+  button{width:100%;padding:11px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-weight:700;font-size:14px;cursor:pointer;border-bottom:3px solid var(--red);font-family:inherit}
+  button:hover{background:var(--navy-2)}
+  .pie{margin-top:18px;font-size:12.5px;color:var(--faint);line-height:1.5;text-align:center}
+  .pie a{color:var(--navy-2);font-weight:600}
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="brand"><span class="dot"></span><span>SIGA-DSS</span></div>
+    {% block contenido %}{% endblock %}
+  </main>
+</body>
+</html>

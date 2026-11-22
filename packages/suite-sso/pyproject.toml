@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "suite-sso"
+version = "1.0.0"
+description = "Inicio de sesión único (SSO) y licenciamiento por módulo para los servicios de Suite UNAB"
+requires-python = ">=3.11"
+dependencies = ["PyJWT>=2.8"]
+
+[project.optional-dependencies]
+django = ["Django>=5.2,<6.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+suite_sso = ["templates/suite_sso/*.html"]

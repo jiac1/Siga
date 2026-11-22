@@ -1,0 +1,149 @@
+[
+  {
+    "etiqueta": "Masaryk Univ. · Informática (muni-fi-spr16)",
+    "meta": {
+      "nombre_xml": "muni-fi-spr16",
+      "n_cursos_xml": 228,
+      "n_clases_xml": 574,
+      "n_salas_xml": 35,
+      "n_estudiantes_xml": 1543,
+      "perfiles_unicos_3a8": 849
+    },
+    "muestra_perfiles": 30,
+    "reduccion_f_bb_pct": 26.3,
+    "reduccion_ventanas_bb_pct": 35.2,
+    "resultados": {
+      "aleatorio": {
+        "evaluados": 30,
+        "factibles": 9,
+        "tasa_factibilidad_pct": 30.0,
+        "f_promedio": 26.11,
+        "ventanas_promedio": 5.22,
+        "dias_promedio": 4.56,
+        "tiempo_promedio_ms": 152.97,
+        "nodos_promedio": 3085.1,
+        "podados_promedio": 0
+      },
+      "branch_and_bound": {
+        "evaluados": 30,
+        "factibles": 8,
+        "tasa_factibilidad_pct": 26.7,
+        "f_promedio": 19.25,
+        "ventanas_promedio": 3.38,
+        "dias_promedio": 4.38,
+        "tiempo_promedio_ms": 104.31,
+        "nodos_promedio": 864.3,
+        "podados_promedio": 0
+      },
+      "recocido_simulado": {
+        "evaluados": 30,
+        "factibles": 9,
+        "tasa_factibilidad_pct": 30.0,
+        "f_promedio": 21.22,
+        "ventanas_promedio": 3.67,
+        "dias_promedio": 4.44,
+        "tiempo_promedio_ms": 86.55,
+        "nodos_promedio": 398.5,
+        "podados_promedio": 0
+      }
+    }
+  },
+  {
+    "etiqueta": "Masaryk Univ. · Cs. Deporte (muni-fsps-spr17)",
+    "meta": {
+      "nombre_xml": "muni-fsps-spr17",
+      "n_cursos_xml": 226,
+      "n_clases_xml": 519,
+      "n_salas_xml": 44,
+      "n_estudiantes_xml": 865,
+      "perfiles_unicos_3a8": 20
+    },
+    "muestra_perfiles": 20,
+    "reduccion_f_bb_pct": 32.8,
+    "reduccion_ventanas_bb_pct": 44.7,
+    "resultados": {
+      "aleatorio": {
+        "evaluados": 20,
+        "factibles": 7,
+        "tasa_factibilidad_pct": 35.0,
+        "f_promedio": 28.71,
+        "ventanas_promedio": 6.71,
+        "dias_promedio": 4,
+        "tiempo_promedio_ms": 1288.54,
+        "nodos_promedio": 60088,
+        "podados_promedio": 0
+      },
+      "branch_and_bound": {
+        "evaluados": 20,
+        "factibles": 7,
+        "tasa_factibilidad_pct": 35.0,
+        "f_promedio": 19.29,
+        "ventanas_promedio": 3.71,
+        "dias_promedio": 3.57,
+        "tiempo_promedio_ms": 574.05,
+        "nodos_promedio": 2402.2,
+        "podados_promedio": 199.6
+      },
+      "recocido_simulado": {
+        "evaluados": 20,
+        "factibles": 7,
+        "tasa_factibilidad_pct": 35.0,
+        "f_promedio": 19.29,
+        "ventanas_promedio": 3.71,
+        "dias_promedio": 3.57,
+        "tiempo_promedio_ms": 502.44,
+        "nodos_promedio": 1437,
+        "podados_promedio": 0
+      }
+    }
+  },
+  {
+    "etiqueta": "Yachay Tech · Pregrado (yach-fal17)",
+    "meta": {
+      "nombre_xml": "yach-fal17",
+      "n_cursos_xml": 91,
+      "n_clases_xml": 415,
+      "n_salas_xml": 33,
+      "n_estudiantes_xml": 821,
+      "perfiles_unicos_3a8": 51
+    },
+    "muestra_perfiles": 30,
+    "reduccion_f_bb_pct": 17.2,
+    "reduccion_ventanas_bb_pct": 25.7,
+    "resultados": {
+      "aleatorio": {
+        "evaluados": 30,
+        "factibles": 3,
+        "tasa_factibilidad_pct": 10.0,
+        "f_promedio": 52.33,
+        "ventanas_promedio": 11.67,
+        "dias_promedio": 5,
+        "tiempo_promedio_ms": 2214.94,
+        "nodos_promedio": 42205.2,
+        "podados_promedio": 0
+      },
+      "branch_and_bound": {
+        "evaluados": 30,
+        "factibles": 3,
+        "tasa_factibilidad_pct": 10.0,
+        "f_promedio": 43.33,
+        "ventanas_promedio": 8.67,
+        "dias_promedio": 5,
+        "tiempo_promedio_ms": 89.89,
+        "nodos_promedio": 708.1,
+        "podados_promedio": 0
+      },
+      "recocido_simulado": {
+        "evaluados": 30,
+        "factibles": 3,
+        "tasa_factibilidad_pct": 10.0,
+        "f_promedio": 43.33,
+        "ventanas_promedio": 8.67,
+        "dias_promedio": 5,
+        "tiempo_promedio_ms": 108.44,
+        "nodos_promedio": 824.1,
+        "podados_promedio": 0
+      }
+    }
+  }
+]

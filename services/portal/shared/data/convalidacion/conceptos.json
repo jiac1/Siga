@@ -1,0 +1,396 @@
+{
+  "_descripcion": "Diccionario curado de conceptos curriculares. Cada concepto agrupa nombres de asignaturas que en distintas universidades chilenas designan el mismo contenido. Los patrones son expresiones regulares sobre el nombre normalizado (minúsculas, sin tildes, sin sufijos 'para ingenieria'). 'nivel': true indica que el número/romano final distingue asignaturas (Inglés I ≠ Inglés II). Mantenido por la Dirección de Carrera; versionado en git.",
+  "_version": "2026-10-21",
+  "conceptos": {
+    "matematica-introductoria": {
+      "patrones": [
+        "^introduccion a las matematicas$",
+        "^introduccion al calculo$",
+        "^precalculo$",
+        "^matematica$",
+        "^matematicas? (basica|general)$",
+        "^taller de matematicas?$",
+        "^matematicas aplicadas i$",
+        "^algebra( i)?$",
+        "^introduccion al algebra$"
+      ]
+    },
+    "algebra": {
+      "patrones": [
+        "^algebra$",
+        "^algebra i$",
+        "^introduccion al algebra$",
+        "^algebra y geometria( analitica)?$",
+        "^introduccion al algebra y geometria$"
+      ]
+    },
+    "calculo-diferencial": {
+      "patrones": [
+        "^calculo i$",
+        "^calculo diferencial$",
+        "^calculo en una variable$",
+        "^calculo$"
+      ]
+    },
+    "calculo-integral": {
+      "patrones": [
+        "^calculo ii$",
+        "^calculo integral$",
+        "^calculo diferencial e integral$"
+      ]
+    },
+    "calculo-multivariable": {
+      "patrones": [
+        "^calculo iii$",
+        "^calculo multivariable$",
+        "^calculo en varias variables$",
+        "^calculo vectorial$",
+        "^calculo y optimizacion multivariable$"
+      ]
+    },
+    "algebra-lineal": {
+      "patrones": [
+        "^algebra lineal$",
+        "^algebra ii$"
+      ]
+    },
+    "ecuaciones-diferenciales": {
+      "patrones": [
+        "ecuaciones diferenciales"
+      ]
+    },
+    "fisica-general": {
+      "patrones": [
+        "^fisica i$",
+        "^fisica general$",
+        "^introduccion a la fisica( clasica)?$",
+        "^fisica$"
+      ]
+    },
+    "mecanica": {
+      "patrones": [
+        "^mecanica$",
+        "^fisica mecanica$",
+        "^mecanica clasica$",
+        "^dinamica$",
+        "^fisica general mecanica$",
+        "^introduccion a la mecanica$",
+        "^mecanica y ondas$"
+      ]
+    },
+    "electromagnetismo": {
+      "patrones": [
+        "electricidad y magnetismo",
+        "^electromagnetismo",
+        "electricidad, magnetismo",
+        "^fisica ii$"
+      ]
+    },
+    "quimica": {
+      "patrones": [
+        "^quimica",
+        "^fundamentos de quimica$",
+        "^introduccion a la quimica$"
+      ]
+    },
+    "programacion-introductoria": {
+      "patrones": [
+        "^introduccion a la programacion$",
+        "^fundamentos de programacion",
+        "^programacion$",
+        "^taller de programacion$",
+        "^pensamiento computacional$",
+        "^computacion para ingenieria$",
+        "^algoritmos y programacion$",
+        "^herramientas computacionales"
+      ]
+    },
+    "programacion-avanzada": {
+      "patrones": [
+        "^programacion avanzada$",
+        "^programacion orientada a objetos$",
+        "^metodos de programacion$"
+      ]
+    },
+    "estructuras-de-datos": {
+      "patrones": [
+        "estructuras? de datos",
+        "^analisis de algoritmos y estructura"
+      ]
+    },
+    "analisis-de-algoritmos": {
+      "patrones": [
+        "^analisis y diseno de algoritmos$",
+        "^diseno y analisis de algoritmos$",
+        "^diseno de algoritmos$",
+        "^algoritmos y complejidad$",
+        "^algorithms and competitive programming$",
+        "^analisis de algoritmos"
+      ]
+    },
+    "paradigmas": {
+      "patrones": [
+        "^paradigmas de programacion$",
+        "^lenguajes de programacion$"
+      ]
+    },
+    "bases-de-datos": {
+      "patrones": [
+        "^bases? de datos( i)?$",
+        "^diseno de bases de datos$",
+        "^fundamentos de bases de datos$"
+      ]
+    },
+    "sistemas-operativos": {
+      "patrones": [
+        "sistemas operativos"
+      ]
+    },
+    "redes": {
+      "patrones": [
+        "^redes de computadores$",
+        "^redes de comunicacion$",
+        "^redes y comunicaciones$",
+        "^redes computacionales$",
+        "^redes de datos$",
+        "^redes$",
+        "^infraestructura ti$",
+        "^redes y ciberseguridad$"
+      ]
+    },
+    "arquitectura-computadores": {
+      "patrones": [
+        "arquitectura (y organizacion )?de computadores",
+        "^organizacion de computadores$",
+        "^estructura de computadores$",
+        "^fundamentos de hardware$"
+      ]
+    },
+    "ingenieria-de-software": {
+      "patrones": [
+        "^ingenieria de software( i)?$",
+        "^fundamentos de ingenieria de software$",
+        "^introduccion a la ingenieria de software$",
+        "^analisis y diseno de software$"
+      ]
+    },
+    "ingenieria-de-software-avanzada": {
+      "patrones": [
+        "^ingenieria de software ii$",
+        "^tecnicas de ingenieria de software$",
+        "^metodos de ingenieria de software$",
+        "^calidad (y seguridad )?de software$",
+        "^desarrollo agil y qa$"
+      ]
+    },
+    "inteligencia-artificial": {
+      "patrones": [
+        "^inteligencia artificial( i)?$",
+        "^fundamentos de inteligencia artificial$",
+        "^artificial intelligence"
+      ]
+    },
+    "aprendizaje-automatico": {
+      "patrones": [
+        "^aprendizaje (automatico|de maquinas)$",
+        "^machine learning$"
+      ]
+    },
+    "mineria-de-datos": {
+      "patrones": [
+        "^mineria de datos$",
+        "^big data$",
+        "^analisis de datos$",
+        "^ciencia de datos$",
+        "^data science$"
+      ]
+    },
+    "ciberseguridad": {
+      "patrones": [
+        "ciberseguridad",
+        "^seguridad de la informacion$",
+        "^seguridad informatica$",
+        "^criptografia y seguridad en redes$",
+        "^fundamentos de ciberseguridad$"
+      ]
+    },
+    "desarrollo-web-movil": {
+      "patrones": [
+        "desarrollo web",
+        "aplicaciones web",
+        "^tecnologias y aplicaciones web$",
+        "^web technologies$",
+        "^aplicaciones moviles$",
+        "^arquitectura de desarrollo"
+      ]
+    },
+    "probabilidad-estadistica": {
+      "patrones": [
+        "^probabilidad(es)? y estadisticas?$",
+        "^estadistica computacional$",
+        "^teoria de probabilidades$",
+        "^probabilidades$",
+        "^estadistica$",
+        "^analisis estadistico",
+        "^fundamentos de probabilidad",
+        "^metodos cuantitativos$"
+      ]
+    },
+    "inferencia-estadistica": {
+      "patrones": [
+        "^inferencia( estadistica)?$",
+        "^estadistica inferencial",
+        "^estadistica aplicada$",
+        "^metodos estadisticos$"
+      ]
+    },
+    "optimizacion": {
+      "patrones": [
+        "^optimizacion( i)?$",
+        "^investigacion (de )?operaciones( i)?$",
+        "^investigacion operativa$",
+        "^metodos de optimizacion$",
+        "^modelamiento y optimizacion$",
+        "^programacion matematica$"
+      ]
+    },
+    "simulacion": {
+      "patrones": [
+        "^simulacion",
+        "^modelos y simulacion$",
+        "^modelacion y simulacion$"
+      ]
+    },
+    "economia": {
+      "patrones": [
+        "^economia$",
+        "^introduccion a la economia$",
+        "^fundamentos de economia",
+        "^microeconomia$"
+      ]
+    },
+    "ingenieria-economica": {
+      "patrones": [
+        "^ingenieria economica$",
+        "^ingenieria economia$"
+      ]
+    },
+    "evaluacion-de-proyectos": {
+      "patrones": [
+        "evaluacion (economica )?(y financiera )?de proyectos",
+        "^formulacion y evaluacion de proyectos$",
+        "^evaluacion de proyectos( tic| informaticos)?$"
+      ]
+    },
+    "gestion-de-proyectos": {
+      "patrones": [
+        "^gestion de proyectos",
+        "^administracion de proyectos",
+        "^portafolio de proyectos$",
+        "^planificacion y (gestion|control) de proyectos$",
+        "^direccion de proyectos$"
+      ]
+    },
+    "contabilidad-costos": {
+      "patrones": [
+        "^contabilidad",
+        "^costos y presupuestos$"
+      ]
+    },
+    "finanzas": {
+      "patrones": [
+        "^finanzas( i)?$",
+        "^finanzas corporativas$",
+        "^gestion financiera$"
+      ]
+    },
+    "marketing": {
+      "patrones": [
+        "^marketing"
+      ]
+    },
+    "gestion-estrategica": {
+      "patrones": [
+        "^gestion estrategica$",
+        "^administracion estrategica$",
+        "^direccion estrategica$",
+        "^planificacion estrategica$"
+      ]
+    },
+    "inteligencia-de-negocios": {
+      "patrones": [
+        "^inteligencia de negocios$",
+        "^business intelligence",
+        "^analitica$"
+      ]
+    },
+    "cadena-de-suministro": {
+      "patrones": [
+        "cadena de suministro",
+        "^logistica$",
+        "^gestion logistica$",
+        "^logistics$"
+      ]
+    },
+    "gestion-de-operaciones": {
+      "patrones": [
+        "^gestion de operaciones( i)?$",
+        "^produccion$",
+        "^sistemas productivos$",
+        "^operaciones y procesos industriales$"
+      ]
+    },
+    "procesos-industriales": {
+      "patrones": [
+        "^procesos industriales$",
+        "^taller de aplicacion industrial$"
+      ]
+    },
+    "ingles": {
+      "nivel": true,
+      "patrones": [
+        "^ingles( general| tecnico)? (i|ii|iii|iv|1|2|3|4)$",
+        "^comunicacion efectiva en espanol / ingles (i|ii|iii|iv)$"
+      ]
+    },
+    "termodinamica": {
+      "patrones": [
+        "^termodinamica"
+      ]
+    },
+    "mecanica-de-fluidos": {
+      "patrones": [
+        "mecanica de fluidos"
+      ]
+    },
+    "introduccion-ingenieria": {
+      "patrones": [
+        "^introduccion a la ingenieria( informatica| industrial| electrica)?$",
+        "^desafios de la ingenieria",
+        "^introduccion al diseno en ingenieria$",
+        "^taller de proyectos de ingenieria$"
+      ]
+    },
+    "responsabilidad-social": {
+      "patrones": [
+        "^responsabilidad social$",
+        "^etica( profesional)?$",
+        "^etica y responsabilidad social$",
+        "^ingenieria, informatica y sociedad$",
+        "^informatica y sociedad$"
+      ]
+    },
+    "transformacion-digital": {
+      "patrones": [
+        "transformacion digital"
+      ]
+    },
+    "emprendimiento": {
+      "patrones": [
+        "^innovacion y emprendimiento",
+        "^emprendimiento",
+        "^taller de innovacion y emprendimiento"
+      ]
+    }
+  }
+}

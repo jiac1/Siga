@@ -1,0 +1,22 @@
+# universidad: Universidad de Chile
+# sigla: UCHILE
+# carrera: Ingeniería Civil Eléctrica
+# area: electrica
+# plan: Malla 2021 (FCFM)
+# duracion: 11
+# creditos: UD (unidades docentes FCFM)
+# fuente: https://ingenieria.uchile.cl/dam/jcr:f0bb9f53-fd8e-45c3-a10b-2497b639ccd5/MALLACIVILELECTRICA2021.jpg
+# consultado: 2026-10-21
+# metodo: lectura visual de la imagen oficial publicada en ingenieria.uchile.cl/carreras/4972
+# notas: Plan Común FCFM semestres I-IV.
+1 | Introducción al Cálculo [MA1001] {6} | Introducción al Álgebra [MA1101] {6} | Introducción a la Física Clásica [FI1000] {6} | Herramientas Computacionales para Ingeniería y Ciencias [CC1000] {3} | Desafíos de Innovación en Ingeniería y Ciencias [CD1100] {6} | Aplicaciones de la Biología a la Ingeniería y Ciencias [BT1211] {3}
+2 | Cálculo Diferencial e Integral [MA1002] {6} | Álgebra Lineal [MA1102] {6} | Introducción a la Física Moderna [FI1100] {6} | Introducción a la Programación [CC1002] {6} | Proyecto de Innovación en Ingeniería y Ciencias [CD1201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+3 | Cálculo en Varias Variables [MA2001] {6} | Ecuaciones Diferenciales Ordinarias [MA2601] {6} | Mecánica [FI2001] {6} | Métodos Experimentales [FI2003] {6} | Química [IQ2211] {6}
+4 | Cálculo Avanzado y Aplicaciones [MA2002] {6} | Economía [IN2201] {6} | Electromagnetismo [FI2002] {6} | Termodinámica / Termodinámica Química [FI2004/IQ2212] {6} | Módulo Interdisciplinario [CD2201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+5 | Análisis y Diseño de Circuitos Eléctricos [EL3101] {6} | Sistemas Digitales [EL3102] {6} | Electromagnetismo Aplicado [EL3103] {6} | Probabilidad y Procesos Estocásticos [EL3104] {6} | Seminario de Ingeniería Eléctrica e Innovación Tecnológica [EL3105] {6}
+6 | Laboratorio de Ingeniería Eléctrica [EL3201] {6} | Circuitos Eléctricos Analógicos [EL3202] {6} | Análisis de Señales [EL3203] {6} | Análisis de Sistemas Dinámicos y Estimación [EL3204] {6} | ~Formación Integral EH/FG {3} | ~Formación Integral EH/FG {3}
+7 | Conversión de la Energía y Sistemas Eléctricos [EL4111] {6} | Principios de Comunicaciones [EL4112] {6} | Fundamentos de Control de Sistemas [EL4113] {6} | Optimización [EL4114] {6} | ~Electivo {6} | Práctica Profesional I [EL4115] {7}
+8 | Núcleo Línea de Especialización {6} | Laboratorio de Línea de Especialización {6} | Programación Avanzada [EL4203] {6} | Formulación y Evaluación de Proyectos [EL4204] {6} | ~Electivo {6} | Examen de Suficiencia en Inglés I [EI1090]
+9 | Taller de Proyectos Tecnológicos [EL6101] {12} | ~Electivo de Línea de Especialización {6} | ~Electivo de Línea de Especialización {6} | ~Electivo de Línea de Especialización {6} | Práctica Profesional II [EL5115] {14}
+10 | Taller de Emprendimiento e Innovación [EL6201] {6} | Introducción al Trabajo de Título [EL6908] {6} | ~Electivo de Línea de Especialización {6} | ~Electivo de Línea de Especialización {6} | ~Electivo de Línea de Especialización {6}
+11 | Taller de Desempeño Profesional [EL6301] {3} | Trabajo de Título [EL6919] {27} | Examen de Suficiencia en Inglés II [EI2090]

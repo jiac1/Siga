@@ -1,0 +1,20 @@
+# universidad: Universidad Finis Terrae
+# sigla: UFT
+# carrera: Ingeniería Civil Informática y Telecomunicaciones
+# area: informatica
+# plan: malla referencial 2024
+# duracion: 10
+# fuente: https://admision.finis.cl/wp-content/uploads/2024/11/malla-ingenieria-civil-informatica.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (texto en contornos, sin capa de texto)
+# notas: Malla referencial y sujeta a modificaciones según la fuente.
+1 | Matemática | Química | Introducción a la Ingeniería | Programación | Taller de Herramientas Computacionales | ~Antropología | ~Taller de Pensamiento, Comunicación y Arte
+2 | Cálculo Diferencial | Álgebra | Mecánica | Introducción a la Electricidad | Programación Avanzada | ~Identidad Personal y Proyecto de Vida
+3 | Cálculo Integral | Álgebra Lineal | Ondas y Calor | Matemáticas Discretas | Estructura de Datos y Algoritmos | Ética | Inglés I
+4 | Cálculo Vectorial | Ecuaciones Diferenciales | Electrónica de Circuitos | Base de Datos | ~Persona y Trascendencia | Inglés II
+5 | Probabilidad y Estadística | Sistemas Digitales | Arquitectura de Computadores | Ingeniería de Software I | Teoría de la Computación | ~Minor de Formación Interdisciplinar
+6 | Teoría Organizacional | Análisis y Procesamiento de Señales | Redes de Computadores | Sistemas Operativos | Ciencia de Datos | ~Minor de Formación Interdisciplinar
+7 | Ingeniería Económica | Comunicaciones Digitales | Business Information Systems | Ingeniería de Software II | Inteligencia Artificial | Práctica Inicial | ~Minor de Desarrollo Profesional
+8 | Evaluación de Proyectos | Procesamiento Digital de Información | Business Intelligence | Innovación y Emprendimiento | Machine Learning | ~Minor de Desarrollo Profesional
+9 | Robótica | ~Electivo I | ~Electivo II | Minería de Datos | Práctica Pre-profesional | Proyecto de Título I
+10 | Proyecto de Título II

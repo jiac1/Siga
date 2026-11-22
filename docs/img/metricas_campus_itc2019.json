@@ -1,0 +1,107 @@
+[
+  {
+    "etiqueta": "Masaryk Univ. · Informática (muni-fi-spr16)",
+    "n_clases": 574,
+    "n_salas": 35,
+    "n_estudiantes": 1543,
+    "n_restricciones_duras": 409,
+    "campus_aleatorio": {
+      "total_clases": 574,
+      "clases_asignadas": 501,
+      "conflictos_sala_h2": 0,
+      "conflictos_docente_h3": 0,
+      "conflictos_capacidad": 0,
+      "conflictos_distribucion_dura": 0,
+      "penalizacion_tiempo": 2188,
+      "penalizacion_sala": 2172,
+      "conflictos_estudiantes": 10949,
+      "penalizacion_total": 62758.0,
+      "tasa_asignacion_pct": 87.3,
+      "tiempo_ms": 90.61
+    },
+    "campus_global_sa": {
+      "total_clases": 574,
+      "clases_asignadas": 521,
+      "conflictos_sala_h2": 0,
+      "conflictos_docente_h3": 0,
+      "conflictos_capacidad": 0,
+      "conflictos_distribucion_dura": 0,
+      "penalizacion_tiempo": 974,
+      "penalizacion_sala": 1304,
+      "conflictos_estudiantes": 6602,
+      "penalizacion_total": 41982.0,
+      "tasa_asignacion_pct": 90.8,
+      "tiempo_ms": 3910.58
+    }
+  },
+  {
+    "etiqueta": "Masaryk Univ. · Cs. Deporte (muni-fsps-spr17)",
+    "n_clases": 519,
+    "n_salas": 44,
+    "n_estudiantes": 865,
+    "n_restricciones_duras": 191,
+    "campus_aleatorio": {
+      "total_clases": 519,
+      "clases_asignadas": 447,
+      "conflictos_sala_h2": 0,
+      "conflictos_docente_h3": 0,
+      "conflictos_capacidad": 0,
+      "conflictos_distribucion_dura": 0,
+      "penalizacion_tiempo": 220,
+      "penalizacion_sala": 321,
+      "conflictos_estudiantes": 5437,
+      "penalizacion_total": 47415.0,
+      "tasa_asignacion_pct": 86.1,
+      "tiempo_ms": 68.05
+    },
+    "campus_global_sa": {
+      "total_clases": 519,
+      "clases_asignadas": 470,
+      "conflictos_sala_h2": 0,
+      "conflictos_docente_h3": 0,
+      "conflictos_capacidad": 0,
+      "conflictos_distribucion_dura": 0,
+      "penalizacion_tiempo": 62,
+      "penalizacion_sala": 255,
+      "conflictos_estudiantes": 1227,
+      "penalizacion_total": 27271.0,
+      "tasa_asignacion_pct": 90.6,
+      "tiempo_ms": 695.19
+    }
+  },
+  {
+    "etiqueta": "Yachay Tech · Pregrado (yach-fal17)",
+    "n_clases": 415,
+    "n_salas": 33,
+    "n_estudiantes": 821,
+    "n_restricciones_duras": 368,
+    "campus_aleatorio": {
+      "total_clases": 415,
+      "clases_asignadas": 352,
+      "conflictos_sala_h2": 0,
+      "conflictos_docente_h3": 0,
+      "conflictos_capacidad": 0,
+      "conflictos_distribucion_dura": 0,
+      "penalizacion_tiempo": 8,
+      "penalizacion_sala": 1044,
+      "conflictos_estudiantes": 6985,
+      "penalizacion_total": 46522.0,
+      "tasa_asignacion_pct": 84.8,
+      "tiempo_ms": 134.98
+    },
+    "campus_global_sa": {
+      "total_clases": 415,
+      "clases_asignadas": 370,
+      "conflictos_sala_h2": 0,
+      "conflictos_docente_h3": 0,
+      "conflictos_capacidad": 0,
+      "conflictos_distribucion_dura": 0,
+      "penalizacion_tiempo": 8,
+      "penalizacion_sala": 900,
+      "conflictos_estudiantes": 2802,
+      "penalizacion_total": 29012.0,
+      "tasa_asignacion_pct": 89.2,
+      "tiempo_ms": 956.94
+    }
+  }
+]

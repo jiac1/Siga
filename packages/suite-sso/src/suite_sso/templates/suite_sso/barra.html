@@ -1,0 +1,38 @@
+{% comment %}
+Barra superior común de SIGA-DSS para módulos Django. Única fuente para
+todos los servicios Python (antes estaba copiada a mano en cada app).
+Se dibuja solo en modo suite. Uso: {% include "suite_sso/barra.html" %}
+justo después de <body>. La altura queda en --su-bar-height para que cada
+app ajuste su layout si tiene elementos fijos.
+{% endcomment %}
+{% if suite.activa %}
+<style>
+  :root{--su-bar-height:44px}
+  #suite-bar{position:sticky;top:0;z-index:1000;height:var(--su-bar-height);display:flex;align-items:center;
+    justify-content:space-between;padding:0 clamp(12px,3vw,28px);background:#102338;border-bottom:3px solid #d8232a;
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;color:#fff;box-sizing:border-box}
+  #suite-bar a{color:inherit;text-decoration:none}
+  #suite-bar .sb-left{display:flex;align-items:center;gap:12px;min-width:0}
+  #suite-bar .sb-brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;white-space:nowrap}
+  #suite-bar .sb-dot{width:9px;height:9px;border-radius:50%;background:#d8232a;display:inline-block}
+  #suite-bar .sb-sep{color:#5b7495;font-size:13px}
+  #suite-bar .sb-app{font-size:13px;color:#bcd0e8;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #suite-bar .sb-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+  #suite-bar .sb-user{font-size:12.5px;color:#9db6d4}
+  #suite-bar .sb-link{font-size:12.5px;font-weight:600;color:#e8eef7;padding:5px 11px;border-radius:6px;border:1px solid rgba(255,255,255,.25)}
+  #suite-bar .sb-link:hover{background:rgba(255,255,255,.12)}
+  @media (max-width:560px){#suite-bar .sb-user{display:none}}
+</style>
+<nav id="suite-bar" aria-label="SIGA-DSS">
+  <div class="sb-left">
+    <a class="sb-brand" href="{{ suite.portal_url }}"><span class="sb-dot"></span>SIGA-DSS</a>
+    <span class="sb-sep">/</span>
+    <span class="sb-app">{{ suite.modulo_nombre }}</span>
+  </div>
+  <div class="sb-right">
+    {% if suite.usuario %}<span class="sb-user">{{ suite.usuario.nombre }} · {{ suite.usuario.organizacion_nombre|default:suite.usuario.organizacion }}</span>{% endif %}
+    <a class="sb-link" href="{{ suite.portal_url }}">Inicio</a>
+    <a class="sb-link" href="{{ suite.logout_url }}">Salir</a>
+  </div>
+</nav>
+{% endif %}

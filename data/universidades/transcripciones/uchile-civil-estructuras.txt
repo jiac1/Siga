@@ -1,0 +1,22 @@
+# universidad: Universidad de Chile
+# sigla: UCHILE
+# carrera: Ingeniería Civil (mención Estructura, Construcción y Geotecnia)
+# area: civil
+# plan: Malla mayo 2024 (FCFM)
+# duracion: 11
+# creditos: UD (unidades docentes FCFM)
+# fuente: https://ingenieria.uchile.cl/dam/jcr:5ccf1d24-7b4b-434f-8be8-c1cddcc87281/Malla-Civil-Estructura-mayo-2024.jpg
+# consultado: 2026-10-21
+# metodo: lectura visual de la imagen oficial publicada en ingenieria.uchile.cl/carreras/4969
+# notas: Existen además las menciones Hidráulica, Sanitaria y Ambiental, y Transporte (no transcritas). Plan Común FCFM semestres I-IV.
+1 | Introducción al Cálculo [MA1001] {6} | Introducción al Álgebra [MA1101] {6} | Introducción a la Física Clásica [FI1000] {6} | Herramientas Computacionales para Ingeniería y Ciencias [CC1000] {3} | Desafíos de Innovación en Ingeniería y Ciencias [CD1100] {6} | Aplicaciones de la Biología a la Ingeniería y Ciencias [BT1211] {3}
+2 | Cálculo Diferencial e Integral [MA1002] {6} | Álgebra Lineal [MA1102] {6} | Introducción a la Física Moderna [FI1100] {6} | Introducción a la Programación [CC1002] {6} | Proyecto de Innovación en Ingeniería y Ciencias [CD1201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+3 | Cálculo en Varias Variables [MA2001] {6} | Ecuaciones Diferenciales Ordinarias [MA2601] {6} | Mecánica [FI2001] {6} | Métodos Experimentales [FI2003] {6} | Química [IQ2211] {6}
+4 | Cálculo Avanzado y Aplicaciones [MA2002] {6} | Economía [IN2201] {6} | Electromagnetismo [FI2002] {6} | Termodinámica / Termodinámica Química [FI2004/IQ2212] {6} | Módulo Interdisciplinario [CD2201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+5 | Probabilidades y Estadística [MA3403] {6} | Optimización / Modelamiento y Optimización [MA3701/IN3171] {6} | Mecánica Estructural [CI3111] {6} | Análisis de Sistemas de Transporte [CI3141] {6} | Mecánica de Fluidos [CI3162] {6}
+6 | Cálculo Numérico para Ingeniería Civil [CI3251] {6} | Ingeniería Hidráulica [CI3262] {6} | Ingeniería Estructural [CI3211] {6} | Ingeniería Ambiental [CI3261] {6} | Topografía [CI3252] {6} | Taller de Práctica Profesional I [CI4150] {1}
+7 | Evaluación de Proyectos [CI4152] {6} | Ingeniería Geotécnica [CI4121] {6} | Dinámica de Estructuras [CI4111] {6} | Ingeniería de Materiales [CI4112] {6} | ~Electivo {6} | Práctica I Topografía [CI4151] {6}
+8 | Construcción [CI4231] {6} | Planificación y Gestión de Proyectos [CI4251] {6} | Diseño Sísmico de Estructuras [CI4211] {6} | Diseño Hormigón Armado [CI4212] {6} | ~Formación Integral EH/FG {3} | ~Formación Integral EH/FG {3} | Taller de Práctica Profesional II [CI5150] {1} | Examen de Suficiencia en Inglés I [EI1090]
+9 | Diseño Geotécnico [CI5121] {6} | Diseño de Estructuras de Acero [CI5122] {6} | Proyecto de Hormigón Armado [CI5123] {6} | Proyecto de Construcción [CI5131] {6} | ~Electivo de Especialidad {6} | Práctica Profesional II [CI5151] {13}
+10 | Trabajo de Habilitación Profesional I [CI5909/CI6908] {3} | Mecánica de Suelos Avanzada [CI5321] {6} | Proyectos de Estructuras de Acero [CI5322] {6} | Ingeniería Estructural Avanzada [CI5323] {6} | ~Electivo de Especialidad {6} | ~Electivo de Especialidad {3} | Examen de Suficiencia en Inglés II [EI2090]
+11 | Trabajo de Habilitación Profesional II [CI5910/CI6911] {27} | ~Formación Integral de Especialidad {3} | Práctica Profesional III [CI6161] {14}

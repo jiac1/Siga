@@ -1,0 +1,672 @@
+{
+ "slug": "ua-civil-informatica",
+ "universidad": "Universidad Autónoma de Chile",
+ "sigla": "UA",
+ "carrera": "Ingeniería Civil Informática",
+ "area": "informatica",
+ "plan": "Malla 2025",
+ "regimen": "trimestral",
+ "duracion": 16,
+ "unidad_creditos": null,
+ "fuente": {
+  "url": "https://admision.uautonoma.cl/content/uploads/2025/11/Malla-2025-Ingenieria-Civil-Informatica.pdf",
+  "consultado": "2026-10-21",
+  "metodo": "lectura visual del PDF oficial + capa de texto",
+  "notas": "Régimen trimestral (16 trimestres, sede Santiago-Providencia). Información referencial según la fuente."
+ },
+ "estadisticas": {
+  "asignaturas": 63,
+  "convalidables": 53,
+  "genericas": 10,
+  "inciertas": 0
+ },
+ "semestres": [
+  {
+   "numero": 1,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s1-1",
+     "nombre": "Introducción a las Matemáticas",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s1-2",
+     "nombre": "Introducción a la Ingeniería",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s1-3",
+     "nombre": "Electivo de Desarrollo del Pensamiento",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 1,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 2,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s2-1",
+     "nombre": "Álgebra",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s2-2",
+     "nombre": "Química y Medio Ambiente",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s2-3",
+     "nombre": "Introducción a la Programación",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 2,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 3,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s3-1",
+     "nombre": "Álgebra Lineal",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s3-2",
+     "nombre": "Cálculo I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s3-3",
+     "nombre": "Programación Orientada a Objetos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s3-4",
+     "nombre": "Electivo de Comunicación",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 3,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 4,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s4-1",
+     "nombre": "Cálculo II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s4-2",
+     "nombre": "Física Mecánica",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s4-3",
+     "nombre": "Fundamentos de Hardware",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 4,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 5,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s5-1",
+     "nombre": "Probabilidades y Estadística Computacional",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s5-2",
+     "nombre": "Cálculo III",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s5-3",
+     "nombre": "Fundamentos de Estructura de Datos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s5-4",
+     "nombre": "Electivo de Comunicación",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 5,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 6,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s6-1",
+     "nombre": "Fundamentos de IoT",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s6-2",
+     "nombre": "Ciencia de Materiales para Electrónica Moderna",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s6-3",
+     "nombre": "Redes y Comunicaciones",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s6-4",
+     "nombre": "Inglés Técnico I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 6,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 7,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s7-1",
+     "nombre": "Ecuaciones Diferenciales",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s7-2",
+     "nombre": "Inferencia Estadística",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s7-3",
+     "nombre": "Bases de Datos I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s7-4",
+     "nombre": "Inglés Técnico II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 7,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 8,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s8-1",
+     "nombre": "Procesos Termodinámicos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s8-2",
+     "nombre": "Análisis y Modelamiento de Sistemas",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s8-3",
+     "nombre": "Seguridad de Redes",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s8-4",
+     "nombre": "Inglés Técnico III",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 8,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 9,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s9-1",
+     "nombre": "Electricidad y Electromagnetismo",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s9-2",
+     "nombre": "Termodinámica",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s9-3",
+     "nombre": "Bases de Datos II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s9-4",
+     "nombre": "Big Data",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s9-5",
+     "nombre": "Inglés Técnico IV",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 9,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 10,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s10-1",
+     "nombre": "Electrónica y Electrotecnia",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s10-2",
+     "nombre": "Contabilidad y Costos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s10-3",
+     "nombre": "Desarrollo de Aplicaciones Web",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s10-4",
+     "nombre": "Ingeniería de Software",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s10-5",
+     "nombre": "Sistemas Operativos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 10,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 11,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s11-1",
+     "nombre": "Gestión de Proyectos Complejos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s11-2",
+     "nombre": "Desarrollo de Aplicaciones Móviles",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s11-3",
+     "nombre": "Ciencia de Datos e Inteligencia de Negocios",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s11-4",
+     "nombre": "Programación Científica",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 11,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 12,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s12-1",
+     "nombre": "Consultoría Informática",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 12,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s12-2",
+     "nombre": "Arquitectura de Software",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 12,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s12-3",
+     "nombre": "Machine Learning",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 12,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s12-4",
+     "nombre": "Electivo de Desarrollo Personal",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 12,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s12-5",
+     "nombre": "Práctica I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 12,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 13,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s13-1",
+     "nombre": "Economía y Finanzas",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 13,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s13-2",
+     "nombre": "Especialidad I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 13,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s13-3",
+     "nombre": "Inteligencia Artificial",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 13,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s13-4",
+     "nombre": "Infraestructura y Servicios Cloud",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 13,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 14,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s14-1",
+     "nombre": "Arquitectura Empresarial y Liderazgo Corporativo",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 14,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s14-2",
+     "nombre": "Especialidad II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 14,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s14-3",
+     "nombre": "Especialidad III",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 14,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s14-4",
+     "nombre": "Electivo de Ética",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 14,
+     "generico": true,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 15,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s15-1",
+     "nombre": "Formulación y Evaluación de Proyectos",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 15,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s15-2",
+     "nombre": "Trabajo de Título I",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 15,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s15-3",
+     "nombre": "Derecho de Empresa y Legislación Laboral",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 15,
+     "generico": false,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s15-4",
+     "nombre": "Electivo de Responsabilidad Social",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 15,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s15-5",
+     "nombre": "Práctica II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 15,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  },
+  {
+   "numero": 16,
+   "asignaturas": [
+    {
+     "id": "ua-civil-informatica-s16-1",
+     "nombre": "Especialidad IV",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 16,
+     "generico": true,
+     "incierto": false
+    },
+    {
+     "id": "ua-civil-informatica-s16-2",
+     "nombre": "Trabajo de Título II",
+     "codigo": null,
+     "creditos": null,
+     "semestre": 16,
+     "generico": false,
+     "incierto": false
+    }
+   ]
+  }
+ ]
+}

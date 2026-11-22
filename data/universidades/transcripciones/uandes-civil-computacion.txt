@@ -1,0 +1,21 @@
+# universidad: Universidad de los Andes
+# sigla: UANDES
+# carrera: Ingeniería Civil en Ciencias de la Computación
+# area: informatica
+# plan: vigente 2025 (sin año en documento)
+# duracion: 11
+# fuente: https://admision.uandes.cl/docs/default-source/carreras/documentos-area-ingenieria-y-administracion/ingenieria-civil-en-ciencias-de-la-computacion/malla-ingenieria-civil-en-ciencias-de-la-computacion.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (texto en contornos, sin capa de texto)
+# notas: '~' marca cupos genéricos (minor, optativos, formación general) que no se usan para convalidar. Se corrige errata "Maviso" -> "Masivo".
+1 | Introducción al Cálculo | Introducción al Álgebra y Geometría | Fundamentos de Química | Programación | Bases para el Estudio de Ingeniería | Taller de Proyectos de Ingeniería | ~Teología I | ~Antropología Filosófica
+2 | Álgebra Lineal | Cálculo I | Introducción a la Mecánica | Fundamentos de Economía | ~Teología II | ~Optativo Arte y Literatura / Historia y Pensamiento Contemporáneo | Inglés ALTE 3
+3 | Ecuaciones Diferenciales | Cálculo II | Mecánica y Ondas | Teoría de Probabilidades | ~Optativo Teológico | ~Minor
+4 | Estadística Aplicada | Electricidad y Magnetismo | Termodinámica | Estática | Ética | ~Minor
+5 | Paradigmas de Programación | Programación de Bajo Nivel | Bases de Datos | HI: Métodos Estadísticos | ~Filosofía de las Ciencias | ~Minor
+6 | Sistemas Operativos y Redes | Arquitectura de Computadores | Estructura de Datos y Algoritmos | Web Technologies | HI: Taller de Diseño Digital y Fabricación 3D | Pre-Professional Practice
+7 | Algorithms and Competitive Programming | Fundamentos de Ciberseguridad | Artificial Intelligence | HI: Diseño y Desarrollo de Sistemas IoT | Pensamiento de Diseño Aplicado a Ingeniería
+8 | Proyecto de Desarrollo de Software | Aplicaciones Móviles | Almacenamiento y Procesamiento Masivo de Datos | Introducción a la Ingeniería de Software | ~Optativo Arte y Literatura Historia y Pensamiento Contemporáneo
+9 | Software Design | User Experience Design | Inteligencia Artificial Aplicada | Sistemas Embebidos | ~Electivo de Especialidad
+10 | Gestión de Proyectos de Software | Software Architecture | Proyecto de Título I | ~Electivo de Especialidad | ~Electivo de Especialidad | Seminario Ética Profesional | Professional Practice
+11 | Emprendimiento e Innovación en Software | ~Electivo de Especialidad | Proyecto de Título II

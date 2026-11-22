@@ -1,0 +1,8 @@
+# Entorno de desarrollo completo de SIGA-DSS (todos los servicios + pruebas)
+-r services/core/requirements.txt
+-r services/mapa-calor/requirements.txt
+-r services/estres-malla/requirements.txt
+-e packages/suite-sso
+pytest>=8
+pytest-django>=4.9
+ruff>=0.6

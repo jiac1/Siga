@@ -1,0 +1,18 @@
+# universidad: Universidad de Santiago de Chile
+# sigla: USACH
+# carrera: Ingeniería de Ejecución en Computación e Informática (vespertino)
+# area: informatica
+# plan: Res. Universitaria N° 7930 de 01/12/2017, mod. Res. N° 1313 de 29/04/2020
+# duracion: 8
+# fuente: https://diinf.usach.cl/wp-content/uploads/2021/05/Malla-Ingenieria-de-Ejecu-en-Compu-e-Inf-Vespertino.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto (códigos entre corchetes)
+# notas: Programa de Ejecución (8 semestres). Los planes podrán variar según la fuente.
+1 | Cálculo I para Ingeniería [13140] | Álgebra I para Ingeniería [13141] | Física I para Ingeniería [13142] | Gestión Personal [13143] | Introducción a la Programación [13175]
+2 | Cálculo II para Ingeniería [13145] | Álgebra II para Ingeniería [13146] | Física II para Ingeniería [13147] | Métodos de Programación [13148] | Comunicación Efectiva [13149]
+3 | Electricidad y Magnetismo para Ingeniería [13150] | Paradigmas de Programación [13151] | Ecuaciones Diferenciales y Métodos Numéricos para Ingeniería [13152] | Fundamentos de Economía [13153] | Análisis Estadístico para Ingeniería [13154] | Inglés I [10130]
+4 | Ingeniería de Sistemas [13155] | Fundamentos de Ingeniería de Software [13156] | Estructura de Computadores [13157] | Evaluación de Proyectos Informáticos [13176] | Análisis de Algoritmos y Estructura de Datos [13159] | Inglés II [10131]
+5 | Diseño de Bases de Datos [13160] | Organización de Computadores [13161] | Administración de Proyectos Informáticos [13177] | Sistemas de Información [13163] | Inglés III [10132]
+6 | Sistemas Operativos [13164] | Taller de Bases de Datos [13165] | Métodos de Ingeniería de Software [16166] | Redes Computacionales [13167] | Inglés IV [10133]
+7 | Proyecto de Ingeniería de Software [13168] | ~Tópicos de Especialidad I [13169] | ~Tópicos de Especialidad II [13170] | ~Tópicos de Especialidad III [13171] | Seminario de Computación e Informática [13172]
+8 | Trabajo de Titulación [13173] | Informática y Sociedad [13174]

@@ -1,0 +1,21 @@
+# universidad: Universidad del Desarrollo
+# sigla: UDD
+# carrera: Ingeniería Civil Industrial (Plan Común Ingeniería Civil)
+# area: industrial
+# plan: Plan curricular vigente año 2020
+# duracion: 11
+# fuente: https://ingenieria.udd.cl/files/2020/04/12.-ing-civil-pc_ing-civil-industrial.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial + capa de texto
+# notas: 'Taller de Exploración Tecnológica' y 'Proyectos de Ingeniería' abarcan los semestres I-II (se asignan a I y II). Comunicación y Pensamiento: orden puede variar. Información referencial.
+1 | Taller de Exploración Tecnológica | Comunicación Oral Comunicación Escrita | Introducción a las Ciencias | Matemáticas Aplicadas I
+2 | Proyectos de Ingeniería | Lectura Crítica Pensamiento Crítico | Taller de Física I | Matemáticas Aplicadas II
+3 | Taller de Programación | Taller de Física II | Álgebra Lineal | Cálculo Integral
+4 | Curso de Especialidad: Taller de Diseño en Ingeniería | Taller de Física III | Taller de Química | Cálculo Multivariable | Probabilidades y Estadística
+5 | Taller de Gestión de Empresas | Responsabilidad Pública | Circuitos Eléctricos | Bases de Datos | Ecuaciones Diferenciales | Inferencia Estadística
+6 | Taller de Inteligencia de Negocios | Termodinámica | Optimización I | Contabilidad y Costos | Microeconomía
+7 | Taller de Modelamiento de Procesos | Emprendimiento | Mecánica de Fluidos | Optimización II | Finanzas | Simulación de Procesos
+8 | Taller de Estudios Técnicos de Proyectos | Ciencia, Tecnología e Innovación | Ingeniería y Sustentabilidad | Gestión de Operaciones I | Tecnología de Información para la Gestión | Redes y Algoritmos
+9 | Taller de Ingeniería Industrial | ~Humanidades | Gestión Estratégica | Gestión de Operaciones II | Evaluación de Proyectos | Gestión de Recursos Humanos
+10 | Taller de Proyecto de Ingeniería | Marketing Estratégico | ~Electivo de Profundización I | ~Electivo de Profundización II
+11 | Taller de Consultoría | Ética Profesional | ~Electivo de Profundización III | ~Electivo de Profundización IV

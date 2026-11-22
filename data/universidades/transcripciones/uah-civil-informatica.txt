@@ -1,0 +1,20 @@
+# universidad: Universidad Alberto Hurtado
+# sigla: UAH
+# carrera: Ingeniería Civil en Informática
+# area: informatica
+# plan: Admisión 2025 (folleto Continuidad de Estudios, V2)
+# duracion: 10
+# fuente: https://admision.uahurtado.cl/wp-content/uploads/2023/10/CE2025_Ingenieria-Civil-Informatica_V2.pdf
+# consultado: 2026-10-21
+# metodo: lectura visual del PDF oficial (página 8)
+# notas: Malla publicada en el folleto de Continuidad de Estudios para técnicos; el Ciclo Básico corresponde al Plan Común de Ingeniería Civil (conducente a Civil Industrial o Civil en Informática). Nombres normalizados desde mayúsculas.
+1 | Álgebra I | Física I | Cálculo Diferencial | Introducción a la Ingeniería | Habilidades I: Ingeniería y Sociedad | Sostenibilidad I
+2 | Álgebra II | Física II | Cálculo Integral | Probabilidades y Estadística | Habilidades II: Filosofía de la Tecnología | Sostenibilidad II
+3 | Álgebra Lineal | Fundamentos de Ciencia de Datos | Cálculo Multivariable | ~Electivo de Especialidad I | Habilidades III: Arte y Creatividad en Ingeniería | ~Optativo Formación General | ~Optativo Formación Teológica
+4 | Teoría de Sistemas | Electromagnetismo | Ecuaciones Diferenciales | ~Electivo de Especialidad II | Habilidades IV: Epistemología de las Ciencias | ~Optativo Formación General | ~Optativo Formación Teológica
+5 | Sistemas Complejos | Bases de Datos | Programación Avanzada | Redes Sociales | Inglés I | Habilidades V: Ingeniería y Ciencias de la Salud
+6 | Investigación de Operaciones y Optimización | Sistemas Operativos | Ingeniería de Software | Cambio Climático | Inglés II | Habilidades VI: Ingeniería y Psicología en el Contexto Laboral | Práctica Industrial
+7 | Simulación y Modelamiento | ~Optativo Formación Complementaria | Arquitectura de Software | Fundamentos de Economía y Economía Digital | Redes | Ética
+8 | Capstone | ~Optativo Formación Complementaria | Ciberseguridad | Formulación y Evaluación de Proyectos | Transformación Digital | Entorno Jurídico de los Negocios | Práctica Profesional
+9 | Arquitectura de Sistemas | ~Optativo Formación Complementaria | Analítica Avanzada | Gestión de Proyectos Informáticos | Proyecto de Título I
+10 | Emprendimiento e Innovación Responsable | ~Optativo Formación Complementaria | Estrategia de Tecnologías de Información | Liderazgo | Proyecto de Título II | ~Optativo Formación Complementaria

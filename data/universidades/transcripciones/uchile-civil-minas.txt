@@ -1,0 +1,22 @@
+# universidad: Universidad de Chile
+# sigla: UCHILE
+# carrera: Ingeniería Civil de Minas
+# area: minas
+# plan: Malla 2026 (versión mayo 2025, FCFM)
+# duracion: 11
+# creditos: UD (unidades docentes FCFM)
+# fuente: https://ingenieria.uchile.cl/dam/jcr:029329ad-a30f-4bab-aa41-cf44499a984d/Malla%20Minas%202025%20.jpeg
+# consultado: 2026-10-21
+# metodo: lectura visual de la imagen oficial publicada en ingenieria.uchile.cl/carreras/4977
+# notas: Plan Común FCFM semestres I-IV.
+1 | Introducción al Cálculo [MA1001] {6} | Introducción al Álgebra [MA1101] {6} | Introducción a la Física Clásica [FI1000] {6} | Herramientas Computacionales para Ingeniería y Ciencias [CC1000] {3} | Desafíos de Innovación en Ingeniería y Ciencias [CD1100] {6} | Aplicaciones de la Biología a la Ingeniería y Ciencias [BT1211] {3}
+2 | Cálculo Diferencial e Integral [MA1002] {6} | Álgebra Lineal [MA1102] {6} | Introducción a la Física Moderna [FI1100] {6} | Introducción a la Programación [CC1002] {6} | Proyecto de Innovación en Ingeniería y Ciencias [CD1201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+3 | Cálculo en Varias Variables [MA2001] {6} | Ecuaciones Diferenciales Ordinarias [MA2601] {6} | Mecánica [FI2001] {6} | Métodos Experimentales [FI2003] {6} | Química [IQ2211] {6}
+4 | Cálculo Avanzado y Aplicaciones [MA2002] {6} | Economía [IN2201] {6} | Electromagnetismo [FI2002] {6} | Termodinámica / Termodinámica Química [FI2004/IQ2212] {6} | Módulo Interdisciplinario [CD2201] {3} | ~Formación Integral DR/EH/FG/EI/FT {3}
+5 | Probabilidades y Estadísticas [MA3403] {6} | Química Mineralógica [MI3100] {6} | Geología para Ingenieros [MI3105] {6} | Minería y Sustentabilidad [MI3110] {6} | Mecánica de Rocas I [MI3115] {6}
+6 | Optimización / Modelamiento y Optimización [MA3701/IN3171] {6} | Fisicoquímica Metalúrgica [MI3230] {6} | Introducción a Yacimientos Minerales [MI3210] {6} | Fenómenos de Transporte [MI3235] {6} | Mecánica de Rocas II [MI3215] {6}
+7 | Evaluación de Proyectos [IN3301] {6} | Metalurgia Extractiva [MI4135] {6} | Análisis Estadístico y Geoestadístico de Datos [MI4040] {6} | Fundamentos de Tecnología Minera [MI4070] {6} | Procesamiento de Minerales I [MI4150] {6} | Práctica Profesional I [MI4901] {7}
+8 | Economía de Minerales [MI4260] {3} | Evaluación de Yacimientos [MI4240] {6} | Legislación Minera [MI4265] {3} | Medio Ambiente y Comunidades [MI5160] {6} | Procesamiento de Minerales II [MI4250] {6} | ~Formación Integral EH/FG {6} | Examen de Suficiencia en Inglés I [EI1090]
+9 | Diseño y Planificación de Minas Subterráneas [MI5120] {6} | Diseño y Planificación de Minas a Cielo Abierto [MI5115] {6} | Gestión de Operaciones Mineras [MI5110] {3} | Seguridad Minera [MI5260] {3} | Aguas y Relaves [MI5170] {3} | ~Electivo de Especialidad {9} | Práctica Profesional II [MI5902] {14}
+10 | Introducción al Trabajo de Título [MI6907] {6} | Taller de Proyecto Minero [MI5210] {6} | Evaluación y Gestión de Proyectos Mineros [MI5265] {6} | ~Electivo de Especialidad {6} | ~Electivo de Especialidad {6}
+11 | Trabajo de Título [MI6919] {30} | Examen de Suficiencia en Inglés II [EI2090]

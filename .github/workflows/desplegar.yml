@@ -1,0 +1,119 @@
+name: Despliegue a AWS
+
+# Publica imágenes en ECR, ejecuta migraciones como tarea única de ECS,
+# actualiza los servicios (con rollback automático si fallan los health checks)
+# y sube el portal estático a S3 + invalida CloudFront.
+#
+# Configuración requerida (Settings → Environments → staging / produccion):
+#   variables: AWS_REGION, ECS_CLUSTER, BUCKET_PORTAL, CLOUDFRONT_ID,
+#              SUBREDES_PRIVADAS (separadas por coma), GRUPO_SEGURIDAD
+#   secreto:   AWS_ROLE_ARN   (salida "rol_github" de Terraform)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ambiente:
+        description: Ambiente de destino
+        type: choice
+        options: [staging, produccion]
+        default: staging
+
+permissions:
+  id-token: write   # OIDC con AWS: sin llaves de acceso guardadas en GitHub
+  contents: read
+
+concurrency:
+  group: despliegue-${{ inputs.ambiente || 'staging' }}
+  cancel-in-progress: false
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.ambiente || 'staging' }}
+    env:
+      PROYECTO: suite-unab
+      AMBIENTE: ${{ inputs.ambiente || 'staging' }}
+      VERSION: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Credenciales AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login en ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Construir y publicar imágenes
+        run: |
+          for svc in core mapa-calor estres-malla; do
+            imagen="${{ steps.ecr.outputs.registry }}/${PROYECTO}/${svc}:${VERSION}"
+            docker buildx build --push \
+              -f deploy/docker/django.Dockerfile \
+              --build-arg SERVICIO=$svc --build-arg APP_VERSION=$VERSION \
+              -t "$imagen" .
+          done
+
+      - name: Registrar nuevas definiciones de tarea
+        id: tareas
+        run: |
+          nueva_revision () {   # $1 = familia, $2 = servicio
+            aws ecs describe-task-definition --task-definition "$1" --query taskDefinition > td.json
+            jq --arg img "${{ steps.ecr.outputs.registry }}/${PROYECTO}/$2:${VERSION}" \
+               '.containerDefinitions[0].image = $img
+                | (.containerDefinitions[0].environment[] | select(.name=="APP_VERSION") | .value) = env.VERSION
+                | del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)' \
+               td.json > td-nueva.json
+            aws ecs register-task-definition --cli-input-json file://td-nueva.json \
+              --query taskDefinition.taskDefinitionArn --output text
+          }
+          for svc in core mapa-calor estres-malla; do
+            arn=$(nueva_revision "${PROYECTO}-${AMBIENTE}-${svc}" "$svc")
+            echo "${svc//-/_}=$arn" >> "$GITHUB_OUTPUT"
+          done
+          for svc in core estres-malla; do
+            arn=$(nueva_revision "${PROYECTO}-${AMBIENTE}-${svc}-migrar" "$svc")
+            echo "migrar_${svc//-/_}=$arn" >> "$GITHUB_OUTPUT"
+          done
+          nueva_revision "${PROYECTO}-${AMBIENTE}-core-purga" "core" > /dev/null
+
+      - name: Migraciones (tareas únicas)
+        run: |
+          red="awsvpcConfiguration={subnets=[${{ vars.SUBREDES_PRIVADAS }}],securityGroups=[${{ vars.GRUPO_SEGURIDAD }}],assignPublicIp=DISABLED}"
+          for td in "${{ steps.tareas.outputs.migrar_core }}" "${{ steps.tareas.outputs.migrar_estres_malla }}"; do
+            tarea=$(aws ecs run-task --cluster "${{ vars.ECS_CLUSTER }}" --launch-type FARGATE \
+              --task-definition "$td" --network-configuration "$red" --query 'tasks[0].taskArn' --output text)
+            aws ecs wait tasks-stopped --cluster "${{ vars.ECS_CLUSTER }}" --tasks "$tarea"
+            codigo=$(aws ecs describe-tasks --cluster "${{ vars.ECS_CLUSTER }}" --tasks "$tarea" \
+              --query 'tasks[0].containers[0].exitCode' --output text)
+            [ "$codigo" = "0" ] || { echo "::error::La migración falló ($td)"; exit 1; }
+          done
+
+      - name: Actualizar servicios ECS
+        run: |
+          aws ecs update-service --cluster "${{ vars.ECS_CLUSTER }}" --service core         --task-definition "${{ steps.tareas.outputs.core }}"
+          aws ecs update-service --cluster "${{ vars.ECS_CLUSTER }}" --service mapa-calor   --task-definition "${{ steps.tareas.outputs.mapa_calor }}"
+          aws ecs update-service --cluster "${{ vars.ECS_CLUSTER }}" --service estres-malla --task-definition "${{ steps.tareas.outputs.estres_malla }}"
+          aws ecs wait services-stable --cluster "${{ vars.ECS_CLUSTER }}" --services core mapa-calor estres-malla
+
+      - name: Publicar portal estático
+        run: |
+          aws s3 sync services/portal "s3://${{ vars.BUCKET_PORTAL }}/" --delete \
+            --exclude "*.json" --cache-control "public,max-age=300"
+          aws s3 sync services/portal "s3://${{ vars.BUCKET_PORTAL }}/" \
+            --exclude "*" --include "*.json" --cache-control "public,max-age=60"
+          aws cloudfront create-invalidation --distribution-id "${{ vars.CLOUDFRONT_ID }}" --paths "/*"
+
+      - name: Verificación posterior al despliegue
+        run: |
+          url="https://$(aws cloudfront get-distribution --id ${{ vars.CLOUDFRONT_ID }} --query Distribution.DomainName --output text)"
+          for ruta in core/salud/ mapa-calor/salud/ estres-malla/salud/ index.html; do
+            curl -fsS --retry 5 --retry-delay 10 "$url/$ruta" > /dev/null && echo "OK $ruta"
+          done

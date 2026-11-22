@@ -1,0 +1,7 @@
+{% extends "core/base.html" %}
+{% block titulo %}{{ titulo }} · SIGA-DSS{% endblock %}
+{% block contenido %}
+<h1>{{ titulo }}</h1>
+<p class="sub">{{ mensaje }}</p>
+<p class="pie"><a href="{% url 'identidad:ingresar' %}">Ir a ingresar</a></p>
+{% endblock %}

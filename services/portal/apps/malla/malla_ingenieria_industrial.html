@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malla · Ingeniería Industrial · UNAB</title>
+<style>
+  :root{
+    --bg:#eaeef3; --surface:#ffffff; --surface-2:#f6f8fb;
+    --ink:#0d1a2c; --ink-soft:#566276; --ink-faint:#8794a6; --line:#dde3ec;
+    --navy:#102338; --navy-2:#1d3e63; --red:#d8232a;
+    --a-matematicas:#2563eb;      --t-matematicas:#e7edfd;
+    --a-fisica:#0891b2;           --t-fisica:#e0f3f8;
+    --a-industrial:#dc2626;       --t-industrial:#fce8e8;
+    --a-gestion:#ea580c;          --t-gestion:#fcebdf;
+    --a-digital:#7c3aed;          --t-digital:#efe8fd;
+    --a-emprendimiento:#db2777;   --t-emprendimiento:#fce7f1;
+    --a-integracion:#92400e;      --t-integracion:#f6eae2;
+    --a-ingles:#ca8a04;           --t-ingles:#f9f1da;
+    --a-formaciongeneral:#475569; --t-formaciongeneral:#eef1f5;
+    --shadow:0 1px 2px rgba(16,35,56,.06),0 6px 18px rgba(16,35,56,.07);
+    --shadow-lg:0 12px 40px rgba(16,35,56,.22);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:var(--bg);
+    line-height:1.45; -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace}
+
+  /* ---------- Header ---------- */
+  header.top{
+    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%);
+    color:#fff; padding:15px clamp(16px,4vw,40px) 0;
+    border-bottom:3px solid var(--red);
+  }
+  .top-inner{max-width:1480px;margin:0 auto}
+  .eyebrow{
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:#9db6d4;font-weight:600;display:flex;gap:10px;align-items:center
+  }
+  .eyebrow .dun{
+    background:rgba(255,255,255,.12);padding:2px 8px;border-radius:4px;
+    letter-spacing:.06em;color:#cfe0f2;white-space:nowrap;flex:none
+  }
+  h1{
+    font-size:clamp(19px,2.5vw,26px);font-weight:700;letter-spacing:-.02em;
+    margin:5px 0 2px;line-height:1.08
+  }
+  .grado{color:#bcd0e8;font-size:13px;font-weight:400}
+  .stats{display:flex;flex-wrap:wrap;gap:0;margin:11px 0 0}
+  .stat{
+    padding:5px 18px 9px 0;margin-right:18px;
+    border-right:1px solid rgba(255,255,255,.14)
+  }
+  .stat:last-child{border-right:none}
+  .stat b{display:block;font-size:20px;font-weight:700;letter-spacing:-.01em}
+  .stat span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#9db6d4}
+
+  /* ---------- Legend / filter ---------- */
+  .legend-wrap{
+    position:sticky;top:0;z-index:30;background:rgba(234,238,243,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line)
+  }
+  .legend{
+    max-width:1560px;margin:0 auto;padding:8px clamp(16px,4vw,40px);
+    display:flex;flex-wrap:wrap;gap:6px;align-items:center
+  }
+  .legend .lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;margin-right:4px}
+  .chip{
+    border:1px solid var(--line);background:var(--surface);
+    padding:3px 9px 3px 7px;border-radius:20px;font-size:11px;font-weight:600;
+    color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+    transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease;
+  }
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none}
+  .chip:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .chip[aria-pressed="true"]{color:var(--ink);box-shadow:var(--shadow);
+    border-color:transparent}
+  .chip.reset{color:var(--ink-soft)}
+  body.filtering .chip:not([aria-pressed="true"]):not(.reset){opacity:.5}
+
+  /* ---------- Malla ---------- */
+  .board-scroll{overflow-x:auto;padding-bottom:8px;scrollbar-width:thin}
+  .board{
+    position:relative;
+    --label-w:28px; --lane-h:66px;
+    max-width:1560px;margin:0 auto;padding:18px clamp(16px,4vw,40px) 8px;
+    display:grid;
+    grid-template-columns:var(--label-w) repeat(8,minmax(150px,1fr));
+    grid-template-rows:auto; grid-auto-rows:var(--lane-h);
+    column-gap:9px; row-gap:6px;
+    align-items:stretch
+  }
+  /* arrow overlay sits above cards but ignores pointer events */
+  .arrows{position:absolute;top:0;left:0;z-index:5;pointer-events:none;overflow:visible}
+  .arrows path.edge{fill:none;stroke:var(--ink-soft);stroke-width:3;opacity:.5;
+    stroke-linecap:round;stroke-linejoin:round;
+    transition:opacity .18s ease,stroke .18s ease,stroke-width .18s ease}
+  .arrows polygon.head{fill:var(--ink-soft);opacity:.42;transition:opacity .18s ease,fill .18s ease}
+  body.no-arrows .arrows{display:none}
+  body.focusing .arrows path.edge{opacity:.06}
+  body.focusing .arrows polygon.head{opacity:.06}
+  .arrows path.edge.on{opacity:1;stroke-width:4.2}
+  .arrows polygon.head.on{opacity:1}
+
+  /* column (semester) headers */
+  .col-head{
+    grid-row:1;align-self:stretch;
+    padding:8px 11px;border-radius:8px;
+    background:var(--surface);border:1px solid var(--line);
+    display:flex;align-items:baseline;justify-content:space-between;z-index:2
+  }
+  .col-head .n{font-size:13px;font-weight:700;color:var(--ink)}
+  .col-head .n small{display:block;font-size:9px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-faint)}
+  .col-head .cr{font-size:10.5px;color:var(--ink-soft);font-weight:600}
+
+  /* area band tint behind a department's lanes */
+  .band{grid-column:1 / -1;background:var(--bt);border-radius:10px;z-index:0;
+    opacity:.55;margin:-3px -6px;pointer-events:none}
+  /* rotated area label in the left gutter */
+  .band-label{grid-column:1;writing-mode:vertical-rl;transform:rotate(180deg);
+    display:flex;align-items:center;justify-content:center;
+    font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--bc);z-index:2;text-align:center;line-height:1.05;padding:2px 0}
+
+  .card{
+    --c:var(--ink-soft);--t:var(--surface-2);
+    position:relative;text-align:left;cursor:pointer;z-index:2;
+    background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    border-bottom:3px solid var(--c);
+    padding:6px 8px 5px;overflow:hidden;font-family:inherit;color:var(--ink);
+    transition:transform .13s ease,box-shadow .13s ease,border-color .13s ease,opacity .18s ease;
+    display:flex;flex-direction:column;justify-content:space-between;gap:3px
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--line);border-bottom-color:var(--c)}
+  .card:focus-visible{outline:2.5px solid var(--c);outline-offset:2px}
+  .card .name{font-size:11.5px;font-weight:600;line-height:1.13;color:var(--ink);
+    letter-spacing:-.005em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .card .meta{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .card .code{font-size:9.5px;letter-spacing:.03em;color:var(--c);font-weight:700;font-family:ui-monospace,Menlo,monospace}
+  .card .cr{font-size:9.5px;font-weight:700;color:var(--ink-soft);flex:none}
+  body.filtering .card.dim{opacity:.26;filter:saturate(.4)}
+  body.filtering .card.dim:hover{transform:none;box-shadow:none}
+  /* prereq-chain focus states */
+  body.focusing .card{opacity:.22;filter:saturate(.45)}
+  body.focusing .card.chain{opacity:1;filter:none}
+  body.focusing .card.dep{opacity:1;filter:none}
+  .card.chain{box-shadow:var(--shadow);border-color:var(--c)}
+  .card.root{outline:2px solid var(--c);outline-offset:2px}
+  .card.dep{border-style:dashed;border-color:var(--c)}
+
+  /* ---------- Detail drawer ---------- */
+  .backdrop{position:fixed;inset:0;background:rgba(13,26,44,.42);opacity:0;
+    pointer-events:none;transition:opacity .25s ease;z-index:50}
+  .backdrop.show{opacity:1;pointer-events:auto}
+  .drawer{
+    position:fixed;top:0;right:0;bottom:0;width:min(460px,92vw);background:var(--surface);
+    z-index:60;box-shadow:var(--shadow-lg);transform:translateX(100%);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;
+  }
+  .drawer.show{transform:translateX(0)}
+  .drawer-head{padding:22px 24px 18px;border-bottom:1px solid var(--line);position:relative}
+  .drawer-head .bar{position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c,var(--navy))}
+  .drawer .tag{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+    font-weight:700;color:var(--c);background:var(--t);padding:3px 9px;border-radius:20px}
+  .drawer .code{font-size:12px;font-weight:700;color:var(--ink-faint);margin-top:12px;letter-spacing:.04em}
+  .drawer h2{font-size:21px;font-weight:700;letter-spacing:-.02em;margin:3px 0 0;line-height:1.18}
+  .drawer .facts{display:flex;gap:18px;margin-top:14px}
+  .drawer .facts div{font-size:12px;color:var(--ink-soft)}
+  .drawer .facts b{display:block;font-size:17px;color:var(--ink);font-weight:700}
+  .closeb{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;
+    border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:17px;
+    color:var(--ink-soft);line-height:1;display:flex;align-items:center;justify-content:center}
+  .closeb:hover{background:var(--surface-2);color:var(--ink)}
+  .drawer-body{padding:20px 24px 32px;overflow-y:auto;flex:1}
+  .sec-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+    color:var(--ink-faint);margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  .sec+.sec{margin-top:24px}
+  .contenidos{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+  ul.ae{list-style:none;display:flex;flex-direction:column;gap:9px}
+  ul.ae li{position:relative;padding-left:22px;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+  ul.ae li::before{content:"";position:absolute;left:0;top:7px;width:8px;height:8px;
+    border-radius:50%;background:var(--c)}
+  .empty{font-size:13px;color:var(--ink-faint);font-style:italic}
+  .chips-row{display:flex;flex-wrap:wrap;gap:7px}
+  .prq-chip{display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+    border:1px solid var(--line);background:var(--surface);border-radius:8px;
+    padding:6px 10px;font-family:inherit;font-size:12.5px;color:var(--ink);text-align:left;
+    transition:border-color .12s ease,box-shadow .12s ease,transform .12s ease}
+  .prq-chip:hover{box-shadow:var(--shadow);transform:translateY(-1px)}
+  .prq-chip .pc-dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .prq-chip .pc-code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--ink-faint);font-weight:700}
+  .prq-chip .pc-name{font-weight:600}
+  .prq-chip .pc-sem{font-size:10.5px;color:var(--ink-faint);font-weight:600}
+
+  footer.foot{max-width:1480px;margin:0 auto;padding:8px clamp(16px,4vw,40px) 40px;
+    color:var(--ink-faint);font-size:12px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center}
+  footer.foot .sep{color:var(--line)}
+
+  @media (max-width:560px){
+    .stat{padding-right:16px;margin-right:16px}.stat b{font-size:20px}
+    .drawer-head{padding:20px 20px 16px}.drawer-body{padding:18px 20px 28px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+  /* page-load stagger */
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .board{animation:fade .35s ease both}
+
+  /* ===== progreso / tracker ===== */
+  .progress-wrap{background:var(--surface);border-bottom:1px solid var(--line)}
+  .progress-inner{max-width:1560px;margin:0 auto;padding:9px clamp(16px,4vw,40px);
+    display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+  .prog-stats{display:flex;gap:18px}
+  .prog-stat{font-size:12px;color:var(--ink-soft)}
+  .prog-stat b{font-size:16px;color:var(--ink);font-weight:700;margin-right:3px}
+  .prog-bar{position:relative;flex:1;min-width:180px;height:12px;border-radius:7px;
+    background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+  .prog-fill{height:100%;width:0;border-radius:7px;
+    background:linear-gradient(90deg,#16a34a,#22c55e);transition:width .4s cubic-bezier(.4,0,.2,1)}
+  .prog-pct{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    font-size:10px;font-weight:700;color:var(--ink-soft);mix-blend-mode:luminosity}
+  .prog-reset{appearance:none;border:1px solid var(--line);background:var(--surface);
+    color:var(--ink-soft);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;
+    padding:7px 13px;border-radius:8px;transition:background .15s,color .15s}
+  .prog-reset:hover{background:var(--surface-2);color:var(--ink)}
+
+  /* check de aprobación en la tarjeta */
+  .chk{position:absolute;top:6px;right:6px;width:19px;height:19px;border-radius:50%;
+    border:2px solid var(--line);background:var(--surface);cursor:pointer;z-index:4;
+    display:flex;align-items:center;justify-content:center;padding:0;
+    transition:border-color .15s,background .15s,transform .12s}
+  .chk::after{content:"";width:9px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;
+    transform:rotate(-45deg) translate(0,-1px);opacity:0;transition:opacity .12s}
+  .chk:hover{border-color:#16a34a;transform:scale(1.12)}
+  .card .name{padding-right:18px}
+
+  /* estados */
+  .card.done{background:#f0fbf3;border-color:#bbe8c8}
+  .card.done .chk{background:#16a34a;border-color:#16a34a}
+  .card.done .chk::after{opacity:1}
+  .card.done .name{color:#15693a}
+  .card.avail{background:#e8f1ff;box-shadow:0 0 0 2px var(--c) inset, var(--shadow)}
+  .card.avail::after{content:"cursable";position:absolute;bottom:5px;right:8px;
+    font-size:8.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--c);opacity:.9}
+  .card.avail .cr{visibility:hidden}
+  body.show-locked .card.locked{opacity:.42;filter:saturate(.5)}
+  .dw-aprob{margin-top:16px;width:100%;appearance:none;cursor:pointer;font-family:inherit;
+    font-size:13.5px;font-weight:700;padding:11px;border-radius:9px;border:1.5px solid var(--c);
+    background:var(--surface);color:var(--c);transition:background .15s,color .15s}
+  .dw-aprob:hover{background:var(--t)}
+  .dw-aprob.is-done{background:#16a34a;border-color:#16a34a;color:#fff}
+  .dw-aprob.is-done:hover{background:#15803d}
+</style>
+<link rel="stylesheet" href="../../shared/tokens.css">
+<link rel="stylesheet" href="../../shared/suite-bar.css">
+</head>
+<body>
+<script>window.SUITE_APP_DEPTH = 2;</script>
+<script src="../../shared/suite-config.js"></script>
+<script src="../../shared/auth.js"></script>
+<script>SuiteAuth.requireLogin({modulo: "malla"});</script>
+<script src="../../shared/suite-bar.js" data-app="Malla curricular"></script>
+  <header class="top">
+    <div class="top-inner">
+      <div class="eyebrow">
+        <span>Universidad Andrés Bello · Facultad de Ingeniería</span>
+        <span class="dun">DUN 71-2022</span>
+      </div>
+      <h1>Ingeniería Industrial</h1>
+      <div class="grado">Plan de Continuidad de Estudios · Régimen trimestral</div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-inner">
+      <div class="prog-stats">
+        <div class="prog-stat"><b id="prog-aprob">0</b><span id="prog-aprob-l">/ 34 asignaturas</span></div>
+        <div class="prog-stat"><b id="prog-cred">0</b><span>/ 114 créditos</span></div>
+      </div>
+      <div class="prog-bar" role="progressbar" aria-label="Avance de carrera">
+        <div class="prog-fill" id="prog-fill"></div>
+        <span class="prog-pct" id="prog-pct">0%</span>
+      </div>
+      <button class="prog-reset" id="prog-reset" title="Desmarcar todas">↺ Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="legend-wrap">
+    <div class="legend" id="legend">
+      <span class="lbl">Áreas</span>
+    </div>
+  </div>
+
+  <div class="board-scroll">
+    <div class="board" id="board"></div>
+  </div>
+
+  <footer class="foot" id="foot"></footer>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dw-name" aria-hidden="true">
+    <div class="drawer-head">
+      <div class="bar" id="dw-bar"></div>
+      <button class="closeb" id="dw-close" aria-label="Cerrar detalle">&#10005;</button>
+      <span class="tag" id="dw-tag"></span>
+      <div class="code mono" id="dw-code"></div>
+      <h2 id="dw-name"></h2>
+      <div class="facts">
+        <div>Semestre<b id="dw-sem"></b></div>
+        <div>Créditos<b id="dw-cr"></b></div>
+        <div>Área<b id="dw-area" style="font-size:14px"></b></div>
+      </div>
+      <button class="dw-aprob" id="dw-aprob"></button>
+    </div>
+    <div class="drawer-body">
+      <div class="sec" id="dw-prq-sec">
+        <p class="sec-title">Prerrequisitos</p>
+        <div id="dw-prq" class="chips-row"></div>
+      </div>
+      <div class="sec" id="dw-dep-sec">
+        <p class="sec-title">Habilita</p>
+        <div id="dw-dep" class="chips-row"></div>
+      </div>
+      <div class="sec" id="dw-cont-sec">
+        <p class="sec-title">Contenidos</p>
+        <p class="contenidos" id="dw-cont"></p>
+      </div>
+      <div class="sec" id="dw-ae-sec">
+        <p class="sec-title">Aprendizajes esperados</p>
+        <div id="dw-ae"></div>
+      </div>
+    </div>
+  </aside>
+
+<script>const CURSOS = [{"codigo": "FMMA005", "nombre": "Nivelación de Matemáticas", "semestre": 1, "creditos": 5, "area": "matematicas", "requisitos": [], "contenidos": "Nivelación en Matemáticas contribuye a desarrollo del ámbito de acción: Dirección y y tributa al siguiente resultado de aprendizaje Gestión de Procesos Productivos RA1: Aplicar herramientas de ingeniería y de gestión para la solución de problemas, mediante el diseño de modelos productivos y de servicios, bajo un enfoque de sostenibilidad. Además, tributa al ámbito de acción: Inversión, en el siguiente resultado de Evaluación de Proyectos de aprendizaje: RA2: Evaluar iniciativas de inversión bajo un enfoque de rentabilidad económica privada y social. Finalmente, tributa al ámbito de acción: en el siguiente resultado de aprendizaje Transformación Digital RA2: Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones en las organizaciones. En este curso se introduce el lenguaje y los elementos matemáticos básicos que permitirán al estudiante abordar con seguridad los contenidos de cursos posteriores. Se refuerza el manejo algebraico y la resolución de ecuaciones, y se modelan situaciones mediante dichas ecuaciones. Se representan ecuaciones en el plano cartesiano mediante el uso de software y se interpretan sus soluciones. Se resuelven problemas mediante el uso de trigonometría y se introduce el concepto de vector y su descomposición ortogonal. Al finalizar el curso, los estudiantes serán capaces de manejar elementos matemáticos básicos necesarios para cursos posteriores de matemática y de física 1. NÚMEROS REALES • Propiedades • La recta numérica • Números enteros • Números racionales • Representación decimal • Conjuntos e intervalos • Valor absoluto y distancia • Aplicaciones 2. POTENCIAS Y RAÍCES • Potencias: Propiedades • Raíces: Propiedades • Aplicaciones 3. EXPRESIONES ALGEBRAICAS • Definición y ejemplos • Operaciones • Reducción de expresiones algebraicas • Factorización y productos notables • Expresiones algebraicas racionales 4. ECUACIONES • Propiedades de la igualdad • Ecuaciones lineales • Sistemas de ecuaciones lineales con dos incógnitas. • Ecuaciones cuadráticas • Completación de cuadrados • Fórmula cuadrática • Modelado mediante ecuaciones 5. INECUACIONES • Propiedades de la desigualdad • Resolución de una inecuación • Tabla de signos 6. LOGARITMOS • Definición y propiedades • Ecuaciones que involucran potencias, raíces y logaritmos. • Aplicaciones 7. PLANO CARTESIANO • Definición • Distancia y Punto medio • Ecuaciones con dos variables y su representación • Representación gráfica de ecuaciones e inecuaciones mediante software • Circunferencia: Definición e identificación 8. RECTA Y PARÁBOLA • Recta: Ecuaciones, paralelismo, perpendicularidad. Representación gráfica. • Parábola: Caso de eje vertical. Identificación. Representación gráfica. • Modelamiento • Ajuste de rectas y parábolas a puntos mediante uso de software 9. TRIGONOMETRÍA • Medida angular: Grados y radianes • Razones trigonométricas • Teoremas del seno y del coseno • Aplicaciones 10. VECTORES • Descripción geométrica • Norma • Suma, multiplicación por escalar, resta • Descomposición de un vector en direcciones ortogonales • Representación en el plano cartesiano • Propiedades", "aprendizajes": ["1. Aplican las propiedades de los números reales y sus operaciones principales para resolver ecuaciones e inecuaciones. 2. Utilizan software para representar y visualizar elementos matemáticos. 3. Modelan matemáticamente para resolver problemas. 4. Emplean elementos de trigonometría y geometría vectorial para resolver problemas"], "eje": "matematicas", "lane": 0}, {"codigo": "AIIN001", "nombre": "Análisis Descriptivo de Procesos", "semestre": 1, "creditos": 2, "area": "industrial", "requisitos": [], "contenidos": "futuras de la carrera a través de la aplicación de los conceptos utilizando paquetes computacionales UNIDAD I: LA EMPRESA(20%) • La empresa • Gestión empresarial • El sistema productivo UNIDAD II: PROCESOS (40%) • Procesos de Negocio • Procesos de apoyo al negocio • Diseño de proceso UNIDAD III: ANÁLISIS DESCRIPTIVO DE PROCESOS (40%) • Análisis de indicadores • Introducción a R-project y Python • Visualización de información", "aprendizajes": ["Describir los conceptos asociados a la orgánica y gestión de las empresas en la industria", "Utilizar las fuentes de información estadística en el contexto de la Ingeniería Industrial", "Analizar problemáticas industriales, a través de las medidas de resumen para tomar decisiones que permitan la mejora de los sistemas, utilizando paquetes computacionales para la industria que le sean útiles en el ejercicio de la profesión"], "eje": "industrial", "lane": 3}, {"codigo": "ATDF101", "nombre": "Tópicos de Ingeniería", "semestre": 1, "creditos": 3, "area": "digital", "requisitos": [], "contenidos": "los estudiantes serán capaces de: • Describir el rol de la Ingeniería en la sociedad. • Identificar y dar solución a problemáticas y necesidades de alto impacto que agreguen valor a los usuarios de instituciones privadas y/o públicas. • Generar el prototipo de un producto innovador de base tecnológica. • Transmitir propuestas de valor y modelos de negocio. • Seleccionar Herramientas tecnológicas a utilizar I: FUNDAMENTOS TÉCNICOS DE INGENIERÍA Origen etimológico y práctico de la profesión. Evolución de la ingeniería y diversificación de disciplinas. Desarrollo sostenible y código de ética de ingenieros. Conceptos claves de los proyectos de ingeniería. El método ingenieril y los proyectos interdisciplinarios. Apresto ingenieril y modelos de negocios, herramientas y estrategias (SMART). II: IDENTIFICANDO PROBLEMÁTICAS Identificación de problemáticas: técnicas y herramientas. Fundamentación: obtención de Información. Generación de alternativas de solución. Diseños preliminares de las propuestas. Elementos del entorno: desarrollo sustentable y tecnologías emergentes. Evaluación y selección de la mejor solución. III: AGREGANDO VALOR Técnicas y herramientas. Responsabilidad social empresarial. Diseño de un proceso creativo. Diseño centrado en el usuario y la usabilidad. Prototipado y validación de un producto mínimo viable", "aprendizajes": ["Distinguir los desafíos actuales de la • sociedad u organizaciones estableciendo los fundamentos de un proyecto de ingeniería • para la comprensión del valor estratégico de la profesión. • • • •", "Analizar el contexto de la situación • actual, obtenida del levantamiento de información, para la definición del alcance y • propuesta de solución. • • • •", "Crear una propuesta de valor ingenieril, presentando soluciones y/o mejoras • mediante estrategias de comunicación, para • abordar un desafío organizacional. • • •"], "eje": "digital", "lane": 6}, {"codigo": "ATDF102", "nombre": "Introducción a la Programación", "semestre": 1, "creditos": 3, "area": "digital", "requisitos": [], "contenidos": "el estudiante será capaz de aplicar el pensamiento computacional para resolver problemas mediante la programación, combinando el modelado de datos y el diseño de algoritmos con la construcción y depuración de programas I: FUNDAMENTOS DE PROGRAMACIÓN general de un computador. de programas en un computador lenguajes interpretados y compilados. concepto de algoritmo y programa. de un algoritmo. de la información en un y el concepto de Tipo de Dato. concepto de variable. y Expresiones. de Entrada y Salida. de Flujo – técnicas de resolución de y diseño. de prueba y depuración de II: ORGANIZACIÓN DE PROGRAMAS FUNCIONES concepto de modularidad. de descomposición funcional. de bibliotecas de funciones en Python. de Funciones. concepto de variable global y variable III: ORGANIZACIÓN DE PROGRAMAS CLASES concepto de clase y objeto. clase String. clase Lista. clase Archivo. usando Clases. de Clases en Python", "aprendizajes": ["Explicar conceptos básicos de la computación y la programación tales como EN PYTHON • variable, operador, condicional, ciclo y Esquema función para describir la solución • Ejecución computacional de un problema. en • El • Representación • Representación computador • El • Operadores • Operaciones • Control problemas • Técnicas programas", "Aplicar técnicas de modelado de datos y creación de algoritmos para USANDO diseñar la solución computacional de un • El problema. • Técnicas • Uso • Creación • El local", "Desarrollar programas utilizando el USANDO lenguaje de programación Python y un • El entorno de desarrollo para implementar la • La solución computacional a un problema. • La • La • Modelamiento • Definición"], "eje": "digital", "lane": 7}, {"codigo": "AACD103", "nombre": "Taller de Innovación y Emprendimiento I", "semestre": 1, "creditos": 2, "area": "emprendimiento", "requisitos": [], "contenidos": "los estudiantes serán capaces de: Reconocer características personales asociadas al emprendimiento y la innovación para identificar oportunidades y formular propuestas de valor, gestionando el riesgo I: CEPS Emprendedoras Personales (CEPs). y Análisis de la Red de contactos como de Networking. al interior de los equipos de trabajo. en equipo. II: INNOVACIÓN de innovación y proyectos de innovación y Valor: Oportunidades de Innovación. de Referencia y Estrategia de Gestión en la III: TÉCNICAS DE PENSAMIENTO LATERAL Creativo de Investigación de Usuario centrado en el usuario y usabilidad IV: PROTOTIPADO de prototipado y validación Lean de desafíos de innovación: trabajo con navigator de validación y de experiencia de validación V: CONSTRUCCIÓN DE PROPUESTAS DE VALOR de Propuesta de Valor de propuestas de valor del valor", "aprendizajes": ["Aplicar las habilidades • emprendedoras personales (CEPs) Competencias • para afrontar con éxito un proyecto Mapa emprendedor. herramienta", "Diseñar un plan de networking, • Liderazgo considerando la importancia del mapa • Trabajo y análisis de la red de contactos como herramienta para el emprendimiento, para configurar equipos de trabajo. • Concepto • Innovación", "Analizar problemáticas y • Marco necesidades junto a oportunidades de Innovación alto impacto que agreguen valor en los procesos para la generación de productos y/o servicios que • El Proceso desarrollan las organizaciones • Técnicas privadas y/o públicas para sus usuarios • Diseño y/o clientes", "Explicar las etapas del proceso • Metodologías creativo para el diseño de productos • Identificación y/o servicios centrados en el usuario. opportunity", "Generar productos innovadores • Prototipos de base tecnológica usando • El proceso metodologías de desarrollo para proveer soluciones de impacto a problemáticas de usuarios públicos • Concepto y/o privados. • Diseño • Transmisión", "Diseñar propuestas de valor coherentes para transmitirlas de forma efectiva a usuarios y/o clientes"], "eje": "emprendimiento", "lane": 8}, {"codigo": "FMMA015", "nombre": "Fundamentos de Matemáticas", "semestre": 2, "creditos": 5, "area": "matematicas", "requisitos": [], "contenidos": "Fundamentos de Matemáticas contribuye al desarrollo del ámbito de acción Dirección y Productivos, y tributa al siguiente resultado de aprendizaje del perfil de egreso: Gestión de Procesos RA1: Aplicar herramientas de ingeniería y de gestión para la solución de problemas, mediante el diseño de modelos productivos y de servicios, bajo un enfoque de sostenibilidad. Además, tributa al ámbito de acción Inversión, en el siguiente resultado de Evaluación de Proyectos de aprendizaje del perfil de egreso: RA2: Evaluar iniciativas de inversión bajo un enfoque de rentabilidad económica privada y social. Finalmente, tributa al ámbito de acción en el siguiente resultado de aprendizaje Transformación Digital del perfil de egreso: RA2: Modelar fuentes de datos, utilizando herramientas tecnológicas que faciliten la toma de decisiones en las organizaciones. En este curso se introduce el lenguaje y elementos básicos que permiten tener un punto de partida común para los cursos posteriores. Se refuerza la operatoria en los conjuntos numéricos, resolución de ecuaciones de primer y segundo grado; se trabaja lenguaje matemático en los diferentes puntos a tratar, se introduce el concepto de matrices y sistemas lineales; además de una unidad de funciones y una introducción al concepto de límite y continuidad. Al finalizar el curso, los estudiantes serán capaces de manejar elementos matemáticos básicos necesarios para cursos posteriores I: CONJUNTOS NUMÉRICOS (30%) • Números enteros y operatoria. • Números racionales y operatoria. • Números reales y operatoria. • Representación decimal. • Potencias y raíces. • Logaritmos. • Solución de problemas en los ámbitos numéricos estudiados. • Ecuaciones lineales. • Ecuaciones cuadráticas. • Resolución de problemas que involucran ecuaciones lineales y cuadráticas. II: MATRICES (30%): • Definición. • Operaciones básicas y propiedades. • Sistemas Lineales. • Eliminación Gaussiana. • Cálculo de inversas. • Determinantes. III: FUNCIONES (30%) • Funciones reales de variable real. • Dominio, Condominio e imagen. • Representación gráfica de funciones reales. • Álgebra de funciones. • Composición de funciones. • Funciones: lineales, cuadráticas, racionales, exponenciales, logarítmicas y trigonométricas. IV: LÍMITE Y CONTINUIDAD (10%) • Idea intuitiva de límite. • Uso del lenguaje de límite y continuidad. • Determinación de límites de una función dada su gráfica y viceversa", "aprendizajes": ["Aplicar la operatoria de los números reales en la resolución de ecuaciones que involucran potencias, raíces y logaritmos", "Modelar problemas de sistemas de ecuaciones lineales por medio del algoritmo de Gauss y el álgebra matricial", "Aplicar funciones en la modelación de problemas matemáticos, visualizando su comportamiento mediante gráficas", "Aplicar el concepto de límites para el análisis de la continuidad de una función desde el punto de vista gráfico"], "eje": "matematicas", "lane": 0}, {"codigo": "CFSA3180", "nombre": "Elementos de Física y Medición", "semestre": 2, "creditos": 5, "area": "fisica", "requisitos": [], "contenidos": "los estudiantes serán capaces de aplicar métodos sencillos de obtención y tratamiento de datos que les permita establecer relaciones entre variables relevantes involucradas en un fenómeno físico. Para esto se proveerá evidencia fenomenológica que constituya además una base que permita dar sustento empírico al desarrollo de los conocimientos en áreas STEM así que las actividades se desarrollan en un ambiente que integra experiencia experimental, interpretación de resultados y revisión teórica de los hallazgos con el fin de ubicarlos adecuadamente en el andamiaje de la física. Las actividades se desarrollan en colaboración con pares y se buscará dar énfasis a las conclusiones que se extraigan de los resultados y al desarrollo de las habilidades del pensamiento científico de los participantes I: MEDICIÓN Y LEYES FÍSICAS Estimaciones de Fermi. Medición, errores y su tratamiento. Muchos datos, distribución gaussiana y análisis estadístico. Ajuste de datos, rectificación, Leyes Físicas y noción de función. II: HERRAMIENTAS MATEMÁTICAS Y DE LA FÍSICA Sistemas de referencia, vectores, trayectoria, posición, velocidad media y cambios de sistema de referencia. Pendiente, rapidez de cambio media y la noción de evento instantáneo. Información física y área bajo la curva en gráficos. III: MODELOS MATEMÁTICOS EN LA FÍSICA Revisión de relaciones polinomiales en Mecánica, y Electromagnetismo. Revisión de relaciones periódicas en Mecánica y Electromagnetismo", "aprendizajes": ["Analizar tanto la validez como el rango de validez de los resultados obtenidos, para una • muestra de datos en un procedimiento experimental. • • •", "Relacionar las variables causales involucradas en un experimento, para la formulación de leyes empíricas y la PROBLEMAS determinación de constantes experimentales. • • •", "Aplicar modelos matemáticos sencillos, en la descripción de fenómenos recurrentes de la • Mecánica y el Electromagnetismo. •"], "eje": "fisica", "lane": 1}, {"codigo": "QUIA090", "nombre": "Química y Ambiente", "semestre": 2, "creditos": 3, "area": "fisica", "requisitos": [], "contenidos": "Química y Ambiente contribuye al desarrollo de las ciencias básicas, permitiendo al estudiante examinar los principios básicos de la química y su interrelación natural con otras ciencias naturales. El estudiante se familiarizará con el manejo de conceptos básicos que posibiliten explicarlas transformaciones químicas de la materia: estequiometria, gases, soluciones, energía y equilibrio químico. La resolución práctica de ejercicios y problemas básicos en estas áreas de la química complementa su formación a este nivel I: ESTEQUIOMETRIA (20%) • Ecuaciones químicas: Escritura y balanceo de ecuaciones. • Pesos atómicos y moleculares. Escala de masas atómicas. • El mol. • Reactivo limitante, rendimiento de una reacción. II: GASES Y ATMÓSFERA (15 %) • Características generales de los gases. • Presión de gases y el manómetro. • Leyes de los gases. • La Atmosfera y el Aire que respiramos • Cambio Climático • Contaminación • Control de la contaminación • Contaminantes • Reguladores III: ENERGÍA Y SOCIEDAD (20 %) • Fundamentos de Energía • Transferencia de energía • Fuentes de energía. • Energías renovables. • Problemas Ambientales, calentamiento global. • Huella de Carbono ¿Qué es? ¿Cómo se calcula? IV: QUÍMICA EN SOLUCIÓN (15 %) • Nomenclatura • Composición de soluciones. • Unidades de concentración de las disoluciones % m/m, % m/v, ppm, M, m. • Diluciones. • Electrólitos fuertes y débiles: Bases, ácidos y sales. • Reacciones de precipitación. Concepto de solubilidad. • Tratamiento de contaminantes • RILES V: EQUILIBRIO QUÍMICO (15 %) • Constantes de equilibrio Kc y Kp. • Concentraciones en el equilibrio. Principio de Le Chatelier. Desplazamiento del equilibrio. • Equilibrio ácido-base. Constantes de acidez y basicidad. Relación entre ellas. • Disociación del agua. Producto iónico del agua. • Concepto de pH. Escalas de pH. Otras escalas “p” • Lluvia acida: Sus causas y efectos. Como Evitarlos", "aprendizajes": ["Realizar cálculos estequiométricos en función del concepto de mol y del número de Avogadro", "Relacionar las características y propiedades de los gases y las variables que inciden en su comportamiento", "Calcular cantidades de energía intercambiada en una reacción química (variación de entalpía, ΔH), la variación de entropía (ΔS), y el concepto de espontaneidad de las reacciones químicas asociado a la variación de energía libre de Gibss (ΔG)", "Asociar el concepto, propiedades y aspectos fundamentales de las disoluciones en reacciones acuosas y no acuosas", "Realizar cálculos de equilibrio químico para diferentes sistemas (gaseosos, soluciones de electrolitos fuertes y débiles). r"], "eje": "fisica", "lane": 2}, {"codigo": "AIIN002", "nombre": "Introducción a los Métodos de Optimización", "semestre": 2, "creditos": 2, "area": "industrial", "requisitos": [], "contenidos": "contribuye al desarrollo del ámbito I y Dirección y Gestión de Procesos productivos tributa al siguiente resultado de aprendizaje del perfil de egreso: RA1 “Aplicar herramientas y metodologías de ingeniería para la organización y control de procesos productivos, logísticos y de servicios, orientadas a la generación de valor con especial atención en la calidad total y las tendencias de la industria” en su nivel inicial. Este curso que permite a los alumnos la introducción en las habilidades de resolución de problemas de complejidad media correspondientes a las distintas áreas de la ingeniería con un enfoque matemático, integrador y multidisciplinario 1. UNIDAD I: INTRODUCCIÓN A LA INGENIERÍA (20%) • Desarrollo de ingeniería y proyectos interdisciplinarios. • El rol del ingeniero en el desarrollo sostenible. • El método ingenieril, modelos de negocios, herramientas y estrategias (smart) 2. UNIDAD II: MODELAMIENTO MATEMÁTICO (40%) • El proceso de modelamiento matemático. • Importancia de los modelos para la toma de decisiones. • Identificación y clasificación de tipos de modelos. • Desarrollo del modelo matemático: • Ejemplos de modelamiento 3. UNIDAD II: MODELOS DE OPTIMIZACIÓN LINEALES (40%) • Introducción a la programación lineal • Resolución de problemas que involucren maximización y minimización - Aplicaciones de modelos de programación lineales", "aprendizajes": ["Identificar la naturaleza del problema y el modelo que más se ajusta a su representación", "Representar situaciones de tipo real a través de modelos matemáticos, identificando sus componentes", "Utilizar herramientas computacionales que le permitan resolver los modelos matemáticos", "Validar los resultados obtenidos en forma tanto empírica como numérica. •"], "eje": "industrial", "lane": 3}, {"codigo": "FMMA115", "nombre": "Cálculo Diferencial e Integral", "semestre": 3, "creditos": 5, "area": "matematicas", "requisitos": ["FMMA015"], "contenidos": "los estudiantes serán capaces de manejar las herramientas principales del cálculo en una y varias variables, necesarias para abordar los cursos de física y de su propia especialidad I: DERIVADAS (25%): • Interpretación geométrica, idea intuitiva. • Reglas de derivación. • Regla de la cadena y derivación implícita. • Razón de cambio. • Aplicaciones de la derivada en problemas de optimización. II: INTEGRALES (25%) • Primitivas e integración indefinida. • Teorema Fundamental del Cálculo. • Integral indefinida, métodos de integración. • Cálculo de áreas. III: INTEGRALES IMPROPIAS (15%) • Integrales impropias de primera y de segunda especie. IV: SERIES (15%) • Definición de sucesión y convergencia. Límite de sucesiones. • Definición de series: sumas parciales, series geométricas, telescópicas y serie “p”. • Series de potencias: intervalo y radio de convergencia. • Series de Taylor y MacLaurin. • Representación de funciones como serie de potencias. V: FUNCIONES EN VARIAS VARIABLES (20%): • Funciones escalares y vectoriales de varias variables. • Derivadas parciales. • Derivadas de orden superior. • Regla de la cadena. • Máximos y mínimos. Criterio del Hessiano. • Método de multiplicadores de Lagrange. • Aplicaciones", "aprendizajes": ["Aplicar derivadas en la resolución de problemas matemáticos", "Aplicar la integral al cálculo de áreas", "Aplicar los conceptos de límite e integración en el cálculo de integrales impropias de primera y segunda especie", "Utilizar series de potencias para representar funciones", "Aplicar derivadas parciales en la optimización de funciones"], "eje": "matematicas", "lane": 0}, {"codigo": "CFSA3220", "nombre": "Mecánica", "semestre": 3, "creditos": 3, "area": "fisica", "requisitos": ["CFSA3180", "FMMA015"], "contenidos": "los estudiantes serán capaces de analizar situaciones problemáticas en el ámbito de la mecánica clásica y aplicar las leyes en la formulación newtoniana inicialmente a partir de concepciones básicas basadas en algebra y luego con la introducción de elementos de cálculo considerar los conceptos de movimiento, fuerza, trabajo y energía, brindándole al estudiante herramientas para análisis y comprensión de fenómenos relacionados con el movimiento de partículas, sistemas de partículas I: CINEMÁTICA • Cinemática de una partícula en coordenadas cartesianas y polares. • Movimiento acelerado con aceleración constante en 1 y 2 dimensiones. • Movimiento con aceleración variable. • Movimiento circular y su relación con la posición, velocidad y aceleración angular. II: DINAMICA Y LEYES DEL MOVIMIENTO • Ecuaciones de movimiento en coordenadas cartesianas, cilíndricas y esféricas. • Movimiento armónico simple y oscilaciones amortiguadas y forzadas. III: TRABAJO Y ENERGÍA • Trabajo mecánico • Teorema de trabajo y la energía • Fuerzas conservativas y no conservativas • Energía cinética traslacional. • Energía potencial • Conservación de la energía mecánica IV: COLISIONES • Movimiento relativo y sistema de referencia centro de masas. • Momentum lineal y su conservación • Impulso y Momentum lineal • Colisiones centrales en 1 y 2 dimensiones. • Colisiones no centrales", "aprendizajes": ["Analizar el movimiento de una partícula utilizando apropiadamente coordenadas cartesianas o curvilíneas, sistemas de referencias apropiados y en base a conceptos temporales como la posición y sus derivadas", "Aplicar los principios de Newton para determinar las ecuaciones de movimiento y la aceleración de una partícula o sólido rígido", "Aplicar los conceptos de trabajo, fuerza, potencia y energía mecánica en la resolución de problemas de interacciones entre sistemas físicos considerando las condiciones de conservación de la energía mecánica", "Aplicar principios de conservación asociados a sistemas físicos cerrados en el contexto del intercambio de propiedades mecánicas con el medio que lo rodea"], "eje": "fisica", "lane": 1}, {"codigo": "AACD102", "nombre": "Taller de Innovación y Emprendimiento II", "semestre": 3, "creditos": 3, "area": "emprendimiento", "requisitos": ["AACD103"], "contenidos": "los estudiantes serán capaces de: Planificar y desarrollar proyectos de innovación que exploten oportunidades contingentes a través de productos tecnológicos y modelos de negocios consistentes con el entorno económico y social en el que aspiran realizarse I: INNOVACIÓN Y VALOR ECONÓMICO Repaso Concepto de Innovación. La Innovación como fuente de Ventaja Competitiva y Valor Económico. El Emprendimiento como fuente de Innovación. Caso de Éxito: Charla con Emprendedor nacional invitado. II: LA STARTUP Y SU FINANCIAMIENTO Concepto de Startup y su diferencia con un emprendimiento tradicional. Ciclo de vida y financiamiento de una Startup. Financiamiento privado y público de la innovación. El equipo emprendedor: Competencias Personales y de Equipo. III: METODOLOGÍA LEAN STARTUP El modelo Lean Startup y Emprendimiento basado en hipótesis. Metodología de Desarrollo de Clientes (Customer Development). Propuesta de Valor, Producto y Solución. Estimación del Mercado: TAM-SAM-SOM. Validación Técnica: Product-Market Fit. Validación Comercial: Modelo de Ingresos y Pricing. IV: EMPRENDIMIENTO Y NEGOCIOS Modelo de Negocios de una Startup: Lean Canvas. Métricas de Negocios Emprendedores. Economía Digital, Modelos de negocios multi- mercado y plataformas digitales. Presentaciones de Negocios", "aprendizajes": ["Aplicar los conceptos de innovación, • valor económico y ventaja competitiva, entendiendo las relaciones y distinciones • entre éstos, para abordar proyectos de ingeniería y emprendimiento. • • •", "Explicar los procesos de financiamiento e inversión de proyectos, • entendiendo la lógica de negocios • asociada, para llevar a cabo proyectos de • innovación y emprendimientos innovadores. • •", "Utilizar conceptos y metodologías de Lean Startup para planificar, validar y • ejecutar proyectos de innovación. • • • • • •", "Construir un modelo de negocios, • comprendiendo sus aspectos fundamentales, para explotar una oportunidad de negocios innovadora reduciendo el riesgo inherente al proceso", "Monitorear en sí mismos y en otros las competencias personales de emprendimiento para liderar procesos de innovación de manera independiente o al interior de una organización"], "eje": "emprendimiento", "lane": 8}, {"codigo": "INGA119", "nombre": "Inglés I", "semestre": 3, "creditos": 3, "area": "ingles", "requisitos": [], "contenidos": "Inglés I contribuye al desarrollo del ámbito de acción y tributa Educación General e Inglés al siguiente resultado de aprendizaje del perfil de egreso de la carrera: RA.4: Desarrollar habilidades comunicativas en el idioma inglés, para desenvolverse en situaciones cotidianas, laborales y académicas. Curso de carácter introductorio, que sienta las bases para la adquisición de las competencias lingüísticas de los niveles A1 del Marco Común Europeo de las Lenguas. En este contexto, al finalizar el curso, el estudiante será capaz de comunicarse efectiva y naturalmente, en forma oral y escrita, en ámbitos de la vida diaria, desde el contexto personal hasta los entornos más cercanos, refiriéndose al pasado reciente, usando una escritura, pronunciación y entonación adecuadas UNIDAD I: “MEET A ROCK STAR” • Be: Affirmative • Be: Yes/No Questions • Be: Contractions UNIDAD II: “AGAINST THE LAW” • Be: Short Answers • This/That/These/Those • Crime UNIDAD III: “AT THE RESTAURANT” • Talk about Food. • Nouns: Singular/Plural • Nouns: There Is/There Are • Nouns: Articles UNIDAD IV: “ON A BUSINESS TRIP” • Present Progressive: Affirmative • Present Progressive: Yes/ No Questions • Present Progressive: Short Answers UNIDAD V: “GOING OUT” • Present Progressive: Negative • Present Progressive: Wh Questions • Verbs UNIDAD VI: “ABOUT PEOPLE” • Be: Negative • Present Progressive: Spelling Changes • Adjectives UNIDAD VII: “FOR SALE” • Nouns: Possessive • Present Progressive: Contractions • Shopping UNIDAD VIII: “ON THE MOVE” • Pronouns: Subject • Pronouns: Object • Pronouns: Possessive • Transport UNIDAD IX: “HEALTH AND FITNESS” • recognize and understand imperatives to express commands, requests, instructions, and suggestions. • talk about ways to keep fit and express preferences. UNIDAD X: “OCCUPATIONS” • recognize and understand how to use the Present Simple to talk about daily routines. • use the Present Simple to talk about what they do or where they work", "aprendizajes": ["Comunicar efectivamente información personal utilizando estructuras básicas, ya sea en forma oral o escrita", "Identificar el significado general y detalles relevantes de una interacción, ya sea en forma oral o escrita", "Expresar opiniones respecto a comidas y alimentación, ya sea en forma oral o escrita", "Expresar gustos y preferencias personales en el contexto de viajes utilizando estructuras básicas, ya sea en forma oral o escrita", "Obtener información acerca de planes presentes y futuros utilizando estructuras básicas, ya sea en forma oral o escrita", "Describir personas usando adjetivos y estructuras básicas, ya sea de forma oral o escrita", "Expresar gustos y preferencias en el contexto de compras utilizando estructuras básicas, ya sea de forma oral o escrita", "Comunicar efectivamente ideas sobre viajes y medios de transporte, utilizando estructuras básicas, ya sea en forma oral y escrita", "Expresar ordenes, solicitudes, instrucciones y sugerencias sobre salud y vida sana, utilizando estructuras básicas, ya sea de forma oral y escrita", "Conversar acerca de ocupaciones y trabajos utilizando estructuras básicas, ya sea de forma oral y escrita"], "eje": "ingles", "lane": 10}, {"codigo": "AIIN111", "nombre": "Procesos en Sistemas Industriales", "semestre": 4, "creditos": 5, "area": "industrial", "requisitos": ["QUIA090", "CFSA3180"], "contenidos": "Procesos en Sistemas Industriales contribuye al desarrollo del ámbito de acción I: y tributa a los siguientes resultados de aprendizaje del Dirección y Gestión de Procesos Productivos perfil de egreso: - RA1: Aplicar herramientas y metodologías de ingeniería para la organización y control de procesos productivos, logísticos y de servicios, orientadas a la generación de valor con especial atención en la calidad total y las tendencias de la industria. - RA2: Evaluar alternativas de solución, coordinando equipos multidisciplinarios, de problemas de ingeniería desde el nivel táctico y operacional para el cumplimiento de los objetivos estratégicos de la organización. Al finalizar el curso, el estudiante será capaz de analizar diferentes máquinas eléctricas, aplicando conocimientos básicos y leyes sobre electricidad y magnetismo, analizar distintos procesos industriales, resolviendo problemas de balances de masa y energía, y calcular la eficiencia de máquinas térmicas para la generación de energía. Lo anterior, permitirá al estudiante explicar procesos de los sectores industriales más importantes del país, considerando principios de responsabilidad social y sostenibilidad. Además de comunicar en un lenguaje técnico con equipos multidisciplinarios en torno a los procesos productivos de la industria I: INTRODUCCIÓN • Definición de Procesos Industriales. • Tipos de Procesos Industriales. • El rol del Ingeniero en los Procesos Industriales. II: ELECTROTECNIA • Introducción a la Electricidad y Magnetismo. • Leyes Aplicables a Máquinas Eléctricas. • Corrientes Alterna y Continua. • Máquinas Eléctricas: Motores, Generadores y Transformadores. III: BALANCES DE MASA • Ley de conservación de la masa. • Ecuación general. • Diagramas de flujo. • Procesos discontinuos en estado estacionario. • Procesos continuos en estado estacionario. • Balance de un proceso. • Análisis de grados de libertad. IV: BALANCES DE ENERGÍA • Tipos de energía. • Transferencia de energía: Calor y Trabajo. • Primera Ley de la Termodinámica: Balance de Energía. • Sistemas cerrados. • Sistemas abiertos en estado estacionario. • Procedimiento general de un balance de energía. • Análisis de Procesos: Balances de masa y energía. • Máquinas Térmicas y Eficiencias. V: DESCRIPCIÓN DE PROCESOS RELEVANTES • Industria Minera. • Industria Energética. • Industria Alimenticia", "aprendizajes": ["Analizar distintos tipos de procesos industriales, y el rol del Ingeniero Industrial como un profesional fundamental para el desarrollo, mejoramiento continuo y sostenibilidad de la industria, bajo principios de responsabilidad con la sociedad y el medio ambiente", "Diferenciar los tipos de máquinas eléctricas usadas en la industria mediante el cálculo de variables eléctricas y magnéticas", "Calcular balances de masa en Procesos Industriales, aplicando metodología de análisis de grados de libertad", "Analizar el funcionamiento de máquinas térmicas, mediante el cálculo balances de energía en sistemas cerrados y abiertos en estado estacionario y su eficiencia", "Explicar los principales procesos Industriales del país, considerando los diagramas de flujo, productividad y requerimientos (másicos y INDUSTRIALES energéticos), así como su impacto en el entorno ambiental y social"], "eje": "industrial", "lane": 3}, {"codigo": "AIIN112", "nombre": "Investigación Operativa", "semestre": 4, "creditos": 4, "area": "industrial", "requisitos": ["FMMA015"], "contenidos": "los estudiantes serán capaces de comprender y utilizar modelos de investigación de operaciones en la toma de decisión UNIDAD I: INTRODUCCIÓN A LA INVESTIGACIÓN DE OPERACIONES • Descripción del curso • Generalidades de la Investigación Operativa UNIDAD II: MODELAMIENTO • Modelamiento de problemas en ingeniería • Modelo general de programación lineal • Modelos lineales mixtos y enteros • Restricciones lógicas UNIDAD III: PROGRAMACIÓN LINEAL • Geometría de problemas lineales • El método Simplex • Método de las dos fases UNIDAD IV: TEORÍA DE DUALIDAD • Dualidad en programación lineal • Análisis de sensibilidad UNIDAD V: PROGRAMACIÓN LINEAL ENTERA • Definiciones y conceptos fundamentales • Método de Ramificación y Acotamiento", "aprendizajes": ["Identificar los conocimientos propios de la Investigación de Operaciones para establecer su aporte hacia el uso eficiente de la información dentro de una organización", "Elaborar, a partir de la información y del comportamiento de los sistemas, modelos de optimización lineales y /o enteros, para el análisis de sistemas productivos y de servicios", "Resolver problemas de programación lineal, e interpretar los resultados para el análisis de sistemas productivos y de servicio", "Analizar los distintos escenarios del entorno, para optimizar los procesos y operaciones de los sistemas productivos y de servicio", "Resolver problemas de programación entera, e interpretar los resultados, para el análisis de sistemas productivos y de servicio"], "eje": "industrial", "lane": 4}, {"codigo": "ATDF103", "nombre": "Base de Datos", "semestre": 4, "creditos": 3, "area": "digital", "requisitos": ["ATDF102"], "contenidos": "los estudiantes serán capaces de gestionar la información por medio de herramientas de bases de datos, realizando modelos de datos eficientes, escalables y con reglas claras, con el objetivo que las empresas cuenten con información de calidad, precisa, oportuna, confiable LOS SISTEMAS DE BASES DE DATOS Y SUS a las bases de datos de la metodología de bases de datos de utilizar una metodología de bases de de Datos de Arquitecturas de un DBMSs EL MODELO RELACIONAL conceptuales para diseño de base de datos modelo relacional de relaciones, entidades y modelos de notación diagramas Entidad-Relación (E/R) de Restricciones del modelo relacional de bases de datos relacionales funcionales y normalización TÉCNICAS DE PROGRAMACIÓN SQL Y GESTIÓN de datos y tipo de datos SQL de Restricciones y Esquemas básica y complejas SQL y manipulación de Tablas y Vistas de Operadores de la información", "aprendizajes": ["Modelar información para el I: diseño eficiente de una base de datos MODELOS • relacional. Introducción • Características • Ventajas datos • Modelos • Tipo", "Aplicar herramientas II: tecnológicas para la construcción de • Modelos una base de datos. • Conceptos • Tipo • Tipo • Modelado • Restricciones • Diseño • Dependencias III", "Integrar la base de datos con DE LA INFORMACIÓN una herramienta de consulta para la • Definición gestión de la información. • Manejo • Consultas • Creación • Implementación • Relacionales • Gestión"], "eje": "digital", "lane": 7}, {"codigo": "INGA129", "nombre": "Inglés II", "semestre": 4, "creditos": 3, "area": "ingles", "requisitos": ["INGA119"], "contenidos": "", "aprendizajes": [], "eje": "ingles", "lane": 10}, {"codigo": "FMSA315", "nombre": "Taller de Métodos Cuantitativos", "semestre": 5, "creditos": 5, "area": "matematicas", "requisitos": ["FMMA015"], "contenidos": "los estudiantes serán capaces de manejar información en forma científica en sus propios proyectos I: PROBABILIDAD • Probabilidad • Probabilidad condicional y teorema de Bayes, independencia • Variables aleatorias discretas y continuas, distribuciones de uso frecuente en modelamiento • Esperanza, varianza • Distribución conjunta, marginales, independencia de variables aleatorias • Ley de los grandes números, Teorema central del límite II: ESTADÍSTICA INFERENCIAL • Estimación de parámetros • Intervalo de confianza y prueba de hipótesis (paramétrica y no paramétrica):  Sobre la media con varianza conocida y desconocida  Sobre la varianza  Sobre la proporción • Prueba de bondad de ajuste III: ECONOMETRÍA • Regresión lineal múltiple • Selección de modelos • Heterocedasticidad • Autocorrelación • Multiconlinealidad", "aprendizajes": ["Modelar fenómenos y procesos aleatorios con formalidad matemática y apoyo de software, con aplicación al cálculo de probabilidades y la toma de decisiones", "Aplicar metodología estadística a datos de una muestra con el fin de realizar inferencia respecto del comportamiento de los parámetros de la distribución de probabilidad subyacente a la población", "Implementar el modelo de regresión lineal multivariada por medio de recursos computacionales, levantando los supuestos clásicos si es pertinente, con el objetivo de pronosticar el comportamiento empírico de variables relevantes en diversos procesos"], "eje": "matematicas", "lane": 0}, {"codigo": "AIIN113", "nombre": "Sistemas Productivos", "semestre": 5, "creditos": 3, "area": "industrial", "requisitos": ["AIIN112"], "contenidos": "los estudiantes serán capaces de comprender y utilizar herramientas de gestión de los sistemas productivos UNIDAD I: INTRODUCCIÓN A LA CADENA DE SUMINISTRO Y SISTEMAS PRODUCTIVOS • Definición de Logística y Cadena de Abastecimiento. • Componentes de un Sistema de Logístico. • La Importancia de la Logística y la Cadena de Abastecimiento. UNIDAD II: PRONÓSTICOS DE DEMANDA • Uso de pronósticos en la Cadena de Suministro • Componentes de la demanda • Técnicas cuantitativas de pronósticos: • Métodos causales • Series de tiempo UNIDAD III: MANEJO DETERMINISTA DE INVENTARIOS • Definiciones básicas • Cantidad económica de pedido (EOQ) • Políticas de control de inventario deterministas: • Sistema de revisión continua • Sistema de revisión periódica UNIDAD IV: SISTEMAS PRODUCTIVOS • Planificación Agregada • Programa Maestro de la Producción • Planificación de Requerimiento de Materiales para la Demanda Dependiente. • Análisis de la Capacidad Aproximada • Cálculo de productividad y rendimiento de Sistemas Productivos -", "aprendizajes": ["Distinguir conceptos básicos, componentes y aplicaciones, sobre la administración de la Cadena de Suministro y la Logística, con el objeto de incorporarlos en el análisis de los sistemas productivos y de servicios", "Evaluar herramientas y metodologías de pronóstico e inventarios para mejorar la toma de decisiones operacionales al interior de las organizaciones", "Desarrollar modelos de gestión de sistemas productivos, bajo estándares de producción, normativa legal y sustentabilidad para su aplicación en sistemas productivos y de servicios", "Aplicar herramientas de planificación productiva para resolver problemas de gestión de sistemas productivos y de servicios"], "eje": "industrial", "lane": 4}, {"codigo": "AIIN412", "nombre": "Costos y Presupuestos", "semestre": 5, "creditos": 3, "area": "gestion", "requisitos": ["FMMA015"], "contenidos": "los estudiantes serán capaces de entender los roles de información, control y planeamiento que subyacen en la contabilidad, al estudiarla como un sistema que forma parte de la estructura de costos y presupuestos de una empresa; efectuar la introducción, interpretación y evaluación de la contabilidad financiera básica, haciendo énfasis en su interpretación y uso I: Contabilidad Financiera. • Análisis de la partida doble y su participación en la construcción del Balance Clasificado y del Estado de resultado. • Análisis del aumento o disminución de patrimonio • Análisis del plan de cuentas. • Análisis del Balance Clasificado y de sus partidas más relevantes. • Determinación y análisis de índices gestión financiera asociados a las distintas partidas que lo conforman (razón corriente; prueba acida; rotación de inventarios; rotación de cartera; etc.). • Análisis del Estado de Resultado y de sus conceptos más importantes. • Determinación y análisis de índices de gestión financiera asociados a los distintos conceptos (rentabilidad sobre patrimonio; rentabilidad sobre ventas; rentabilidad sobre activos; etc.) • Notas a los estados financieros. II: Costos • Conceptos básicos de contabilidad de costos y gestión, uso y propósito. • Función • Objetivos • Características • Usos • Análisis del “objeto del costo”. • Análisis y clasificación de los Costos de acuerdo con: • Su naturaleza. • Su Variabilidad. • Su relación con el producto o actividad. • La planificación y control. • Su uso en la toma de decisiones. • Sistemas de acumulación de costos: • Costos por órdenes de producción o lote. • Costos por procesos. • Control de Inventarios: • FIFO • PMP • Enfoque de costeo en el estado de resultado: • Por absorción. • Contributivo o de costeo variable. III: Activo Fijo y Depreciación • Concepto y cálculo del activo fijo. • Diferencias entre mantención reparación y mejora. • Concepto de depreciación, cálculo a través de los métodos: Lineal, Acelerado, Por producción • Análisis de su efecto en los estados financieros y en el impuesto a la renta. IV: Presupuestos • Concepto de presupuesto. • Bases que fundamentan el proceso presupuestario. • Proceso presupuestario. • Control presupuestario, concepto. • Etapas del control presupuestario. • Objetivos del presupuesto. • Características. • Ventajas. • Limitaciones. • Presupuesto de Operaciones. • Presupuesto de Capital. • Presupuesto financiero. • Flujo de Caja", "aprendizajes": ["Utilizar los estados financieros como herramienta, para la toma de decisiones en la organización", "Distinguir los conceptos de costos y su correcta asignación, para la toma de decisiones en la organización", "Aplicar la valorización de los activos fijos y su efecto tributario, para tomar decisiones de inversión de largo plazo", "Aplicar los conceptos de presupuesto y la importancia que tiene en el proceso de gestión, para comprender la planificación de corto plazo. 1"], "eje": "gestion", "lane": 5}, {"codigo": "INGA239", "nombre": "Inglés III", "semestre": 5, "creditos": 3, "area": "ingles", "requisitos": ["INGA129"], "contenidos": "Inglés III contribuye al desarrollo del ámbito Educación General e Inglés y tributa al siguiente resultado de aprendizaje del perfil de egreso de la carrera: RA.4: Desarrollar habilidades comunicativas en el idioma inglés, para desenvolverse en situaciones cotidianas, laborales y académicas. Curso de carácter progresivo, que consolida la adquisición de las competencias lingüísticas del nivel A2 del Marco Común Europeo de las Lenguas. En este contexto, al finalizar el curso, el estudiante será capaz de comunicarse efectiva y naturalmente, en forma oral y escrita, en ámbitos de la vida diaria, desde el contexto personal hasta los entornos más cercanos, refiriéndose al pasado reciente, usando una escritura, pronunciación y entonación adecuadas UNIDAD I: “GETTING A JOB” • Modals: Be Able To • Gerunds: As Object • Gerunds: After Prepositions • Education UNIDAD II: “BUSINESS MATTERS” • Modals: Must / Had To • Modals: Must Not/ Don’t Have To • Work and Business UNIDAD III: “PLANNING A VACATION” • Modals: Should • Infinitives and Gerunds: After Verbs • Travel UNIDAD IV: “EATING OUT” • Past Progressive: Progressive vs. Simple • Adverbs: Comparisons • Talking About Food UNIDAD V: “TRAVELING ABROAD” • Future: Will vs. Going To • Future: Simple Present • Future: Present Progressive • Travel UNIDAD VI: “EMOTIONS” • Past Progressive: Statements • Past Progressive: Questions and Answers • Adjectives UNIDAD VII: “MAKING EXCUSES” • Infinitives: After Adjectives • Infinitives: After Objects • Gerunds: As Subject • Health UNIDAD VIII: “TICKETS, PLEASE!” • Adverbs: Frequency • Gerunds: Gerund or Infinitive • Entertainment UNIDAD IX: “SAVING ENERGY” • How to Save Energy • The Electricity Bill • Make Your Own Energy • Renewable Energy UNIDAD X: “KNOWING A SECOND LANGUAGE” • The Benefits of Language Learning • Being Bilingual • Tips for Learning English", "aprendizajes": ["Comunicar efectivamente ideas en el contexto de entrevistas de trabajo utilizando estructuras básicas, ya sea en forma oral o escrita", "Identificar el significado general y detalles relevantes de una interacción en el contexto de negocios y trabajo, ya sea en forma oral o escrita", "Comunicar efectivamente ideas al momento de dar y recibir sugerencias sobre viajes, ya sea en forma oral o escrita", "Expresar gustos y preferencias personales en el contexto de visitas a restaurantes utilizando estructuras básicas, ya sea en forma oral o escrita", "Expresar efectivamente ideas sobre planes y viajes al extranjero, ya sea en forma oral o escrita", "Describir emociones usando adjetivos y estructuras básicas, ya sea de forma oral o escrita", "Identificar el significado general y detalles relevantes de interacciones de personas que dan excusas y declinan invitaciones, ya sea en forma oral o escrita", "Comunicar efectivamente ideas sobre entretenimiento, utilizando estructuras básicas, ya sea en forma oral y escrita", "Comunicar efectivamente ideas sobre ahorro de energía, utilizando estructuras para hace predicciones, ya sea en forma oral y escrita", "Conversar acerca del aprendizaje de un segundo idioma utilizando estructuras básicas, ya sea de forma oral y escrita"], "eje": "ingles", "lane": 10}, {"codigo": "AIIN114", "nombre": "Logística y Sistemas Productivos", "semestre": 6, "creditos": 3, "area": "industrial", "requisitos": ["AIIN112"], "contenidos": "los estudiantes serán capaces de de comprender y evaluar el funcionamiento de las principales actividades logísticas que definen la cadena de producción a través de una mirada integradora, crítica, global y sistémica UNIDAD I: CADENA DE SUMINISTROS Y ASPECTOS CLAVE • Estrategia en la cadena de suministros • Desempeño de la cadena de suministros y ajuste estratégico UNIDAD II: MANEJO Y CONTROL DE INVENTARIO BAJO INCERTIDUMBRE • Incertidumbre en la cadena de suministros • Control de inventarios con incertidumbre • Demanda incierta • Tiempos de entrega inciertos • Control agregado de inventario UNIDAD III: EL TRANSPORTE EN LA CADENA DE SUMINISTROS • El rol del transporte en la cadena de suministros • El sistema de transporte de carga • Modos y operaciones de transporte • Redes de transporte y características de desempeño. • Programación de embarques y diseño de rutas UNIDAD IV: ALMACENAMIENTO, EMPAQUETADO Y MANEJO DE MATERIALES • Necesidades y beneficio del almacenamiento. • Decisiones del almacén • Empaquetado • Manejo de materiales UNIDAD V: LOCALIZACIÓN DE INSTALACIONES EN LA CADENA DE SUMINISTROS • El papel de las instalaciones en la cadena de suministros • Factores que influyen en decisiones de localización y modelo de decisiones • Heurísticas para localización de instalaciones • Modelos matemáticos de localización de instalaciones", "aprendizajes": ["Identificar el rol del manejo y control de inventarios, el transporte y la localización de instalaciones para la administración de la cadena de suministros", "Aplicar procedimientos y metodologías de optimización en las estrategias de manejo y control de inventario, transporte y localización de instalaciones que permitan mejorar la toma de decisiones en la cadena de suministros", "Distinguir conceptos básicos, actividades e impacto de los almacenes y sus operaciones para la administración de la cadena de suministros"], "eje": "industrial", "lane": 3}, {"codigo": "AIIN211", "nombre": "Modelamiento y Diseño de Procesos", "semestre": 6, "creditos": 3, "area": "industrial", "requisitos": ["ATDF102", "AIIN111"], "contenidos": "los estudiantes serán capaces de desarrollar habilidades de modelamiento, análisis y diseño de los procesos productivos y de servicios dentro de las organizaciones, evaluando oportunidades de mejoras y priorizando soluciones. El alumno podrá revisar los procesos organizacionales, para contribuir al mejor funcionamiento de la organización con una visión sistemática de la Gestión por Procesos UNIDAD I: INTRODUCCIÓN A LA GESTIÓN DE PROCESOS • Reconocer los conceptos claves de la gestión de procesos. • ABC de los procesos. UNIDAD II: MODELAMIENTO Y SIMULACIÓN DE PROCESOS • Modelación visual participativa: definiciones, consideraciones, usos y contenidos. • Introducción, lenguaje y notaciones. • Desarrollo de notaciones y modelos estándar. • Introducción, conceptos y definiciones de la simulación de procesos. • Utilización de herramientas y heurísticas de simulación en el rediseño de procesos. UNIDAD III: ANÁLISIS DE PROCESOS • Definiciones y alcances del análisis y diagnóstico. • Determinar los patrones de obtención de información y el equipo de trabajo. • Análisis y diagnóstico de procesos: utilización de recursos, análisis de la distribución, análisis de tiempos, calidad y costos. • Identificar y especificar las actividades críticas en los procesos. UNIDAD IV: DISEÑO DE PROCESOS • Definiciones y especificaciones del diseño de procesos. • Diseño e introducción a la mejora de procesos. • Definición del estado futuro del proceso. • Simulación del proceso futuro, ambientes y análisis de carga", "aprendizajes": ["Seleccionar los aspectos claves de la modelación, análisis y diseño de procesos, para interiorizarse en el levantamiento de procesos en las organizaciones", "Identificar procesos dentro de la organización y simular su desarrollo, para detectar las fortalezas y debilidades que mostraran en su desempeño", "Analizar el funcionamiento de los procesos, sus partes y componentes identificando oportunidades de mejora", "Diseñar las mejoras en los procesos, con el propósito de utilizar las herramientas de ingeniera adquiridas, para finalmente representar visualmente este modelo mejorado"], "eje": "industrial", "lane": 4}, {"codigo": "AIIN413", "nombre": "Ingeniería Económica", "semestre": 6, "creditos": 3, "area": "gestion", "requisitos": ["AIIN412"], "contenidos": "los estudiantes serán capaces de distinguir opciones de inversión en base a herramientas de matemáticas financieras, reconociendo sus ventajas y limitaciones. Analizar la rentabilidad de iniciativas de inversión mediante la construcción de flujos de caja consolidado y la aplicación de indicadores económico-financieros relacionados a la iniciativa de inversión I: INTRODUCCIÓN • Aspectos fundamentales de la Ingeniería Económica • Elementos de matemáticas financieras • Concepto de valor del dinero en el Tiempo • Tipos de Interés: Interés Simple y Compuesto • Valor Actual y Valor Futuro. Equivalencia Económica. Descuento y Capitalización • Esquemas de Flujos: Series de Pagos Iguales, Series de Pagos Gradiente, Perpetuidades. • Equivalencia de Tasas de Interés: Tasas de Interés Nominal y Efectiva • Análisis de Interés bajo Inflación • Administración de Deuda: Anualidades y Tablas de Amortización. Períodos de Gracia. II: PREPARACIÓN DE FLUJOS DE CAJA DE DE INVERSIÓN • Proceso de evaluación • Metodología de evaluación. Flujos proyectados, Estructura de Flujo de Caja • Análisis de beneficios del proyecto • Análisis de costos pertinentes para la toma de decisiones • Impuesto, Utilidad, Inversión, Capital de trabajo, Depreciación, • Análisis de Sensibilidad. Punto de equilibrio III: INDICADORES DE RENTABILIDAD • Horizontes de evaluación • Análisis comparativo de rentabilidad VAN – TIR • Análisis de Período de recuperación del Proyecto (PAYBACK) • Relación Rentabilidad. Rentabilidad sobre Inversión, Relación beneficios y Costos del proyecto • Indicadores de proyectos repetitivos • Ranking de proyectos", "aprendizajes": ["Analizar distintas opciones de inversión en base a herramientas de matemática financiera, para apoyar la toma de decisiones de financiamiento e inversión", "Desarrollar el flujo de caja de una iniciativa de inversión, para establecer los INICIATIVAS flujos que afectan a la viabilidad económica de un proyecto", "Evaluar iniciativas de inversión en condiciones de certidumbre, en base a los indicadores de rentabilidad, para apoyar la toma de decisiones respecto de la viabilidad económica y financiera de un proyecto. 1"], "eje": "gestion", "lane": 5}, {"codigo": "AIIN314", "nombre": "Integrador I: Seminario de Ingeniería", "semestre": 6, "creditos": 3, "area": "integracion", "requisitos": [], "contenidos": "los estudiantes serán capaces de distinguir opciones de inversión en base a herramientas de matemáticas financieras, reconociendo sus ventajas y limitaciones. Analizar la rentabilidad de iniciativas de inversión mediante la construcción de flujos de caja consolidado y la aplicación de indicadores económico-financieros relacionados a la iniciativa de inversión", "aprendizajes": [], "eje": "integracion", "lane": 9}, {"codigo": "INGA249", "nombre": "Inglés IV", "semestre": 6, "creditos": 3, "area": "ingles", "requisitos": ["INGA239"], "contenidos": "Inglés IV contribuye al desarrollo del ámbito y tributa al Educación General e Inglés siguiente RA del perfil de egreso de la carrera: RA.4: Desarrollar habilidades comunicativas en el idioma inglés, para desenvolverse en situaciones cotidianas, laborales y académicas. Curso de carácter concluyente, que sienta las bases para la adquisición de las competencias lingüísticas del nivel B1 del Marco Común Europeo de las Lenguas. En este contexto, al finalizar el curso, el estudiante será capaz de comunicarse efectiva y naturalmente, en forma oral y escrita, en ámbitos de la vida diaria, desde el contexto personal hasta los entornos más cercanos, refiriéndose al pasado reciente, usando una escritura, pronunciación y entonación adecuadas I: “EDUCATION” • College for Kids? • Present Perfect: Statements Q and A • Education II: “AWAY FROM HOME” • Study Exchange • Present Perfect: Progressive • Study Abroad III: “CELEBRATIONS” • Passive Voice: With or Without Agent • Celebrations IV: “BAD WEATHER” • Relative Clauses: Object Clauses • Relative Clauses: Subject Clauses • Relative Clauses: With or Without Relative Pronouns • Weather V: “ARTS AND ENTERTAINMENT” • Music • Passive Voice: Indirect Form • Entertainment 3 VI: “AT WORK” • The Job Interview • Present Perfect: Contrast With Other Tenses • Work VII: “SENDING A PACKAGE” • Airmail to Tokyo • Passive Voice: Modals • Postal Services VIII: “EMERGENCY” • Clauses: Noun and adverbial Clauses • Road Accidents IX: “BANKING” • Opening a Bank Account • E-mails of Inquiry and Response • Banking Trends X: “GADGETS” • Gadgets and Technology • All About Apps • Choosing a Device", "aprendizajes": ["Comunicar efectivamente ideas sobre el tema de la educación utilizando estructuras simples, ya sea en forma oral o escrita", "Comunicar efectivamente ideas sobre experiencias de estudio en el extranjero, utilizando estructuras básicas, ya sea en forma oral y escrita", "Describir celebraciones y festividades usando estructuras simples, ya sea de forma oral o escrita", "Identificar el significado general y detalles relevantes de una interacción en el contexto de discusiones sobre el clima, ya sea en forma oral o escrita", "Expresar efectivamente ideas sobre arte y entretención, ya sea en forma oral o escrita", "Describir diversos aspectos de un lugar de trabajo usando adjetivos y estructuras básicas, ya sea de forma oral o escrita", "Comunicar efectivamente ideas sobre el envío de paquetes y encomiendas utilizando estructuras básicas, ya sea en forma oral y escrita", "Describir accidentes y situaciones de emergencia, utilizando estructuras básicas, ya sea de forma oral y escrita", "Comunicar efectivamente ideas sobre la banca, utilizando estructuras para hace predicciones, ya sea en forma oral y escrita", "Conversar acerca de dispositivos y tecnología utilizando estructuras simples, ya sea de forma oral y escrita"], "eje": "ingles", "lane": 10}, {"codigo": "AIIN213", "nombre": "Planificación y Mejora de Procesos", "semestre": 7, "creditos": 3, "area": "industrial", "requisitos": ["FMSA315", "AIIN211"], "contenidos": "los estudiantes serán capaces de: Medir, evaluar, controlar y planificar los procesos dentro de las organizaciones, realizando el levantamiento y medición de estos, definiendo medidas de control estadístico de procesos, paras analizar y elaborar la mejora continua. Además, podrá identificar y eliminar “desperdicios” en los procesos organizacionales, buscando maximizar la productividad, para contribuir al mejor funcionamiento de la empresa mediante una visión sistémica de la Gestión por Procesos UNIDAD I: INTRODUCCIÓN A EXCELENCIA OPERACIONAL • Metodologías de desarrollo de la excelencia operacional. • Antecedentes: Historia y evolución de metodologías como: TPM (Total Productive Maintenance), Lean Manufacturing, Six Sigma y DMAIC. • Introducción a la mejora continua de procesos y calidad. • Análisis de acciones para la mejora de procesos. • Crear la estrategia para el desarrollo de la mejora de procesos. UNIDAD II: LEAN MANUFACTURING • Antecedentes e Historia • Principio de Lean Manufacturing. • Los 7 desperdicios de Lean Manufacturing. • Análisis de problemas y toma de decisiones. • Conformación del grupo de mejora continua. • Herramientas Lean (Análisis de la cadena de valor, mapas SIPOC, VSM AS IS – TO BE, análisis de mudas, matriz de priorización y planes de acción (bajo concepto de A3 y QW) diagrama de causa-efecto, diagrama de Pareto, 5w + 1H, LUP, PokaYoke, TWI, Matriz ERCS, Lluvia de ideas, Gestión Visual, Modelo Integral del Cambio (MIC), Just in Time,). • Elaboración de indicadores de control (KPI – SLA- OEE). • Desarrollo de Lean Manufacturing para un proceso. UNIDAD III: LEAN SIX SIGMA • Introducción y conceptos básicos de Lean Six Sigma. • Barreras en la ejecución de un proceso que disminuyen la creación de valor. • Desarrollo del Ciclo DMAIC para gestión y mejora continua de procesos. • Herramientas de control (Histograma, Diagrama de Dispersión y Gráficos de Control). • Medición de calidad en los procesos productivos y de servicio. UNIDAD IV: TOTAL PRODUCTIVE MAINTENANCE (TPM) • Introducción a los conceptos, definiciones y beneficios del TPM. • Claves para la aplicación del TPM. • Fases de la implementación del TPM. • Los 8 pilares del TPM. • Descripción y desarrollo de la herramienta 5´S - SMED • Herramientas estadísticas para la resolución de problemas. • Planes de Mantenimiento productivo", "aprendizajes": ["Aplicar las metodologías de planificación y mejora continua de procesos, para incrementar la eficiencia operacional de estos", "Medir, mediante el uso de herramientas ingenieriles, las distintas etapas de un proceso, para evaluar el estado actual de estos", "Evaluar la aplicación de la mejora continua, empleando herramientas de control, para comparar los resultados obtenidos a través del uso de indicadores de control", "Planificar actividades en equipos de trabajo para el desarrollo de mejora de procesos, aplicando el uso de herramientas de mejora continua"], "eje": "industrial", "lane": 4}, {"codigo": "AIIN414", "nombre": "Evaluación de Proyectos", "semestre": 7, "creditos": 3, "area": "gestion", "requisitos": ["AIIN413"], "contenidos": "los estudiantes serán capaces de generar elementos necesarios para la toma de decisiones relacionadas a un proyecto de inversión, a través del proceso de preparación, formulación y evaluación de un proyecto privado y social que incluye el desarrollo de estudios de viabilidad de mercado, técnica, legal, organizacional y económica a nivel de prefactibilidad I: INTRODUCCIÓN • Concepto de proyecto • Ciclo del proyecto • Estudios de viabilidad • Proceso de estudio del proyecto: preparación, formulación y evaluación • Enfoque de evaluación privada y Evaluación social de proyectos. • Precios sociales. II: PREPARACIÓN Y FORMULACIÓN DE • Estudio de mercado: Análisis económico de mercado del proyecto; análisis de mercados del proyecto: proveedor, competidor, distribuidor, y consumidor; técnicas de proyección de demanda: cuantitativas y cualitativas. • Estudio técnico del proyecto: Balance de infraestructura y equipamiento, Dimensionamiento Localización del Proyecto, Aspectos Organizacionales, Aspectos ambientales. • Estudio Societario, legal, tributario III: EVALUACIÓN DE PROYECTOS • Cálculo de costos e inversiones privadas y sociales del proyecto. • Cálculo de beneficios privadas y sociales del proyecto. • Construcción de flujos de caja del proyecto. Flujo de caja del proyecto, flujo de caja del inversionista. Flujo social del proyecto. • Evaluación y análisis de rentabilidad privada y social del proyecto. • Evaluación de proyectos bajo incertidumbre. Cálculo costo capital proyecto puro y financiado. • Análisis de sensibilidad del proyecto. Modelo de simulación de Montecarlo", "aprendizajes": ["Explicar las etapas asociadas al desarrollo y estudio de una iniciativa bajo un enfoque de análisis privado y social para el análisis de iniciativas de inversión", "Formular proyectos de inversión a nivel de prefactibilidad en base a estudios de PROYECTOS viabilidad de mercado, técnico, organizacional y legal, para el análisis de iniciativas de inversión", "Evaluar proyectos de inversión en situaciones de incertidumbre, en base a indicadores económicos y financieros para determinar la rentabilidad privada y social de iniciativas de inversión"], "eje": "gestion", "lane": 5}, {"codigo": "ATDF105", "nombre": "Minería de Datos", "semestre": 7, "creditos": 3, "area": "digital", "requisitos": ["FMSA315"], "contenidos": "los estudiantes serán capaces de aplicar el razonamiento científico para generar modelos y verificar hipótesis aplicando técnicas de minería de datos I: EL MÉTODO CIENTÍFICO EN LA • Formulación de una investigación. • Tipos de investigación: cuantitativa y cualitativa. • La investigación cuantitativa: Planteamiento del problema. o Formulación de Hipótesis. o Recolección de datos. o Análisis de datos usando estadística o (pruebas de hipótesis y modelos de regresión). Fundamentación de conclusiones. o Limitaciones de la investigación y o posibilidad de generalizar los resultados. II: PREPARACIÓN DE LA INFORMACIÓN • Fuentes de información en organizaciones: Bases de Datos, Data Warehouse y OLAP • Manejo de datos ruidosos y faltantes • Reducción de la dimensionalidad • Análisis de las componentes principales III: ANÁLISIS UTILIZANDO APRENDIZAJE • Conceptos básicos • Árboles de decisión • Redes neuronales • Clasificación Bayesiana • Máquina de soporte vectorial • K-vecinos más cercanos IV: ANÁLISIS UTILIZANDO APRENDIZAJE SUPERVISADO • Conceptos básicos • K-means • Clustering jerárquico • Métricas de distancia • Estandarización • Métricas: AUC, Entropía, Purity, Accuracy,", "aprendizajes": ["Elaborar modelos e hipótesis verificables mediante el análisis de datos para resolver INGENIERÍA problemas en diversos contextos", "Aplicar técnicas de aprendizaje supervisado y no supervisado para analizar datos y modelar problemas", "Aplicar métricas para evaluar la calidad del modelo elaborado en un problema de ingeniería determinado. SUPERVISADO NO"], "eje": "digital", "lane": 6}, {"codigo": "AIIN312", "nombre": "Portafolio Proyectos", "semestre": 7, "creditos": 5, "area": "integracion", "requisitos": ["AIIN314", "AIIN413", "AIIN114", "AIIN211"], "contenidos": "el estudiante será capaz de formular y dirigir proyectos de ingeniería que generen valor para una organización UNIDAD I: DIMENSIÓN ESTRATÉGICA • El concepto de portafolio y programa de proyectos. • Evaluación estratégica de un portafolio de proyectos • Análisis de la Viabilidad de un proyecto (legal, medioambiental, económica, tecnológica, cultural, etc.) • Selección, priorización y balance de portafolio • Valorización de un portafolio de proyectos UNIDAD II: DIMENSIÓN TÁCTICA Y OPERATIVA • Metodologías tradicionales y ágiles para la gestión de proyectos • Control de proyectos mediante valor ganado. • Diseño, Selección e implementación de herramientas de apoyo a la gestión de proyectos • Generación de indicadores de gestión de proyectos a nivel estratégico y táctico. UNIDAD III: ORGANIZACIÓN Y LIDERAZGO DE EQUIPOS • Formación de Equipos • Liderazgo y supervisión • Comunicación efectiva • Prevención y resolución de conflictos", "aprendizajes": ["Aplicar técnicas de gestión estratégica de portafolios para seleccionar y priorizar proyectos", "Aplicar técnicas de monitoreo y control para realizar seguimiento a proyectos en ejecución", "Aplicar técnicas de gestión de personas para liderar equipos de proyecto"], "eje": "integracion", "lane": 9}, {"codigo": "AIIN217", "nombre": "Tópicos de Especialidad", "semestre": 8, "creditos": 3, "area": "industrial", "requisitos": ["AIIN213"], "contenidos": "los estudiantes serán capaces de: Identificar los procesos de la planificación y gestión estratégica, analizar las fuerzas competitivas de los sectores industriales y desarrollar la ejecución y control de la planificación estratégica. RESULTADOS DE EJES TEMÁTICOS PLANIFICACIÓN Y CONTROL ESTRATÉGICO", "aprendizajes": ["RA2: Evaluar alternativas de solución, coordinando equipos multidisciplinarios, de problemas de ingeniería desde el nivel táctico y operacional para el cumplimiento de los objetivos estratégicos de la organización. RA2: Evaluar iniciativas de inversión y emprendimiento bajo un enfoque de rentabilidad económica, privada y social"], "eje": "industrial", "lane": 4}, {"codigo": "ATDF106", "nombre": "Gestión de la Transformación Digital", "semestre": 8, "creditos": 3, "area": "digital", "requisitos": ["ATDF103"], "contenidos": "los estudiantes serán capaces de diseñar un plan de transformación digital con foco en la mejora del valor organizacional y el cumplimiento de normativas externas, gestionar el cambio en la cultura organizacional, así como monitorear exitosamente su ejecución I: DISEÑO DEL PLAN DE DIGITAL • Plan estratégico • Arquitectura empresarial II: IMPLEMENTACIÓN DEL PLAN DE DIGITAL • Gestión de riesgos • Modelos de negocio • Tecnologías exponenciales • Sistemas de información gerencial III: GESTIÓN DEL CAMBIO DURANTE LA DIGITAL • Frameworks de transformación • Modelos de madurez IV: GOBIERNO CORPORATIVO Y EMPRESARIAL • Sistema tributario y legislativo asociado a empresas. • Compliance y Accountabilty • Compliance Medio Ambiental, Laboral, Tributario, Penal General y Ciberseguridad • Compliance Penal por Ley de Responsabilidad Penal de la Persona Jurídica Nº20.393", "aprendizajes": ["Diseñar planes de transformación digital, de acuerdo a diferentes estrategias, para la TRANSFORMACIÓN evaluación del impacto en los distintos procesos de la organización", "Simular la implementación de un plan de transformación digital para establecer su TRANSFORMACIÓN impacto en la organización", "Analizar técnicas de gestión del cambio, para la implementación de un plan de ORGANIZACIONAL transformación digital. TRANSFORMACIÓN", "Analizar aspectos de Gobierno Corporativo, Responsabilidad Social Empresarial RESPONSABILIDAD y Compliance, para establecer consecuencias legales en ámbito medioambiental, laboral, tributario, penal, entre otros contextos derivados del accionar de la organización en un contexto de Transformación Digital"], "eje": "digital", "lane": 7}, {"codigo": "AIIN313", "nombre": "Integrador II: Proyecto de Título", "semestre": 8, "creditos": 4, "area": "integracion", "requisitos": ["AIIN312"], "contenidos": "los estudiantes serán capaces de: Identificar los procesos de la planificación y gestión estratégica, analizar las fuerzas competitivas de los sectores industriales y desarrollar la ejecución y control de la planificación estratégica. RESULTADOS DE", "aprendizajes": [], "eje": "integracion", "lane": 9}, {"codigo": "CEGARS14", "nombre": "Responsabilidad Social", "semestre": 8, "creditos": 2, "area": "formaciongeneral", "requisitos": [], "contenidos": "Responsabilidad Social contribuye al desarrollo del ámbito de acción IV Educación del perfil de egreso de la carrera. General e inglés Este curso tiene el propósito de desarrollar habilidades, con el objetivo de ampliar el conocimiento, reforzar el compromiso y motivar acciones positivas, es decir, habilidades que dan cuenta de “saber”, “saber hacer” y “saber ser”. Su formación contempla el desarrollo del Resultado de Aprendizaje de Formación General “Relacionar la formación académica con el propio entorno desde un principio de responsabilidad social, considerando la dimensión ética de prácticas y/o discursos cotidianos, y en el ejercicio profesional.” Lo anterior se enmarca en el programa de Educación general de la UNAB que tiene por objetivo, dotar a los estudiantes de habilidades de formación transferibles a cualquier área disciplinar. Los cursos de Responsabilidad Social favorecen la inclusión social, la inserción exitosa del estudiante en el mundo laboral y, finalmente, un desarrollo humano sustentable; patentando con ello el sello UNAB que identifica al estudiante de nuestra Universidad. La Dimensión de Responsabilidad Social recoge el desarrollo de las otras habilidades como las comunicativas, las de razonamiento científico, las de tecnologías de la información y de pensamiento crítico. Todo esto, dentro del marco del programa de Educación General de la Universidad, que busca desarrollar en los estudiantes habilidades transversales aplicables a cualquier especialidad y a su específico perfil de egreso UNIDAD I: CONCEPTOS DE RESPONSABILIDAD SOCIAL • ¿Qué es Responsabilidad Social? • Conceptos claves y ejes fundamentales de la RS. • Principios y marcos legislativos de la RS. • Parámetros de sustentabilidad. UNIDAD II: VALORES Y CONDUCTAS COHERENTES CON LA RESPONSABILIDAD SOCIAL. • Autocuidado y Responsabilidad social. • Buenas prácticas sociales y comportamiento ciudadano activo. • Actitud ética, comprometida y corresponsable. • Contribución para un desarrollo justo y sustentable a la solución de problemas sociales. UNIDAD III: DISEÑO Y EJECUCIÓN DE PROYECTO Y/O ACCIONES DE RESPONSABILIDAD SOCIAL APLICABLES EN SU ENTORNO CERCANO. • Planificación y diseño de un proyecto de RS en corresponsabilidad. • Ejecución y puesta en práctica en escenario real de un proyecto y/o acción. • Evaluación de un proyecto de RS", "aprendizajes": ["Identificar problemas de carácter social, distinguiendo que todas las acciones y decisiones tienen un impacto positivo o negativo en su vida, condición de estudiante y futuro profesional", "Aplicar buenas prácticas sociales demostrando un comportamiento de ciudadano activo a favor del desarrollo humano", "Diseñar soluciones y acciones colaborativas y creativas para afrontar desafíos cotidianos, con conductas, actitudes y acciones socialmente responsables"], "eje": "formaciongeneral", "lane": 11}];</script>
+<script>
+const AREAS = {
+  matematicas:     {label:"Matemáticas",                    short:"Matemáticas"},
+  fisica:          {label:"Ciencias Básicas",               short:"Cs. Básicas"},
+  industrial:      {label:"Procesos y Operaciones",         short:"Procesos"},
+  gestion:         {label:"Gestión y Economía",             short:"Gestión"},
+  digital:         {label:"Transformación Digital y Datos", short:"T. Digital"},
+  emprendimiento:  {label:"Innovación y Emprendimiento",    short:"Emprendim."},
+  integracion:     {label:"Integración y Título",           short:"Integración"},
+  ingles:          {label:"Inglés",                         short:"Inglés"},
+  formaciongeneral:{label:"Formación General",              short:"F. General"},
+};
+const cvar = a => ({c:`var(--a-${a})`, t:`var(--t-${a})`});
+
+// ----- prereq graph -----
+const byCode = Object.fromEntries(CURSOS.map(c=>[c.codigo,c]));
+const PRE = Object.fromEntries(CURSOS.map(c=>[c.codigo,(c.requisitos||[]).filter(p=>byCode[p])]));
+const DEP = Object.fromEntries(CURSOS.map(c=>[c.codigo,[]]));
+CURSOS.forEach(c=>PRE[c.codigo].forEach(p=>DEP[p].push(c.codigo)));
+function ancestors(code){const seen=new Set(),st=[...PRE[code]];while(st.length){const x=st.pop();if(seen.has(x))continue;seen.add(x);PRE[x].forEach(y=>st.push(y));}return seen;}
+const cardEl={}; let drawerOpen=false; let currentCode=null;
+
+// ----- stats -----
+const totCr = CURSOS.reduce((s,c)=>s+c.creditos,0);
+const sems = [...new Set(CURSOS.map(c=>c.semestre))].sort((a,b)=>a-b);
+document.getElementById('stats').innerHTML = [
+  [sems.length,'Trimestres'],[CURSOS.length,'Asignaturas'],[totCr,'Créditos SCT']
+].map(([b,s])=>`<div class="stat"><b>${b}</b><span>${s}</span></div>`).join('');
+
+// ----- legend -----
+const legend = document.getElementById('legend');
+let activeArea = null;
+Object.entries(AREAS).forEach(([k,v])=>{
+  const n = CURSOS.filter(c=>c.area===k).length;
+  const b = document.createElement('button');
+  b.className='chip'; b.setAttribute('aria-pressed','false'); b.dataset.area=k;
+  b.innerHTML = `<span class="dot" style="background:var(--a-${k})"></span>${v.label} <span style="color:var(--ink-faint);font-weight:600">${n}</span>`;
+  b.onclick=()=>toggleArea(k);
+  legend.appendChild(b);
+});
+const reset = document.createElement('button');
+reset.className='chip reset'; reset.textContent='Mostrar todas';
+reset.style.display='none'; reset.onclick=()=>toggleArea(null);
+legend.appendChild(reset);
+
+const arrToggle=document.createElement('button');
+arrToggle.className='chip'; arrToggle.style.marginLeft='auto';
+arrToggle.setAttribute('aria-pressed','true');
+arrToggle.innerHTML='&#8627; Prerrequisitos';
+arrToggle.onclick=()=>{const on=document.body.classList.toggle('no-arrows');
+  arrToggle.setAttribute('aria-pressed',String(!on));};
+legend.appendChild(arrToggle);
+
+function toggleArea(k){
+  activeArea = (k===activeArea)?null:k;
+  document.body.classList.toggle('filtering', !!activeArea);
+  reset.style.display = activeArea?'inline-flex':'none';
+  legend.querySelectorAll('.chip[data-area]').forEach(ch=>{
+    ch.setAttribute('aria-pressed', String(ch.dataset.area===activeArea));
+  });
+  document.querySelectorAll('.card').forEach(card=>{
+    card.classList.toggle('dim', !!activeArea && card.dataset.area!==activeArea);
+  });
+}
+
+// ----- board (lane grid) -----
+const board = document.getElementById('board');
+const laneArea=[]; CURSOS.forEach(c=>{laneArea[c.lane]=c.area;});
+const nLanes=laneArea.length;
+board.style.setProperty('grid-template-rows','auto');
+// semester header cells (row 1)
+sems.forEach(s=>{
+  const cr=CURSOS.filter(c=>c.semestre===s).reduce((a,c)=>a+c.creditos,0);
+  const h=document.createElement('div'); h.className='col-head';
+  h.style.gridColumn=String(s+1); h.style.gridRow='1';
+  h.innerHTML=`<span class="n"><small>Trim</small>${roman(s)}</span><span class="cr">${cr} cr</span>`;
+  board.appendChild(h);
+});
+// area bands (tint + rotated label) over their lane rows
+const bands=[];
+laneArea.forEach((a,i)=>{
+  const last=bands[bands.length-1];
+  if(last && last.area===a && last.end===i-1) last.end=i;
+  else bands.push({area:a,start:i,end:i});
+});
+bands.forEach(b=>{
+  const r1=b.start+2, r2=b.end+3;
+  const tint=document.createElement('div'); tint.className='band';
+  tint.style.gridRow=`${r1} / ${r2}`; tint.style.setProperty('--bt',`var(--t-${b.area})`);
+  board.appendChild(tint);
+  const lab=document.createElement('div'); lab.className='band-label';
+  lab.style.gridRow=`${r1} / ${r2}`; lab.style.setProperty('--bc',`var(--a-${b.area})`);
+  lab.textContent=AREAS[b.area].short;
+  board.appendChild(lab);
+});
+// course cards positioned by lane & semester
+CURSOS.forEach(c=>{
+  const card=makeCard(c);
+  card.style.gridColumn=String(c.semestre+1);
+  card.style.gridRow=String(c.lane+2);
+  board.appendChild(card);
+});
+
+function makeCard(c){
+  const {c:cc,t:tt} = cvar(c.area);
+  const b = document.createElement('button');
+  b.className='card'; b.dataset.area=c.area; b.dataset.code=c.codigo;
+  b.style.setProperty('--c',cc); b.style.setProperty('--t',tt);
+  b.setAttribute('aria-label',`${c.nombre}, ${c.codigo}, ${c.creditos} créditos`);
+  b.title=c.nombre;
+  b.innerHTML = `
+    <span class="chk" role="checkbox" aria-checked="false" aria-label="Marcar ${esc(c.codigo)} como aprobada"></span>
+    <div class="name">${esc(c.nombre)}</div>
+    <div class="meta"><span class="code">${c.codigo}</span><span class="cr">${c.creditos} cr</span></div>`;
+  b.onclick=()=>openDrawer(c,b);
+  b.querySelector('.chk').addEventListener('click',e=>{e.stopPropagation();toggleAprobada(c.codigo);});
+  b.addEventListener('pointerenter',()=>{if(!drawerOpen)highlightChain(c.codigo);});
+  b.addEventListener('pointerleave',()=>{if(!drawerOpen)clearHighlight();});
+  b.addEventListener('focus',()=>{if(!drawerOpen)highlightChain(c.codigo);});
+  b.addEventListener('blur',()=>{if(!drawerOpen)clearHighlight();});
+  cardEl[c.codigo]=b;
+  return b;
+}
+
+// ----- arrows -----
+const SVGNS='http://www.w3.org/2000/svg';
+const svg=document.createElementNS(SVGNS,'svg'); svg.setAttribute('class','arrows');
+board.appendChild(svg);
+const EDGES=[];
+CURSOS.forEach(c=>PRE[c.codigo].forEach(p=>{
+  const path=document.createElementNS(SVGNS,'path'); path.setAttribute('class','edge');
+  const head=document.createElementNS(SVGNS,'polygon'); head.setAttribute('class','head');
+  svg.appendChild(path); svg.appendChild(head);
+  EDGES.push({from:p,to:c.codigo,path,head});
+}));
+function layoutArrows(){
+  const br=board.getBoundingClientRect();
+  const W=board.offsetWidth,H=board.offsetHeight;
+  svg.setAttribute('width',W); svg.setAttribute('height',H); svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  EDGES.forEach(e=>{
+    const a=cardEl[e.from],b=cardEl[e.to]; if(!a||!b)return;
+    const ra=a.getBoundingClientRect(),rb=b.getBoundingClientRect();
+    const sx=ra.right-br.left, sy=ra.top-br.top+ra.height/2;
+    const ex=rb.left-br.left,  ey=rb.top-br.top+rb.height/2;
+    const dx=Math.max(26,(ex-sx)*0.45);
+    e.path.setAttribute('d',`M ${sx} ${sy} C ${sx+dx} ${sy}, ${ex-dx} ${ey}, ${ex-11} ${ey}`);
+    const hx=ex-11;
+    e.head.setAttribute('points',`${hx-10},${ey-7.5} ${hx+2},${ey} ${hx-10},${ey+7.5}`);
+  });
+}
+window.addEventListener('resize',layoutArrows);
+if(window.ResizeObserver) new ResizeObserver(layoutArrows).observe(board);
+requestAnimationFrame(()=>requestAnimationFrame(layoutArrows));
+setTimeout(layoutArrows,350);
+
+function highlightChain(code){
+  const chain=new Set([code,...ancestors(code)]);
+  const deps=new Set(DEP[code]);
+  const col=`var(--a-${byCode[code].area})`;
+  document.body.classList.add('focusing');
+  Object.entries(cardEl).forEach(([cd,el])=>{
+    el.classList.toggle('chain', chain.has(cd)&&cd!==code);
+    el.classList.toggle('root', cd===code);
+    el.classList.toggle('dep', deps.has(cd));
+  });
+  EDGES.forEach(e=>{
+    const on=(chain.has(e.from)&&chain.has(e.to))||(e.from===code&&deps.has(e.to));
+    e.path.classList.toggle('on',on); e.head.classList.toggle('on',on);
+    e.path.style.stroke=on?col:''; e.head.style.fill=on?col:'';
+  });
+}
+function clearHighlight(){
+  document.body.classList.remove('focusing');
+  Object.values(cardEl).forEach(el=>el.classList.remove('chain','root','dep'));
+  EDGES.forEach(e=>{e.path.classList.remove('on');e.head.classList.remove('on');e.path.style.stroke='';e.head.style.fill='';});
+}
+function chipHTML(code){const c=byCode[code];
+  return `<button class="prq-chip" data-code="${code}" style="--c:var(--a-${c.area})">`+
+    `<span class="pc-dot" style="background:var(--a-${c.area})"></span>`+
+    `<span><span class="pc-code">${code}</span> <span class="pc-name">${esc(c.nombre)}</span> <span class="pc-sem">· S${c.semestre}</span></span></button>`;
+}
+
+// ----- drawer -----
+const drawer=document.getElementById('drawer'),backdrop=document.getElementById('backdrop');
+let lastFocus=null;
+function openDrawer(c,trigger){
+  lastFocus=trigger; drawerOpen=true; currentCode=c.codigo; clearHighlight();
+  const {c:cc,t:tt}=cvar(c.area);
+  drawer.style.setProperty('--c',cc); drawer.style.setProperty('--t',tt);
+  document.getElementById('dw-bar').style.background=cc;
+  document.getElementById('dw-tag').textContent=AREAS[c.area].label;
+  document.getElementById('dw-code').textContent=c.codigo;
+  document.getElementById('dw-name').textContent=c.nombre;
+  document.getElementById('dw-sem').textContent=roman(c.semestre);
+  document.getElementById('dw-cr').textContent=c.creditos;
+  document.getElementById('dw-area').textContent=AREAS[c.area].short;
+  const prqBox=document.getElementById('dw-prq'), depBox=document.getElementById('dw-dep');
+  prqBox.innerHTML = PRE[c.codigo].length
+    ? PRE[c.codigo].map(chipHTML).join('')
+    : '<p class="empty">Sin prerrequisitos · ingreso directo.</p>';
+  depBox.innerHTML = DEP[c.codigo].length
+    ? DEP[c.codigo].map(chipHTML).join('')
+    : '<p class="empty">No es prerrequisito de otra asignatura.</p>';
+  drawer.querySelectorAll('.prq-chip').forEach(ch=>ch.onclick=()=>{
+    const code=ch.dataset.code; openDrawer(byCode[code], cardEl[code]);
+    document.getElementById('drawer').scrollTop=0;
+  });
+  const hasCont=!!(c.contenidos&&c.contenidos.trim());
+  document.getElementById('dw-cont-sec').style.display=hasCont?'':'none';
+  document.getElementById('dw-cont').textContent=c.contenidos||'';
+  updateDrawerAprob(c.codigo);
+  const aeBox=document.getElementById('dw-ae');
+  const hasAE=!!(c.aprendizajes && c.aprendizajes.length);
+  document.getElementById('dw-ae-sec').style.display=hasAE?'':'none';
+  aeBox.innerHTML=hasAE?'<ul class="ae">'+c.aprendizajes.map(a=>`<li>${esc(a)}</li>`).join('')+'</ul>':'';
+  backdrop.classList.add('show'); drawer.classList.add('show');
+  drawer.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  document.getElementById('dw-close').focus();
+}
+function closeDrawer(){
+  backdrop.classList.remove('show'); drawer.classList.remove('show');
+  drawer.setAttribute('aria-hidden','true'); document.body.style.overflow='';
+  drawerOpen=false; clearHighlight();
+  if(lastFocus) lastFocus.focus();
+}
+document.getElementById('dw-close').onclick=closeDrawer;
+backdrop.onclick=closeDrawer;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('show'))closeDrawer();});
+
+// ----- footer -----
+document.getElementById('foot').innerHTML =
+  `<span><b style="color:var(--ink-soft)">${CURSOS.length}</b> asignaturas</span><span class="sep">·</span>`+
+  `<span><b style="color:var(--ink-soft)">${totCr}</b> créditos SCT</span><span class="sep">·</span>`+
+  `<span>8 trimestres · Plan de continuidad</span><span class="sep">·</span>`+
+  `<span>Fuente: Decreto Universitario (DUN) 71-2022</span><span class="sep">·</span>`+
+  `<span>Pasa el cursor por una asignatura para ver su cadena de prerrequisitos · clic para el detalle</span>`;
+
+// ----- tracker de aprobación -----
+let STORE_KEY='malla_aprob_DUN71-2022_IIND';
+// SIGA-DSS: separar el progreso por usuario logueado, para que no se
+// mezcle si varias personas usan el mismo navegador (antes era una sola
+// clave fija por carrera para cualquier visitante).
+try{const _u=window.SuiteAuth&&SuiteAuth.getUser&&SuiteAuth.getUser();if(_u&&_u.nombre) STORE_KEY+='_'+encodeURIComponent(_u.nombre);}catch(_e){}
+let aprobadas=new Set();
+try{ const s=localStorage.getItem(STORE_KEY); if(s) aprobadas=new Set(JSON.parse(s)); }catch(e){}
+function saveAprob(){ try{ localStorage.setItem(STORE_KEY,JSON.stringify([...aprobadas])); }catch(e){} }
+function toggleAprobada(code){
+  if(aprobadas.has(code)) aprobadas.delete(code); else aprobadas.add(code);
+  saveAprob(); refreshStates();
+}
+function isAvailable(code){
+  if(aprobadas.has(code)) return false;
+  return PRE[code].every(p=>aprobadas.has(p));
+}
+function refreshStates(){
+  CURSOS.forEach(c=>{
+    const el=cardEl[c.codigo]; if(!el) return;
+    const done=aprobadas.has(c.codigo), avail=!done && isAvailable(c.codigo);
+    el.classList.toggle('done',done);
+    el.classList.toggle('avail',avail);
+    el.classList.toggle('locked',!done && !avail);
+    const chk=el.querySelector('.chk'); if(chk) chk.setAttribute('aria-checked',String(done));
+  });
+  updateProgress();
+  if(drawerOpen && currentCode) updateDrawerAprob(currentCode);
+}
+function updateProgress(){
+  const nA=aprobadas.size;
+  const crA=CURSOS.filter(c=>aprobadas.has(c.codigo)).reduce((a,c)=>a+c.creditos,0);
+  const pct=totCr?Math.round(crA/totCr*100):0;
+  document.getElementById('prog-aprob').textContent=nA;
+  document.getElementById('prog-aprob-l').textContent=`/ ${CURSOS.length} asignaturas`;
+  document.getElementById('prog-cred').textContent=crA;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+function updateDrawerAprob(code){
+  const btn=document.getElementById('dw-aprob');
+  const done=aprobadas.has(code);
+  btn.classList.toggle('is-done',done);
+  btn.textContent=done?'✓ Aprobada — quitar':'Marcar como aprobada';
+  btn.onclick=()=>toggleAprobada(code);
+}
+document.getElementById('prog-reset').onclick=()=>{
+  if(!aprobadas.size) return;
+  if(confirm('¿Desmarcar todas las asignaturas aprobadas?')){ aprobadas.clear(); saveAprob(); refreshStates(); }
+};
+refreshStates();
+
+// ----- utils -----
+function roman(n){return ["","I","II","III","IV","V","VI","VII","VIII","IX","X"][n]||n;}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+</script>
+</body>
+</html>

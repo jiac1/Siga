@@ -1,0 +1,674 @@
+{
+  "curricular_analytics": {
+    "tiempo_total_ms": 15.1,
+    "mallas": [
+      {
+        "slug": "automatizacion-robotica",
+        "nombre": "Ingeniería en Automatización y Robótica",
+        "n_cursos": 43,
+        "n_aristas": 62,
+        "n_semestres": 8,
+        "tiene_ciclos": false,
+        "complejidad_total": 478,
+        "complejidad_promedio": 11.12,
+        "curso_mas_critico": {
+          "codigo": "TDFI102",
+          "nombre": "Introducción a la Programación",
+          "semestre": 1,
+          "factor_bloqueo": 25,
+          "factor_retraso": 7,
+          "complejidad": 32
+        }
+      },
+      {
+        "slug": "civil-electrica",
+        "nombre": "Ingeniería Civil Eléctrica",
+        "n_cursos": 49,
+        "n_aristas": 44,
+        "n_semestres": 10,
+        "tiene_ciclos": false,
+        "complejidad_total": 488,
+        "complejidad_promedio": 9.96,
+        "curso_mas_critico": {
+          "codigo": "FMMP012",
+          "nombre": "Introducción a las Matemáticas",
+          "semestre": 1,
+          "factor_bloqueo": 25,
+          "factor_retraso": 9,
+          "complejidad": 34
+        }
+      },
+      {
+        "slug": "civil-informatica",
+        "nombre": "Ingeniería Civil Informática",
+        "n_cursos": 48,
+        "n_aristas": 61,
+        "n_semestres": 10,
+        "tiene_ciclos": false,
+        "complejidad_total": 492,
+        "complejidad_promedio": 10.25,
+        "curso_mas_critico": {
+          "codigo": "TDFI102",
+          "nombre": "Introducción a la Programación",
+          "semestre": 1,
+          "factor_bloqueo": 25,
+          "factor_retraso": 7,
+          "complejidad": 32
+        }
+      },
+      {
+        "slug": "computacion-informatica",
+        "nombre": "Ingeniería en Computación e Informática",
+        "n_cursos": 40,
+        "n_aristas": 45,
+        "n_semestres": 8,
+        "tiene_ciclos": false,
+        "complejidad_total": 332,
+        "complejidad_promedio": 8.3,
+        "curso_mas_critico": {
+          "codigo": "TDFI102",
+          "nombre": "Introducción a la Programación",
+          "semestre": 1,
+          "factor_bloqueo": 19,
+          "factor_retraso": 7,
+          "complejidad": 26
+        }
+      },
+      {
+        "slug": "industrial",
+        "nombre": "Ingeniería Industrial",
+        "n_cursos": 34,
+        "n_aristas": 29,
+        "n_semestres": 8,
+        "tiene_ciclos": false,
+        "complejidad_total": 192,
+        "complejidad_promedio": 5.65,
+        "curso_mas_critico": {
+          "codigo": "FMMA015",
+          "nombre": "Fundamentos de Matemáticas",
+          "semestre": 2,
+          "factor_bloqueo": 14,
+          "factor_retraso": 5,
+          "complejidad": 19
+        }
+      },
+      {
+        "slug": "civil",
+        "nombre": "Ingeniería Civil",
+        "n_cursos": 55,
+        "n_aristas": 81,
+        "n_semestres": 11,
+        "tiene_ciclos": false,
+        "complejidad_total": 1076,
+        "complejidad_promedio": 19.56,
+        "curso_mas_critico": {
+          "codigo": "FMMP012",
+          "nombre": "Introducción a las Matemáticas",
+          "semestre": 1,
+          "factor_bloqueo": 36,
+          "factor_retraso": 11,
+          "complejidad": 47
+        }
+      },
+      {
+        "slug": "civil-minas",
+        "nombre": "Ingeniería Civil en Minas",
+        "n_cursos": 49,
+        "n_aristas": 54,
+        "n_semestres": 10,
+        "tiene_ciclos": false,
+        "complejidad_total": 465,
+        "complejidad_promedio": 9.49,
+        "curso_mas_critico": {
+          "codigo": "ICMI121",
+          "nombre": "Geología I",
+          "semestre": 2,
+          "factor_bloqueo": 23,
+          "factor_retraso": 8,
+          "complejidad": 31
+        }
+      },
+      {
+        "slug": "construccion",
+        "nombre": "Ingeniería en Construcción",
+        "n_cursos": 50,
+        "n_aristas": 48,
+        "n_semestres": 10,
+        "tiene_ciclos": false,
+        "complejidad_total": 582,
+        "complejidad_promedio": 11.64,
+        "curso_mas_critico": {
+          "codigo": "FMMP012",
+          "nombre": "Introducción a las Matemáticas",
+          "semestre": 1,
+          "factor_bloqueo": 21,
+          "factor_retraso": 9,
+          "complejidad": 30
+        }
+      },
+      {
+        "slug": "civil-industrial",
+        "nombre": "Ingeniería Civil Industrial",
+        "n_cursos": 51,
+        "n_aristas": 68,
+        "n_semestres": 10,
+        "tiene_ciclos": false,
+        "complejidad_total": 552,
+        "complejidad_promedio": 10.82,
+        "curso_mas_critico": {
+          "codigo": "FMMP012",
+          "nombre": "Introducción a las Matemáticas",
+          "semestre": 1,
+          "factor_bloqueo": 32,
+          "factor_retraso": 9,
+          "complejidad": 41
+        }
+      },
+      {
+        "slug": "civil-industrial-2-0",
+        "nombre": "Ingeniería Civil Industrial 2.0",
+        "n_cursos": 67,
+        "n_aristas": 78,
+        "n_semestres": 15,
+        "tiene_ciclos": false,
+        "complejidad_total": 1007,
+        "complejidad_promedio": 15.03,
+        "curso_mas_critico": {
+          "codigo": "FMMV012",
+          "nombre": "Introducción a las Matemáticas",
+          "semestre": 2,
+          "factor_bloqueo": 33,
+          "factor_retraso": 11,
+          "complejidad": 44
+        }
+      }
+    ],
+    "top_civil_informatica": [
+      {
+        "codigo": "TDFI102",
+        "nombre": "Introducción a la Programación",
+        "semestre": 1,
+        "factor_bloqueo": 25,
+        "factor_retraso": 7,
+        "complejidad": 32
+      },
+      {
+        "codigo": "PTEC101",
+        "nombre": "Algoritmos y Estructuras de Datos",
+        "semestre": 3,
+        "factor_bloqueo": 22,
+        "factor_retraso": 7,
+        "complejidad": 29
+      },
+      {
+        "codigo": "FMMP012",
+        "nombre": "Introducción a las Matemáticas",
+        "semestre": 1,
+        "factor_bloqueo": 14,
+        "factor_retraso": 8,
+        "complejidad": 22
+      },
+      {
+        "codigo": "FMMP112",
+        "nombre": "Cálculo Diferencial",
+        "semestre": 2,
+        "factor_bloqueo": 12,
+        "factor_retraso": 8,
+        "complejidad": 20
+      },
+      {
+        "codigo": "CINF101",
+        "nombre": "Análisis y Diseño de Algoritmos",
+        "semestre": 5,
+        "factor_bloqueo": 11,
+        "factor_retraso": 7,
+        "complejidad": 18
+      },
+      {
+        "codigo": "PTEC102",
+        "nombre": "Paradigmas de Programación",
+        "semestre": 5,
+        "factor_bloqueo": 11,
+        "factor_retraso": 7,
+        "complejidad": 18
+      },
+      {
+        "codigo": "FMMP212",
+        "nombre": "Cálculo Integral",
+        "semestre": 3,
+        "factor_bloqueo": 10,
+        "factor_retraso": 8,
+        "complejidad": 18
+      },
+      {
+        "codigo": "CINF103",
+        "nombre": "Fundamentos de Inteligencia Artificial",
+        "semestre": 6,
+        "factor_bloqueo": 9,
+        "factor_retraso": 7,
+        "complejidad": 16
+      },
+      {
+        "codigo": "CFIS310",
+        "nombre": "Física General",
+        "semestre": 1,
+        "factor_bloqueo": 8,
+        "factor_retraso": 7,
+        "complejidad": 15
+      },
+      {
+        "codigo": "TDFI101",
+        "nombre": "Introducción a la Ingeniería",
+        "semestre": 1,
+        "factor_bloqueo": 9,
+        "factor_retraso": 5,
+        "complejidad": 14
+      }
+    ]
+  },
+  "convalidacion": {
+    "conceptos_version": "2026-10-21",
+    "tiempo_ambas_variantes_ms": 1072.9,
+    "tiempo_solo_mejorado_ms": 719.3,
+    "global": {
+      "base": {
+        "n": 112,
+        "positivos": 69,
+        "negativos": 43,
+        "tp": 1,
+        "fp": 0,
+        "tn": 43,
+        "fn": 68,
+        "precision": 1.0,
+        "exhaustividad": 0.014,
+        "f1": 0.029,
+        "especificidad": 1.0,
+        "acierto_top3": 0.913
+      },
+      "mejorado": {
+        "n": 112,
+        "positivos": 69,
+        "negativos": 43,
+        "tp": 67,
+        "fp": 4,
+        "tn": 39,
+        "fn": 2,
+        "precision": 0.944,
+        "exhaustividad": 0.971,
+        "f1": 0.957,
+        "especificidad": 0.907,
+        "acierto_top3": 1.0
+      }
+    },
+    "por_par": {
+      "usach-civil-informatica→unab-ingenieria-civil-informatica": {
+        "base": {
+          "n": 38,
+          "positivos": 25,
+          "negativos": 13,
+          "tp": 0,
+          "fp": 0,
+          "tn": 13,
+          "fn": 25,
+          "precision": 0.0,
+          "exhaustividad": 0.0,
+          "f1": 0.0,
+          "especificidad": 1.0,
+          "acierto_top3": 0.92
+        },
+        "mejorado": {
+          "n": 38,
+          "positivos": 25,
+          "negativos": 13,
+          "tp": 25,
+          "fp": 2,
+          "tn": 11,
+          "fn": 0,
+          "precision": 0.926,
+          "exhaustividad": 1.0,
+          "f1": 0.962,
+          "especificidad": 0.846,
+          "acierto_top3": 1.0
+        }
+      },
+      "uchile-civil-computacion→unab-ingenieria-civil-informatica": {
+        "base": {
+          "n": 32,
+          "positivos": 17,
+          "negativos": 15,
+          "tp": 0,
+          "fp": 0,
+          "tn": 15,
+          "fn": 17,
+          "precision": 0.0,
+          "exhaustividad": 0.0,
+          "f1": 0.0,
+          "especificidad": 1.0,
+          "acierto_top3": 1.0
+        },
+        "mejorado": {
+          "n": 32,
+          "positivos": 17,
+          "negativos": 15,
+          "tp": 17,
+          "fp": 1,
+          "tn": 14,
+          "fn": 0,
+          "precision": 0.944,
+          "exhaustividad": 1.0,
+          "f1": 0.971,
+          "especificidad": 0.933,
+          "acierto_top3": 1.0
+        }
+      },
+      "usach-civil-industrial→unab-ingenieria-civil-industrial": {
+        "base": {
+          "n": 42,
+          "positivos": 27,
+          "negativos": 15,
+          "tp": 1,
+          "fp": 0,
+          "tn": 15,
+          "fn": 26,
+          "precision": 1.0,
+          "exhaustividad": 0.037,
+          "f1": 0.071,
+          "especificidad": 1.0,
+          "acierto_top3": 0.852
+        },
+        "mejorado": {
+          "n": 42,
+          "positivos": 27,
+          "negativos": 15,
+          "tp": 25,
+          "fp": 1,
+          "tn": 14,
+          "fn": 2,
+          "precision": 0.962,
+          "exhaustividad": 0.926,
+          "f1": 0.943,
+          "especificidad": 0.933,
+          "acierto_top3": 1.0
+        }
+      }
+    },
+    "errores_mejorado": [
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Bases de Datos Avanzadas",
+        "gold": null,
+        "pred": "TDFI103",
+        "score": 0.4788,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-informatica→unab-ingenieria-civil-informatica",
+        "origen": "Proyecto de Ingeniería de Software",
+        "gold": null,
+        "pred": "PTEC105",
+        "score": 0.678,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "uchile-civil-computacion→unab-ingenieria-civil-informatica",
+        "origen": "Proyecto de Software",
+        "gold": null,
+        "pred": "PTEC105",
+        "score": 0.5117,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Física Moderna",
+        "gold": null,
+        "pred": "CFIS310",
+        "score": 0.5014,
+        "ok": false,
+        "top3": false
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Introducción a la Innovación",
+        "gold": "ACAD101",
+        "pred": null,
+        "score": 0.3324,
+        "ok": false,
+        "top3": true
+      },
+      {
+        "caso": "usach-civil-industrial→unab-ingenieria-civil-industrial",
+        "origen": "Análisis de Decisiones",
+        "gold": "CIND212",
+        "pred": null,
+        "score": 0.2251,
+        "ok": false,
+        "top3": true
+      }
+    ]
+  },
+  "uctp": [
+    {
+      "instancia": "Pequeña (4 ramos · TEO)",
+      "espacio_combinatorio": 256,
+      "n_secciones": 16,
+      "conflictos_sala": 4,
+      "conflictos_docente": 0,
+      "resultados": {
+        "aleatorio": {
+          "factibles": 5,
+          "penalizacion": 37.0,
+          "ventanas": 6,
+          "dias_activos": 5,
+          "exceso_carga": 0,
+          "nodos_explorados": 25,
+          "nodos_podados": 0,
+          "tiempo_ms": 0.57
+        },
+        "branch_and_bound": {
+          "factibles": 5,
+          "penalizacion": 20.0,
+          "ventanas": 2,
+          "dias_activos": 4,
+          "exceso_carga": 0,
+          "nodos_explorados": 155,
+          "nodos_podados": 2,
+          "tiempo_ms": 7.297
+        },
+        "recocido_simulado": {
+          "factibles": 5,
+          "penalizacion": 20.0,
+          "ventanas": 2,
+          "dias_activos": 4,
+          "exceso_carga": 0,
+          "nodos_explorados": 2505,
+          "nodos_podados": 0,
+          "tiempo_ms": 27.492
+        }
+      }
+    },
+    {
+      "instancia": "Mediana (5 ramos · TEO+LAB)",
+      "espacio_combinatorio": 7040,
+      "n_secciones": 26,
+      "conflictos_sala": 2,
+      "conflictos_docente": 0,
+      "resultados": {
+        "aleatorio": {
+          "factibles": 5,
+          "penalizacion": 78.0,
+          "ventanas": 16,
+          "dias_activos": 5,
+          "exceso_carga": 2,
+          "nodos_explorados": 40,
+          "nodos_podados": 0,
+          "tiempo_ms": 1.081
+        },
+        "branch_and_bound": {
+          "factibles": 5,
+          "penalizacion": 40.0,
+          "ventanas": 4,
+          "dias_activos": 5,
+          "exceso_carga": 0,
+          "nodos_explorados": 663,
+          "nodos_podados": 13,
+          "tiempo_ms": 39.98
+        },
+        "recocido_simulado": {
+          "factibles": 5,
+          "penalizacion": 40.0,
+          "ventanas": 6,
+          "dias_activos": 5,
+          "exceso_carga": 0,
+          "nodos_explorados": 2510,
+          "nodos_podados": 0,
+          "tiempo_ms": 26.997
+        }
+      }
+    },
+    {
+      "instancia": "Grande (6 ramos · TEO+LAB)",
+      "espacio_combinatorio": 202500,
+      "n_secciones": 38,
+      "conflictos_sala": 4,
+      "conflictos_docente": 0,
+      "resultados": {
+        "aleatorio": {
+          "factibles": 5,
+          "penalizacion": 40.0,
+          "ventanas": 8,
+          "dias_activos": 5,
+          "exceso_carga": 6,
+          "nodos_explorados": 35,
+          "nodos_podados": 0,
+          "tiempo_ms": 1.306
+        },
+        "branch_and_bound": {
+          "factibles": 5,
+          "penalizacion": 16.0,
+          "ventanas": 2,
+          "dias_activos": 5,
+          "exceso_carga": 0,
+          "nodos_explorados": 3564,
+          "nodos_podados": 490,
+          "tiempo_ms": 192.824
+        },
+        "recocido_simulado": {
+          "factibles": 5,
+          "penalizacion": 18.0,
+          "ventanas": 0,
+          "dias_activos": 4,
+          "exceso_carga": 10,
+          "nodos_explorados": 2507,
+          "nodos_podados": 0,
+          "tiempo_ms": 21.992
+        }
+      }
+    },
+    {
+      "instancia": "Auditada (5 ramos + H2/H3)",
+      "espacio_combinatorio": 3840,
+      "n_secciones": 24,
+      "conflictos_sala": 1,
+      "conflictos_docente": 1,
+      "resultados": {
+        "aleatorio": {
+          "factibles": 5,
+          "penalizacion": 33.0,
+          "ventanas": 4,
+          "dias_activos": 5,
+          "exceso_carga": 2,
+          "nodos_explorados": 30,
+          "nodos_podados": 0,
+          "tiempo_ms": 0.793
+        },
+        "branch_and_bound": {
+          "factibles": 5,
+          "penalizacion": 19.0,
+          "ventanas": 0,
+          "dias_activos": 5,
+          "exceso_carga": 0,
+          "nodos_explorados": 416,
+          "nodos_podados": 8,
+          "tiempo_ms": 23.003
+        },
+        "recocido_simulado": {
+          "factibles": 5,
+          "penalizacion": 21.0,
+          "ventanas": 0,
+          "dias_activos": 4,
+          "exceso_carga": 4,
+          "nodos_explorados": 2506,
+          "nodos_podados": 0,
+          "tiempo_ms": 21.099
+        }
+      }
+    }
+  ],
+  "eficiencia_servicios": {
+    "sso_hs256": {
+      "iteraciones": 1000,
+      "us_por_emision_y_verificacion": 130.4
+    },
+    "mapa_calor": {
+      "tiempo_ms": 285.3,
+      "total_salas": 4,
+      "total_edificios": 2,
+      "total_registros": 4
+    },
+    "estres_malla": {
+      "tiempo_ms": 20.6,
+      "n_asignaturas": 10,
+      "n_con_datos": 4,
+      "n_criticas": 0,
+      "pct_promedio": 76.5,
+      "complejidad_total": 23,
+      "n_aristas": 5,
+      "tiene_ciclos": false,
+      "top_estres_combinado": [
+        {
+          "codigo": "FMMP101",
+          "nombre": "Cálculo I",
+          "semestre": 1,
+          "pct_aprob": 60.0,
+          "factor_bloqueo": 1,
+          "factor_retraso": 2,
+          "complejidad": 3,
+          "indice_estres": 1.2
+        },
+        {
+          "codigo": "CINF101",
+          "nombre": "Introducción a la Programación",
+          "semestre": 1,
+          "pct_aprob": 86.5,
+          "factor_bloqueo": 3,
+          "factor_retraso": 2,
+          "complejidad": 5,
+          "indice_estres": 0.68
+        },
+        {
+          "codigo": "PTEC103",
+          "nombre": "Programación Orientada a Objetos",
+          "semestre": 2,
+          "pct_aprob": 82.0,
+          "factor_bloqueo": 0,
+          "factor_retraso": 2,
+          "complejidad": 2,
+          "indice_estres": 0.36
+        },
+        {
+          "codigo": "CFIS101",
+          "nombre": "Física I",
+          "semestre": 1,
+          "pct_aprob": 77.5,
+          "factor_bloqueo": 0,
+          "factor_retraso": 1,
+          "complejidad": 1,
+          "indice_estres": 0.22
+        }
+      ]
+    }
+  }
+}
