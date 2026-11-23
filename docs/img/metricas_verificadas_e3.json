@@ -1,6 +1,6 @@
 {
   "curricular_analytics": {
-    "tiempo_total_ms": 15.1,
+    "tiempo_total_ms": 90.81,
     "mallas": [
       {
         "slug": "automatizacion-robotica",
@@ -268,8 +268,8 @@
   },
   "convalidacion": {
     "conceptos_version": "2026-10-21",
-    "tiempo_ambas_variantes_ms": 1072.9,
-    "tiempo_solo_mejorado_ms": 719.3,
+    "tiempo_ambas_variantes_ms": 1081.6,
+    "tiempo_solo_mejorado_ms": 704.6,
     "global": {
       "base": {
         "n": 112,
@@ -465,7 +465,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 25,
           "nodos_podados": 0,
-          "tiempo_ms": 0.57
+          "tiempo_ms": 0.513
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -475,7 +475,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 155,
           "nodos_podados": 2,
-          "tiempo_ms": 7.297
+          "tiempo_ms": 6.414
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -485,7 +485,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 2505,
           "nodos_podados": 0,
-          "tiempo_ms": 27.492
+          "tiempo_ms": 24.301
         }
       }
     },
@@ -504,7 +504,7 @@
           "exceso_carga": 2,
           "nodos_explorados": 40,
           "nodos_podados": 0,
-          "tiempo_ms": 1.081
+          "tiempo_ms": 1.029
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -514,7 +514,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 663,
           "nodos_podados": 13,
-          "tiempo_ms": 39.98
+          "tiempo_ms": 34.925
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -524,7 +524,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 2510,
           "nodos_podados": 0,
-          "tiempo_ms": 26.997
+          "tiempo_ms": 25.526
         }
       }
     },
@@ -543,7 +543,7 @@
           "exceso_carga": 6,
           "nodos_explorados": 35,
           "nodos_podados": 0,
-          "tiempo_ms": 1.306
+          "tiempo_ms": 1.221
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -553,7 +553,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 3564,
           "nodos_podados": 490,
-          "tiempo_ms": 192.824
+          "tiempo_ms": 166.522
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -563,7 +563,7 @@
           "exceso_carga": 10,
           "nodos_explorados": 2507,
           "nodos_podados": 0,
-          "tiempo_ms": 21.992
+          "tiempo_ms": 20.279
         }
       }
     },
@@ -582,7 +582,7 @@
           "exceso_carga": 2,
           "nodos_explorados": 30,
           "nodos_podados": 0,
-          "tiempo_ms": 0.793
+          "tiempo_ms": 0.749
         },
         "branch_and_bound": {
           "factibles": 5,
@@ -592,7 +592,7 @@
           "exceso_carga": 0,
           "nodos_explorados": 416,
           "nodos_podados": 8,
-          "tiempo_ms": 23.003
+          "tiempo_ms": 23.617
         },
         "recocido_simulado": {
           "factibles": 5,
@@ -602,7 +602,7 @@
           "exceso_carga": 4,
           "nodos_explorados": 2506,
           "nodos_podados": 0,
-          "tiempo_ms": 21.099
+          "tiempo_ms": 21.314
         }
       }
     }
@@ -610,16 +610,16 @@
   "eficiencia_servicios": {
     "sso_hs256": {
       "iteraciones": 1000,
-      "us_por_emision_y_verificacion": 130.4
+      "us_por_emision_y_verificacion": 122.6
     },
     "mapa_calor": {
-      "tiempo_ms": 285.3,
+      "tiempo_ms": 340.7,
       "total_salas": 4,
       "total_edificios": 2,
       "total_registros": 4
     },
     "estres_malla": {
-      "tiempo_ms": 20.6,
+      "tiempo_ms": 40.4,
       "n_asignaturas": 10,
       "n_con_datos": 4,
       "n_criticas": 0,

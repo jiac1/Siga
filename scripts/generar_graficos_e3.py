@@ -18,21 +18,26 @@ sys.path.insert(0, str(RAIZ / "scripts" / "evaluacion"))
 
 import evaluar_suite  # noqa: E402
 
-NAVY = "#0F2043"
-BLUE = "#1E40AF"
-TEAL = "#0D9488"
-AMBER = "#D97706"
-CRIMSON = "#BE123C"
-SLATE = "#64748B"
-BG_PANEL = "#F8FAFC"
+INK = "#191B16"
+BRAND = "#1D6B55"
+TEAL = "#0C8599"
+BLUE = "#3F62E0"
+AMBER = "#D89B1E"
+CRIMSON = "#C73C2E"
+SLATE = "#8E9189"
+BG_PANEL = "#F6F6F2"
 
 plt.rcParams.update(
     {
         "font.family": "DejaVu Sans",
-        "axes.edgecolor": "#CBD5E1",
+        "axes.edgecolor": "#DEDED7",
         "axes.linewidth": 0.8,
         "axes.facecolor": "#FFFFFF",
         "figure.facecolor": "#FFFFFF",
+        "text.color": INK,
+        "axes.labelcolor": INK,
+        "xtick.color": INK,
+        "ytick.color": INK,
     }
 )
 
@@ -88,9 +93,9 @@ def _graficar_convalidacion(conv: dict, salida: Path) -> None:
 
     x = np.arange(len(etiquetas))
     w = 0.26
-    ax1.bar(x - w, p_vals, w, label="Precisión", color=TEAL, edgecolor=NAVY, lw=0.6)
-    ax1.bar(x, r_vals, w, label="Exhaustividad (Recall)", color=BLUE, edgecolor=NAVY, lw=0.6)
-    b_f1 = ax1.bar(x + w, f1_vals, w, label="F1-Score (con IC 95%)", color=NAVY, edgecolor=NAVY, lw=0.6)
+    ax1.bar(x - w, p_vals, w, label="Precisión", color=TEAL, edgecolor=INK, lw=0.6)
+    ax1.bar(x, r_vals, w, label="Exhaustividad (Recall)", color=BLUE, edgecolor=INK, lw=0.6)
+    b_f1 = ax1.bar(x + w, f1_vals, w, label="F1-Score (con IC 95%)", color=BRAND, edgecolor=INK, lw=0.6)
     ax1.axhline(0.90, color=CRIMSON, linestyle="--", linewidth=1.1, label="Compuerta CI (F1 ≥ 0,90)")
 
     # Barras de error IC95% Bootstrap para las 5 variantes principales
@@ -120,25 +125,25 @@ def _graficar_convalidacion(conv: dict, salida: Path) -> None:
             va="bottom",
             fontsize=7.3,
             fontweight="bold",
-            color=NAVY,
+            color=INK,
         )
 
     ax1.set_xticks(x)
-    ax1.set_xticklabels(etiquetas, fontsize=7.6, color=NAVY)
+    ax1.set_xticklabels(etiquetas, fontsize=7.6, color=INK)
     ax1.set_ylim(0, 1.16)
-    ax1.set_ylabel("Puntaje (0 – 1)", fontsize=9.0, color=NAVY)
+    ax1.set_ylabel("Puntaje (0 – 1)", fontsize=9.0, color=INK)
     ax1.set_title(
         "A. Comparativa Semántica, Ablación y Validación Cruzada (n = 112)",
         fontsize=10.1,
         fontweight="bold",
-        color=NAVY,
+        color=INK,
         pad=10,
     )
     ax1.grid(axis="y", linestyle="--", alpha=0.45)
     ax1.legend(loc="upper left", fontsize=7.6, frameon=True, facecolor=BG_PANEL)
 
     taus = [s["umbral_tau"] for s in sens]
-    ax2.plot(taus, [s["f1"] for s in sens], marker="o", lw=2.2, color=NAVY, label="F1 Híbrido (con conceptos)")
+    ax2.plot(taus, [s["f1"] for s in sens], marker="o", lw=2.2, color=BRAND, label="F1 Híbrido (con conceptos)")
     ax2.plot(taus, [s["precision"] for s in sens], marker="s", lw=1.6, color=TEAL, label="Precisión Híbrido")
     ax2.plot(taus, [s["exhaustividad"] for s in sens], marker="^", lw=1.6, color=BLUE, label="Exhaustividad Híbrido")
     ax2.plot(taus, [s["especificidad"] for s in sens], marker="d", lw=1.6, color=AMBER, label="Especificidad (TN rate)")
@@ -155,13 +160,13 @@ def _graficar_convalidacion(conv: dict, salida: Path) -> None:
 
     ax2.set_xlim(0.23, 0.62)
     ax2.set_ylim(0.25, 1.05)
-    ax2.set_xlabel("Umbral de decisión τ (score mínimo para convalidar)", fontsize=8.8, color=NAVY)
-    ax2.set_ylabel("Puntaje (0,25 – 1,00)", fontsize=9.0, color=NAVY)
+    ax2.set_xlabel("Umbral de decisión τ (score mínimo para convalidar)", fontsize=8.8, color=INK)
+    ax2.set_ylabel("Puntaje (0,25 – 1,00)", fontsize=9.0, color=INK)
     ax2.set_title(
         "B. Sensibilidad al Umbral τ y Estabilidad del Punto Operativo",
         fontsize=10.1,
         fontweight="bold",
-        color=NAVY,
+        color=INK,
         pad=10,
     )
     ax2.grid(True, linestyle="--", alpha=0.45)
@@ -171,7 +176,7 @@ def _graficar_convalidacion(conv: dict, salida: Path) -> None:
         "Evaluación Estadística del Motor de Convalidación: Alternativas Semánticas, Ablación, LOPO CV y Sensibilidad",
         fontsize=11.3,
         fontweight="bold",
-        color=NAVY,
+        color=INK,
         y=0.99,
     )
     plt.tight_layout()
@@ -195,7 +200,7 @@ def _graficar_curricular_analytics(ca: dict, salida: Path) -> None:
     colores = [CRIMSON if m["slug"] == "civil-informatica" else BLUE for m in mallas]
 
     y = np.arange(len(mallas))
-    bars = ax1.barh(y, c_vals, color=colores, edgecolor=NAVY, linewidth=0.6, height=0.65)
+    bars = ax1.barh(y, c_vals, color=colores, edgecolor=INK, linewidth=0.6, height=0.65)
     for bar, val in zip(bars, c_vals, strict=True):
         ax1.text(
             val + 14,
@@ -204,14 +209,14 @@ def _graficar_curricular_analytics(ca: dict, salida: Path) -> None:
             va="center",
             fontsize=8.3,
             fontweight="bold",
-            color=NAVY,
+            color=INK,
         )
 
     ax1.set_yticks(y)
-    ax1.set_yticklabels(nombres, fontsize=8.3, color=NAVY)
+    ax1.set_yticklabels(nombres, fontsize=8.3, color=INK)
     ax1.set_xlim(0, max(c_vals) * 1.15)
-    ax1.set_xlabel("Complejidad Estructural Total C(G) = Σ (b(v) + d(v))", fontsize=8.8, color=NAVY)
-    ax1.set_title("A. Complejidad Estructural de 10 Mallas UNAB", fontsize=10.3, fontweight="bold", color=NAVY, pad=10)
+    ax1.set_xlabel("Complejidad Estructural Total C(G) = Σ (b(v) + d(v))", fontsize=8.8, color=INK)
+    ax1.set_title("A. Complejidad Estructural de 10 Mallas UNAB", fontsize=10.3, fontweight="bold", color=INK, pad=10)
     ax1.grid(axis="x", linestyle="--", alpha=0.45)
 
     abrev = {
@@ -230,18 +235,18 @@ def _graficar_curricular_analytics(ca: dict, salida: Path) -> None:
     d_vals = np.array([r["factor_retraso"] for r in top8])
     y2 = np.arange(len(top8))
 
-    ax2.barh(y2, b_vals, color=NAVY, edgecolor=NAVY, lw=0.6, height=0.62, label="Factor de Bloqueo b(v)")
-    ax2.barh(y2, d_vals, left=b_vals, color=TEAL, edgecolor=NAVY, lw=0.6, height=0.62, label="Factor de Retraso d(v)")
+    ax2.barh(y2, b_vals, color=BRAND, edgecolor=INK, lw=0.6, height=0.62, label="Factor de Bloqueo b(v)")
+    ax2.barh(y2, d_vals, left=b_vals, color=TEAL, edgecolor=INK, lw=0.6, height=0.62, label="Factor de Retraso d(v)")
 
     for i, (bv, dv) in enumerate(zip(b_vals, d_vals, strict=True)):
-        ax2.text(bv + dv + 0.6, i, f"c={bv + dv}", va="center", fontsize=8.2, fontweight="bold", color=NAVY)
+        ax2.text(bv + dv + 0.6, i, f"c={bv + dv}", va="center", fontsize=8.2, fontweight="bold", color=INK)
 
     ax2.set_yticks(y2)
-    ax2.set_yticklabels(labels_t, fontsize=7.8, color=NAVY)
+    ax2.set_yticklabels(labels_t, fontsize=7.8, color=INK)
     ax2.set_xlim(0, max(b_vals + d_vals) + 6)
-    ax2.set_xlabel("Contribución a Complejidad Curricular c(v)", fontsize=8.8, color=NAVY)
+    ax2.set_xlabel("Contribución a Complejidad Curricular c(v)", fontsize=8.8, color=INK)
     ax2.set_title(
-        "B. Top-8 Cuellos de Botella · Ing. Civil Informática", fontsize=10.3, fontweight="bold", color=NAVY, pad=10
+        "B. Top-8 Cuellos de Botella · Ing. Civil Informática", fontsize=10.3, fontweight="bold", color=INK, pad=10
     )
     ax2.grid(axis="x", linestyle="--", alpha=0.45)
     ax2.legend(loc="lower right", fontsize=8, frameon=True, facecolor=BG_PANEL)
@@ -250,7 +255,7 @@ def _graficar_curricular_analytics(ca: dict, salida: Path) -> None:
         "Diagnóstico Curricular Analytics (DAG) en la Facultad de Ingeniería UNAB (0 Ciclos Detectados)",
         fontsize=11.6,
         fontweight="bold",
-        color=NAVY,
+        color=INK,
         y=0.99,
     )
     plt.tight_layout()
@@ -273,13 +278,13 @@ def _graficar_uctp(uctp: list[dict], salida: Path) -> None:
 
     algs = [
         ("aleatorio", "Línea base aleatoria", SLATE),
-        ("branch_and_bound", "Branch & Bound exacto", NAVY),
+        ("branch_and_bound", "Branch & Bound exacto", BRAND),
         ("recocido_simulado", "Recocido Simulado (SA)", TEAL),
     ]
 
     for idx, (clave, label, col) in enumerate(algs):
         vals = [inst["resultados"][clave]["penalizacion"] for inst in uctp]
-        bars = ax1.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=NAVY, lw=0.6)
+        bars = ax1.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=INK, lw=0.6)
         for bar, v in zip(bars, vals, strict=True):
             ax1.text(
                 bar.get_x() + bar.get_width() / 2,
@@ -289,20 +294,20 @@ def _graficar_uctp(uctp: list[dict], salida: Path) -> None:
                 va="bottom",
                 fontsize=7.8,
                 fontweight="bold",
-                color=NAVY,
+                color=INK,
             )
 
     ax1.set_xticks(x)
-    ax1.set_xticklabels(etiquetas, fontsize=8.3, color=NAVY)
-    ax1.set_ylabel("Penalización blanda f(x)  (menor es mejor)", fontsize=8.8, color=NAVY)
+    ax1.set_xticklabels(etiquetas, fontsize=8.3, color=INK)
+    ax1.set_ylabel("Penalización blanda f(x)  (menor es mejor)", fontsize=8.8, color=INK)
     ax1.set_ylim(0, 90)
-    ax1.set_title("A. Función Objetivo Compuesta f(x)", fontsize=10.3, fontweight="bold", color=NAVY, pad=10)
+    ax1.set_title("A. Función Objetivo Compuesta f(x)", fontsize=10.3, fontweight="bold", color=INK, pad=10)
     ax1.grid(axis="y", linestyle="--", alpha=0.45)
     ax1.legend(loc="upper right", fontsize=8, frameon=True, facecolor=BG_PANEL)
 
     for idx, (clave, label, col) in enumerate(algs):
         vals = [inst["resultados"][clave]["ventanas"] for inst in uctp]
-        bars = ax2.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=NAVY, lw=0.6)
+        bars = ax2.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=INK, lw=0.6)
         for bar, v in zip(bars, vals, strict=True):
             ax2.text(
                 bar.get_x() + bar.get_width() / 2,
@@ -312,14 +317,14 @@ def _graficar_uctp(uctp: list[dict], salida: Path) -> None:
                 va="bottom",
                 fontsize=8,
                 fontweight="bold",
-                color=NAVY,
+                color=INK,
             )
 
     ax2.set_xticks(x)
-    ax2.set_xticklabels(etiquetas, fontsize=8.3, color=NAVY)
-    ax2.set_ylabel("Ventanas horarias (módulos libres intermedios)", fontsize=8.8, color=NAVY)
+    ax2.set_xticklabels(etiquetas, fontsize=8.3, color=INK)
+    ax2.set_ylabel("Ventanas horarias (módulos libres intermedios)", fontsize=8.8, color=INK)
     ax2.set_ylim(0, 19)
-    ax2.set_title("B. Reducción de Ventanas Horarias (H1 = 0)", fontsize=10.3, fontweight="bold", color=NAVY, pad=10)
+    ax2.set_title("B. Reducción de Ventanas Horarias (H1 = 0)", fontsize=10.3, fontweight="bold", color=INK, pad=10)
     ax2.grid(axis="y", linestyle="--", alpha=0.45)
     ax2.legend(loc="upper right", fontsize=8, frameon=True, facecolor=BG_PANEL)
 
@@ -327,7 +332,7 @@ def _graficar_uctp(uctp: list[dict], salida: Path) -> None:
         "Benchmark del Motor Combinatorio UCTP: Línea Base vs. Branch-and-Bound vs. Simulated Annealing",
         fontsize=11.5,
         fontweight="bold",
-        color=NAVY,
+        color=INK,
         y=0.99,
     )
     plt.tight_layout()
@@ -351,7 +356,7 @@ def _graficar_itc2019(itc: list[dict], salida: Path) -> None:
     w = 0.26
     algs = [
         ("aleatorio", "Línea base aleatoria", SLATE),
-        ("branch_and_bound", "Branch & Bound exacto", NAVY),
+        ("branch_and_bound", "Branch & Bound exacto", BRAND),
         ("recocido_simulado", "Recocido Simulado (SA)", TEAL),
     ]
 
@@ -360,7 +365,7 @@ def _graficar_itc2019(itc: list[dict], salida: Path) -> None:
 
     for idx, (clave, label, col) in enumerate(algs):
         vals = [ds["resultados"][clave]["f_promedio"] or 0.0 for ds in itc]
-        bars = ax1.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=NAVY, lw=0.6)
+        bars = ax1.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=INK, lw=0.6)
         for bar, v in zip(bars, vals, strict=True):
             ax1.text(
                 bar.get_x() + bar.get_width() / 2,
@@ -370,20 +375,20 @@ def _graficar_itc2019(itc: list[dict], salida: Path) -> None:
                 va="bottom",
                 fontsize=7.8,
                 fontweight="bold",
-                color=NAVY,
+                color=INK,
             )
 
     ax1.set_xticks(x)
-    ax1.set_xticklabels(etiquetas, fontsize=8.3, color=NAVY)
-    ax1.set_ylabel("Penalización blanda promedio f(x)  (menor es mejor)", fontsize=8.8, color=NAVY)
+    ax1.set_xticklabels(etiquetas, fontsize=8.3, color=INK)
+    ax1.set_ylabel("Penalización blanda promedio f(x)  (menor es mejor)", fontsize=8.8, color=INK)
     ax1.set_ylim(0, max_f * 1.18)
-    ax1.set_title("A. Función Objetivo Compuesta f(x) · ITC-2019", fontsize=10.3, fontweight="bold", color=NAVY, pad=10)
+    ax1.set_title("A. Función Objetivo Compuesta f(x) · ITC-2019", fontsize=10.3, fontweight="bold", color=INK, pad=10)
     ax1.grid(axis="y", linestyle="--", alpha=0.45)
     ax1.legend(loc="upper left", fontsize=8, frameon=True, facecolor=BG_PANEL)
 
     for idx, (clave, label, col) in enumerate(algs):
         vals = [ds["resultados"][clave]["ventanas_promedio"] or 0.0 for ds in itc]
-        bars = ax2.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=NAVY, lw=0.6)
+        bars = ax2.bar(x + (idx - 1) * w, vals, w, label=label, color=col, edgecolor=INK, lw=0.6)
         for bar, v in zip(bars, vals, strict=True):
             ax2.text(
                 bar.get_x() + bar.get_width() / 2,
@@ -393,14 +398,14 @@ def _graficar_itc2019(itc: list[dict], salida: Path) -> None:
                 va="bottom",
                 fontsize=7.8,
                 fontweight="bold",
-                color=NAVY,
+                color=INK,
             )
 
     ax2.set_xticks(x)
-    ax2.set_xticklabels(etiquetas, fontsize=8.3, color=NAVY)
-    ax2.set_ylabel("Ventanas horarias promedio (H1 = 0)", fontsize=8.8, color=NAVY)
+    ax2.set_xticklabels(etiquetas, fontsize=8.3, color=INK)
+    ax2.set_ylabel("Ventanas horarias promedio (H1 = 0)", fontsize=8.8, color=INK)
     ax2.set_ylim(0, max_w * 1.18)
-    ax2.set_title("B. Reducción de Ventanas Horarias · ITC-2019", fontsize=10.3, fontweight="bold", color=NAVY, pad=10)
+    ax2.set_title("B. Reducción de Ventanas Horarias · ITC-2019", fontsize=10.3, fontweight="bold", color=INK, pad=10)
     ax2.grid(axis="y", linestyle="--", alpha=0.45)
     ax2.legend(loc="upper left", fontsize=8, frameon=True, facecolor=BG_PANEL)
 
@@ -408,7 +413,7 @@ def _graficar_itc2019(itc: list[dict], salida: Path) -> None:
         "Evaluación Externa UCTP sobre Benchmarks Estándar ITC-2019 (Perfiles Estudiantiles Reales)",
         fontsize=11.4,
         fontweight="bold",
-        color=NAVY,
+        color=INK,
         y=0.99,
     )
     plt.tight_layout()
