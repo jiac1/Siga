@@ -47,4 +47,12 @@ python scripts/evaluacion/evaluar_uctp.py
 python scripts/evaluacion/evaluar_itc2019.py --max-perfiles 30 --json docs/img/metricas_itc2019.json
 python scripts/evaluacion/evaluar_campus_itc2019.py --iteraciones 2500 --json docs/img/metricas_campus_itc2019.json
 python scripts/evaluacion/evaluar_suite.py
+
+# Generación de figuras, informe consolidado E1-E3, presentación y guión de defensa
+python scripts/render_diagrams.py
+python scripts/generar_gantt_matplotlib.py
+python scripts/generar_graficos_e3.py
+python scripts/generar_docx_formal.py
+python scripts/generar_ppt_defensa.py
+python scripts/generar_guion_docx.py
 ```

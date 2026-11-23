@@ -11,7 +11,7 @@ BASE_CSS = """
 body {
   background: #FFFFFF;
   font-family: 'Segoe UI', 'Calibri', Arial, sans-serif;
-  color: #0F2043;
+  color: #191B16;
   padding: 28px 32px;
   display: inline-block;
 }
@@ -23,33 +23,34 @@ body {
   text-align: center;
   font-size: 21px;
   font-weight: 800;
-  color: #0F2043;
+  color: #191B16;
   margin-bottom: 18px;
   letter-spacing: -0.2px;
 }
 .box {
   border-radius: 12px;
-  border: 2px solid #0F2043;
-  background: #F8FAFC;
+  border: 2px solid #DEDED7;
+  background: #F6F6F2;
   padding: 14px 18px;
-  box-shadow: 0 2px 8px rgba(15, 32, 67, 0.06);
+  box-shadow: 0 2px 8px rgba(25, 27, 22, 0.06);
 }
 .box-navy {
-  background: #0F2043;
+  background: #191B16;
   color: #FFFFFF;
-  border-color: #0F2043;
+  border-color: #191B16;
+  border-bottom: 4px solid #1D6B55;
 }
 .box-teal {
-  background: #ECFDF5;
-  border-color: #0D9488;
+  background: #ECFAFC;
+  border-color: #0C8599;
 }
 .box-blue {
-  background: #EFF6FF;
-  border-color: #1E40AF;
+  background: #E7F1EC;
+  border-color: #1D6B55;
 }
 .box-db {
-  background: #F1F5F9;
-  border-color: #334155;
+  background: #F4F4EF;
+  border-color: #5B5E56;
   border-radius: 26px / 12px;
 }
 .box h3 {
@@ -60,10 +61,10 @@ body {
 }
 .box p, .box li {
   font-size: 13.5px;
-  color: #334155;
+  color: #5B5E56;
   line-height: 1.4;
 }
-.box-navy p { color: #CBD5E1; }
+.box-navy p { color: #D6DBD5; }
 .badge {
   display: inline-block;
   font-size: 11px;
@@ -74,10 +75,10 @@ body {
   border-radius: 99px;
   margin-bottom: 7px;
 }
-.b-navy { background: #E2E8F0; color: #0F2043; }
-.b-blue { background: #DBEAFE; color: #1E40AF; }
-.b-teal { background: #CCFBF1; color: #0F766E; }
-.b-slate { background: #E2E8F0; color: #334155; }
+.b-navy { background: #EFEFEA; color: #191B16; }
+.b-blue { background: #D2E8DD; color: #154E3E; }
+.b-teal { background: #D4F1F6; color: #0A6C7D; }
+.b-slate { background: #EFEFEA; color: #5B5E56; }
 .arrow-down {
   display: flex;
   flex-direction: column;
@@ -87,9 +88,9 @@ body {
 .arrow-label {
   font-size: 12.5px;
   font-weight: 700;
-  color: #1E40AF;
-  background: #EFF6FF;
-  border: 1px solid #BFDBFE;
+  color: #154E3E;
+  background: #E7F1EC;
+  border: 1px solid #B7DEC9;
   padding: 2px 10px;
   border-radius: 99px;
   margin: 4px 0;
@@ -103,10 +104,10 @@ HTML_DSS_CICLO = f"""<!DOCTYPE html>
 .gw-box {{ width: 540px; text-align: center; }}
 .cols {{ display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 4px; }}
 .panel {{
-  border: 2px dashed #64748B;
+  border: 2px dashed #8E9189;
   border-radius: 14px;
   padding: 16px 18px;
-  background: #F8FAFC;
+  background: #F6F6F2;
 }}
 .panel-h {{
   font-size: 15px;
@@ -119,24 +120,24 @@ HTML_DSS_CICLO = f"""<!DOCTYPE html>
 .stack {{ display: flex; flex-direction: column; gap: 10px; }}
 .mod-card {{
   background: #FFFFFF;
-  border: 1.5px solid #CBD5E1;
-  border-left: 5px solid #1E40AF;
+  border: 1.5px solid #DEDED7;
+  border-left: 5px solid #1D6B55;
   border-radius: 10px;
   padding: 11px 14px;
 }}
-.panel-oferta .mod-card {{ border-left-color: #0D9488; }}
-.mod-card b {{ display: block; font-size: 15px; color: #0F2043; margin-bottom: 3px; }}
-.mod-card span {{ font-size: 13px; color: #475569; line-height: 1.35; display: block; }}
+.panel-oferta .mod-card {{ border-left-color: #0C8599; }}
+.mod-card b {{ display: block; font-size: 15px; color: #191B16; margin-bottom: 3px; }}
+.mod-card span {{ font-size: 13px; color: #5B5E56; line-height: 1.35; display: block; }}
 .feedback {{
   margin-top: 16px;
-  border: 2px solid #0D9488;
-  background: #F0FDFA;
+  border: 2px solid #1D6B55;
+  background: #E7F1EC;
   border-radius: 12px;
   padding: 12px 20px;
   text-align: center;
   font-size: 14.5px;
   font-weight: 700;
-  color: #0F766E;
+  color: #154E3E;
 }}
 </style></head><body>
 <div class="canvas" id="diagram">
@@ -149,17 +150,17 @@ HTML_DSS_CICLO = f"""<!DOCTYPE html>
   </div>
   <div class="arrow-down">
     <svg width="620" height="36" viewBox="0 0 620 36">
-      <line x1="310" y1="0" x2="310" y2="14" stroke="#334155" stroke-width="2.5"/>
-      <line x1="150" y1="14" x2="470" y2="14" stroke="#334155" stroke-width="2.5"/>
-      <line x1="150" y1="14" x2="150" y2="30" stroke="#1E40AF" stroke-width="2.5"/>
-      <polygon points="144,26 156,26 150,35" fill="#1E40AF"/>
-      <line x1="470" y1="14" x2="470" y2="30" stroke="#0D9488" stroke-width="2.5"/>
-      <polygon points="464,26 476,26 470,35" fill="#0D9488"/>
+      <line x1="310" y1="0" x2="310" y2="14" stroke="#5B5E56" stroke-width="2.5"/>
+      <line x1="150" y1="14" x2="470" y2="14" stroke="#5B5E56" stroke-width="2.5"/>
+      <line x1="150" y1="14" x2="150" y2="30" stroke="#1D6B55" stroke-width="2.5"/>
+      <polygon points="144,26 156,26 150,35" fill="#1D6B55"/>
+      <line x1="470" y1="14" x2="470" y2="30" stroke="#0C8599" stroke-width="2.5"/>
+      <polygon points="464,26 476,26 470,35" fill="#0C8599"/>
     </svg>
   </div>
   <div class="cols">
     <div class="panel">
-      <div class="panel-h" style="color:#1E40AF">Gestión Curricular · Demanda Pedagógica</div>
+      <div class="panel-h" style="color:#1D6B55">Gestión Curricular · Demanda Pedagógica</div>
       <div class="stack">
         <div class="mod-card">
           <b>1. Malla Interactiva (DAG)</b>
@@ -176,7 +177,7 @@ HTML_DSS_CICLO = f"""<!DOCTYPE html>
       </div>
     </div>
     <div class="panel panel-oferta">
-      <div class="panel-h" style="color:#0F766E">Gestión de Capacidad · Oferta Operativa</div>
+      <div class="panel-h" style="color:#0C8599">Gestión de Capacidad · Oferta Operativa</div>
       <div class="stack">
         <div class="mod-card">
           <b>4. Mapa de Calor de Salas</b>
@@ -188,7 +189,7 @@ HTML_DSS_CICLO = f"""<!DOCTYPE html>
           <span>Branch &amp; Bound admisible + Recocido Simulado: cero topes (H1), auditoría
           salas/docentes (H2/H3) y minimización de ventanas.</span>
         </div>
-        <div class="mod-card" style="border-left-color:#334155;background:#F1F5F9;">
+        <div class="mod-card" style="border-left-color:#5B5E56;background:#F4F4EF;">
           <b>6. Vacantes Efectivas sin Tope</b>
           <span>Verificación combinatoria de cupos reales compatibles con el resto de la carga semestral.</span>
         </div>
@@ -206,7 +207,7 @@ HTML_C4_CONTENEDORES = f"""<!DOCTYPE html>
 {BASE_CSS}
 .actor-wrap {{ display: flex; justify-content: center; }}
 .actor {{
-  background: #0F2043; color: #FFF; padding: 11px 28px; border-radius: 99px;
+  background: #191B16; color: #FFF; padding: 11px 28px; border-radius: 99px;
   font-size: 15.5px; font-weight: 700; text-align: center;
 }}
 .gw {{ width: 720px; margin: 0 auto; text-align: center; }}
@@ -215,13 +216,14 @@ HTML_C4_CONTENEDORES = f"""<!DOCTYPE html>
 .svc {{ min-height: 155px; display: flex; flex-direction: column; justify-content: space-between; }}
 .route {{
   font-family: Consolas, monospace; font-size: 13px; font-weight: 700;
-  color: #1E40AF; background: #DBEAFE; padding: 3px 8px; border-radius: 6px;
+  color: #154E3E; background: #D2E8DD; padding: 3px 8px; border-radius: 6px;
   display: inline-block; margin-bottom: 6px;
 }}
+.box-teal .route {{ color: #0A6C7D; background: #D4F1F6; }}
 .db-card {{ text-align: center; display: flex; flex-direction: column; justify-content: center; }}
-.sso-box {{ border: 2px solid #0D9488; background: #F0FDFA; border-radius: 12px; padding: 12px 16px; }}
-.sso-box h3 {{ font-size: 15.5px; font-weight: 800; color: #0F766E; margin-bottom: 4px; }}
-.sso-box p {{ font-size: 13px; color: #1E293B; line-height: 1.4; }}
+.sso-box {{ border: 2px solid #0C8599; background: #ECFAFC; border-radius: 12px; padding: 12px 16px; }}
+.sso-box h3 {{ font-size: 15.5px; font-weight: 800; color: #0A6C7D; margin-bottom: 4px; }}
+.sso-box p {{ font-size: 13px; color: #191B16; line-height: 1.4; }}
 </style></head><body>
 <div class="canvas" id="diagram">
   <div class="title">Modelo C4 · Diagrama de Contenedores de SIGA-DSS</div>
@@ -231,8 +233,8 @@ HTML_C4_CONTENEDORES = f"""<!DOCTYPE html>
   <div class="arrow-down">
     <span class="arrow-label">HTTP :8080 (Docker Local) · HTTPS :443 (CloudFront + WAF)</span>
     <svg width="24" height="22" viewBox="0 0 24 22">
-      <line x1="12" y1="0" x2="12" y2="14" stroke="#0F2043" stroke-width="2.5"/>
-      <polygon points="6,12 18,12 12,21" fill="#0F2043"/>
+      <line x1="12" y1="0" x2="12" y2="14" stroke="#191B16" stroke-width="2.5"/>
+      <polygon points="6,12 18,12 12,21" fill="#191B16"/>
     </svg>
   </div>
   <div class="box box-navy gw">
@@ -241,16 +243,16 @@ HTML_C4_CONTENEDORES = f"""<!DOCTYPE html>
   </div>
   <div class="arrow-down">
     <svg width="920" height="32" viewBox="0 0 920 32">
-      <line x1="460" y1="0" x2="460" y2="12" stroke="#334155" stroke-width="2.5"/>
-      <line x1="115" y1="12" x2="805" y2="12" stroke="#334155" stroke-width="2.5"/>
-      <line x1="115" y1="12" x2="115" y2="25" stroke="#1E40AF" stroke-width="2.5"/>
-      <polygon points="109,22 121,22 115,31" fill="#1E40AF"/>
-      <line x1="345" y1="12" x2="345" y2="25" stroke="#1E40AF" stroke-width="2.5"/>
-      <polygon points="339,22 351,22 345,31" fill="#1E40AF"/>
-      <line x1="575" y1="12" x2="575" y2="25" stroke="#1E40AF" stroke-width="2.5"/>
-      <polygon points="569,22 581,22 575,31" fill="#1E40AF"/>
-      <line x1="805" y1="12" x2="805" y2="25" stroke="#1E40AF" stroke-width="2.5"/>
-      <polygon points="799,22 811,22 805,31" fill="#1E40AF"/>
+      <line x1="460" y1="0" x2="460" y2="12" stroke="#5B5E56" stroke-width="2.5"/>
+      <line x1="115" y1="12" x2="805" y2="12" stroke="#5B5E56" stroke-width="2.5"/>
+      <line x1="115" y1="12" x2="115" y2="25" stroke="#1D6B55" stroke-width="2.5"/>
+      <polygon points="109,22 121,22 115,31" fill="#1D6B55"/>
+      <line x1="345" y1="12" x2="345" y2="25" stroke="#1D6B55" stroke-width="2.5"/>
+      <polygon points="339,22 351,22 345,31" fill="#1D6B55"/>
+      <line x1="575" y1="12" x2="575" y2="25" stroke="#1D6B55" stroke-width="2.5"/>
+      <polygon points="569,22 581,22 575,31" fill="#1D6B55"/>
+      <line x1="805" y1="12" x2="805" y2="25" stroke="#0C8599" stroke-width="2.5"/>
+      <polygon points="799,22 811,22 805,31" fill="#0C8599"/>
     </svg>
   </div>
   <div class="grid4">
@@ -329,10 +331,10 @@ HTML_PIPELINE_ETL = f"""<!DOCTYPE html>
   flex-direction: column;
   justify-content: center;
 }}
-.step h3 {{ font-size: 16px; color: #0F2043; margin-bottom: 5px; }}
-.step p {{ font-size: 13.5px; color: #334155; }}
+.step h3 {{ font-size: 16px; color: #191B16; margin-bottom: 5px; }}
+.step p {{ font-size: 13.5px; color: #5B5E56; }}
 .h-arrow {{ display: flex; flex-direction: column; align-items: center; justify-content: center; }}
-.h-arrow span {{ font-size: 11px; font-weight: 700; color: #1E40AF; margin-bottom: 3px; text-align: center; }}
+.h-arrow span {{ font-size: 11px; font-weight: 700; color: #1D6B55; margin-bottom: 3px; text-align: center; }}
 .turn-connector {{
   display: flex;
   justify-content: center;
@@ -353,8 +355,8 @@ HTML_PIPELINE_ETL = f"""<!DOCTYPE html>
     <div class="h-arrow">
       <span>Parsing</span>
       <svg width="36" height="18" viewBox="0 0 36 18">
-        <line x1="0" y1="9" x2="26" y2="9" stroke="#1E40AF" stroke-width="2.5"/>
-        <polygon points="24,4 35,9 24,14" fill="#1E40AF"/>
+        <line x1="0" y1="9" x2="26" y2="9" stroke="#1D6B55" stroke-width="2.5"/>
+        <polygon points="24,4 35,9 24,14" fill="#1D6B55"/>
       </svg>
     </div>
     <div class="box box-blue step">
@@ -366,8 +368,8 @@ HTML_PIPELINE_ETL = f"""<!DOCTYPE html>
     <div class="h-arrow">
       <span>Esquema</span>
       <svg width="36" height="18" viewBox="0 0 36 18">
-        <line x1="0" y1="9" x2="26" y2="9" stroke="#1E40AF" stroke-width="2.5"/>
-        <polygon points="24,4 35,9 24,14" fill="#1E40AF"/>
+        <line x1="0" y1="9" x2="26" y2="9" stroke="#1D6B55" stroke-width="2.5"/>
+        <polygon points="24,4 35,9 24,14" fill="#1D6B55"/>
       </svg>
     </div>
     <div class="box box-blue step">
@@ -379,10 +381,10 @@ HTML_PIPELINE_ETL = f"""<!DOCTYPE html>
 
   <div class="turn-connector">
     <svg width="26" height="28" viewBox="0 0 26 28">
-      <line x1="13" y1="0" x2="13" y2="18" stroke="#0D9488" stroke-width="2.8"/>
-      <polygon points="6,16 20,16 13,27" fill="#0D9488"/>
+      <line x1="13" y1="0" x2="13" y2="18" stroke="#0C8599" stroke-width="2.8"/>
+      <polygon points="6,16 20,16 13,27" fill="#0C8599"/>
     </svg>
-    <span class="arrow-label" style="color:#0F766E;background:#CCFBF1;border-color:#99F6E4;">
+    <span class="arrow-label" style="color:#0A6C7D;background:#ECFAFC;border-color:#A5E4EE;">
       Validación Topológica DAG (0 Ciclos) e Ingesta Idempotente (cargar_catalogo)
     </span>
   </div>
@@ -395,10 +397,10 @@ HTML_PIPELINE_ETL = f"""<!DOCTYPE html>
       y copias estáticas versionadas en el portal.</p>
     </div>
     <div class="h-arrow">
-      <span>Consumo</span>
+      <span style="color:#0C8599">Consumo</span>
       <svg width="36" height="18" viewBox="0 0 36 18">
-        <line x1="0" y1="9" x2="26" y2="9" stroke="#0D9488" stroke-width="2.5"/>
-        <polygon points="24,4 35,9 24,14" fill="#0D9488"/>
+        <line x1="0" y1="9" x2="26" y2="9" stroke="#0C8599" stroke-width="2.5"/>
+        <polygon points="24,4 35,9 24,14" fill="#0C8599"/>
       </svg>
     </div>
     <div class="box box-teal step">

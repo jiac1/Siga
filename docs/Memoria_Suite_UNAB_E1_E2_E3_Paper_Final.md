@@ -92,6 +92,8 @@ El *University Course Timetabling Problem* (UCTP) constituye un problema clásic
 ### 2.5. Modelo de Suite Modular y Comparativa con Soluciones Existentes
 Adoptando el paradigma de modularidad de *Adobe Creative Suite/Cloud*, cada aplicación conserva valor autónomo (operable en modo *standalone* o integrado) mientras comparte autenticación, diseño visual, catálogos y licenciamiento por institución. La Tabla 1 contrasta SIGA-DSS frente a los paradigmas existentes.
 
+**Tabla 1:** Comparativa de SIGA-DSS frente a los paradigmas existentes de gestión académica.
+
 | Paradigma | Ejemplos | Fortalezas | Limitaciones frente al enfoque SIGA-DSS |
 | :--- | :--- | :--- | :--- |
 | **ERP Institucionales** | Banner (Ellucian), PeopleSoft, SAP | Registro oficial de notas, matrícula y actas consolidadas. | Interfaces rígidas, nula simulación *what-if*, sin *Curricular Analytics* ni optimización de ventanas UCTP. |
@@ -129,7 +131,7 @@ Todos los experimentos se ejecutan sobre artefactos versionados dentro del repos
    * **Línea base (*baseline*):** Motor original de recuperación solo por similitud de contenidos textuales sobre nombres cortos ($F_1 = 0,029$, $R = 0,014$).
 6. **Benchmark Combinatorio UCTP (Instancias UNAB + Estándar Internacional ITC-2019):**
    * *Suite sintética UNAB:* 4 instancias deterministas representativas de programación académica UNAB (módulos M1–M14, actividades `TEO`+`LAB`, espacios entre **256 y 202.500 combinaciones**, incluyendo instancia con colisiones inyectadas de sala $H_2$ y docente $H_3$), más validación E2E en navegador sobre `horarios_prueba.xlsx` y `malla_horarios_prueba.xlsx`.
-   * *Benchmarks externos ITC-2019:* 3 instancias reales oficiales de la *International Timetabling Competition 2019* (`data/benchmarks/itc2019/`, obtenidas del repositorio oficial UniTime/DTU): **Masaryk Univ. Informática** (`muni-fi-spr16`: 228 cursos, 574 clases, 35 salas, 1.543 estudiantes), **Masaryk Univ. Cs. del Deporte** (`muni-fsps-spr17`: 226 cursos, 519 clases, 44 salas, 865 estudiantes) y **Yachay Tech Pregrado** (`yach-fal17`: 91 cursos, 415 clases, 33 salas, 821 estudiantes), evaluando perfiles reales de 3 a 8 asignaturas inscritos por estudiantes reales.
+   * *Benchmarks externos ITC-2019:* 3 instancias reales oficiales de la *International Timetabling Competition 2019* (Müller et al., 2025; `data/benchmarks/itc2019/`, obtenidas del repositorio oficial UniTime/DTU): **Masaryk Univ. Informática** (`muni-fi-spr16`: 228 cursos, 574 clases, 35 salas, 1.543 estudiantes), **Masaryk Univ. Cs. del Deporte** (`muni-fsps-spr17`: 226 cursos, 519 clases, 44 salas, 865 estudiantes) y **Yachay Tech Pregrado** (`yach-fal17`: 91 cursos, 415 clases, 33 salas, 821 estudiantes), evaluando perfiles reales de 3 a 8 asignaturas inscritos por estudiantes reales.
    * **Línea base (*baseline*):** Backtracking MRV con selección aleatoria de secciones sin función de penalización de ventanas.
 
 ### 3.3. Métricas, Criterios de Aceptación y Protocolo SUS Diseñado
@@ -179,7 +181,7 @@ El esquema relacional implementado en el código fuente se organiza por dominio 
 ### 4.4. Formulación Algorítmica Implementada
 
 #### 4.4.1. Grafos Curriculares (DAG) y *Curricular Analytics* (`estres-malla/malla/engine.py`, `test_mallas_dag.py`)
-Cada malla se formaliza como $G = (V, E)$, donde $(u, v) \in E$ indica que $u$ es prerrequisito de $v$. La aciclicidad ($Cycle(G) = \emptyset$) se certifica en $\mathcal{O}(|V| + |E|)$ mediante orden topológico de Kahn y DFS de tres estados. Sobre el orden topológico se computan exactamente las métricas de Heileman et al. (2018):
+Cada malla se formaliza como $G = (V, E)$, donde $(u, v) \in E$ indica que $u$ es prerrequisito de $v$. La aciclicidad ($Cycle(G) = \emptyset$) se certifica en $\mathcal{O}(|V| + |E|)$ mediante orden topológico de Kahn y DFS de tres estados (Cormen et al., 2022). Sobre el orden topológico se computan exactamente las métricas de Heileman et al. (2018):
 
 $$b(v) = |\{w \in V \mid \exists\text{ camino dirigido } v \rightsquigarrow w\}|$$
 
@@ -194,7 +196,7 @@ permitiendo priorizar asignaturas que simultáneamente bloquean la malla y prese
 #### 4.4.2. Motor Híbrido de Convalidaciones (`services/core/convalidaciones/motor.py`)
 Implementado con paridad exacta entre servidor y cliente, el motor unifica dos modos operativos y una capa de precedentes institucionales:
 
-1. **Similitud sobre Contenidos (TF-IDF Global + Cobertura de Términos Clave):** Cada asignatura destino UNAB pondera su nombre $3\times$ junto a sus contenidos tras normalización, eliminación de *stop-words* curriculares y *stemming* conservador de plurales del español. Sobre el IDF global del catálogo UNAB se computa el coseno TF-IDF ($\cos$) y la cobertura ($\text{cov}$) de los 12 términos más discriminantes ($\text{IDF} \ge \text{mediana}$):
+1. **Similitud sobre Contenidos (TF-IDF Global + Cobertura de Términos Clave):** Cada asignatura destino UNAB pondera su nombre $3\times$ junto a sus contenidos tras normalización, eliminación de *stop-words* curriculares y *stemming* conservador de plurales del español. Sobre el IDF global del catálogo UNAB se computa el coseno TF-IDF ($\cos$) (Manning et al., 2008) y la cobertura ($\text{cov}$) de los 12 términos más discriminantes ($\text{IDF} \ge \text{mediana}$):
    $$S_{\text{cont}}(q, a) = \text{cov}(q, a) + \bigl(1 - \text{cov}(q, a)\bigr) \cdot \cos(\vec{v}_q, \vec{v}_a)$$
 2. **Alineación Semántica y Léxica por Nombre (Modo Catálogo):** Cuando el postulante selecciona asignaturas desde el catálogo nacional sin adjuntar syllabus PDF, el motor combina el diccionario curado de 50 conceptos (`conceptos.json`), la similitud de **coeficiente de Dice ponderado por IDF** ($S_{\text{Dice}}$) y la señal de contenido ($S_{\text{cont}}$):
    $$S_{\text{concepto}} = \begin{cases} 0,90 + 0,10 \cdot S_{\text{Dice}} & \text{si } \mathcal{C}(q) \cap \mathcal{C}(a) \neq \emptyset \\ 0 & \text{en otro caso} \end{cases}, \qquad S_{\text{texto}} = 0,70 \cdot S_{\text{Dice}} + 0,30 \cdot S_{\text{cont}}$$
@@ -227,7 +229,9 @@ Todos los resultados de esta sección fueron ejecutados y verificados directamen
 
 ### 5.1. Evaluación del Motor de Convalidación Asistido por IA
 
-Dado que el *Gold Standard* comprende **112 asignaturas** (69 positivos, 43 negativos) en tres pares universitarios de ingeniería y ciencias básicas, la evaluación mediante `scripts/evaluacion/evaluar_motor.py` incorpora: (1) comparación contra dos alternativas semánticas sin diccionario manual (*Latent Semantic Analysis* / Truncated SVD $k=32$ y *Character $n$-gram* TF-IDF de 3 a 5 gramas); (2) ablación del diccionario de conceptos (`0 conceptos`); (3) **intervalos de confianza Bootstrap no paramétricos al 95%** ($B=2.000$ réplicas); (4) **separación estricta entre calibración y evaluación** mediante validación cruzada *5-Fold Stratified* y *Leave-One-University-Pair-Out* (LOPO, tanto con glosario completo como podando cualquier concepto exclusivo del par de prueba); y (5) análisis de sensibilidad frente al umbral de decisión $\tau \in [0,25; 0,60]$.
+Dado que el *Gold Standard* comprende **112 asignaturas** (69 positivos, 43 negativos) en tres pares universitarios de ingeniería y ciencias básicas, la Tabla 2 resume la evaluación mediante `scripts/evaluacion/evaluar_motor.py`, que incorpora: (1) comparación contra dos alternativas semánticas sin diccionario manual (*Latent Semantic Analysis* / Truncated SVD $k=32$ y *Character $n$-gram* TF-IDF de 3 a 5 gramas); (2) ablación del diccionario de conceptos (`0 conceptos`); (3) **intervalos de confianza Bootstrap no paramétricos al 95%** ($B=2.000$ réplicas); (4) **separación estricta entre calibración y evaluación** mediante validación cruzada *5-Fold Stratified* y *Leave-One-University-Pair-Out* (LOPO, tanto con glosario completo como podando cualquier concepto exclusivo del par de prueba); y (5) análisis de sensibilidad frente al umbral de decisión $\tau \in [0,25; 0,60]$.
+
+**Tabla 2:** Evaluación estadística y ablación del motor de convalidación sobre el Gold Standard ($n=112$).
 
 | Escenario / Variante Evaluada | Umbral $\tau$ | $n$ (Pos/Neg) | TP / FP | Precisión | Exhaustividad | **$F_1$-Score ($\text{IC}_{95\%}$)** | Especif. | Top-3 |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -243,6 +247,8 @@ Dado que el *Gold Standard* comprende **112 asignaturas** (69 positivos, 43 nega
 | ↳ Par 2: UCHILE Civil Comp $\rightarrow$ UNAB Civil Inf | 0,45 | 32 (17/15) | 17 / 1 | 0,944 | 1,000 | **0,971** (LOPO podado: **0,971**) | 0,933 | 1,000 |
 | ↳ Par 3: USACH Civil Ind $\rightarrow$ UNAB Civil Ind | 0,45 | 42 (27/15) | 25 / 1 | 0,962 | 0,926 | **0,943** (LOPO podado: **0,920**) | 0,933 | 1,000 |
 
+**Nota:** En las líneas base alternativas sin diccionario (LSA/SVD y Char n-gram), el umbral marcado con asterisco corresponde al valor óptimo $\tau_{\text{cal}}$ calibrado por búsqueda en grilla ($\tau \in [0,18; 0,66]$) maximizando $F_1$ (desempatando por especificidad), dado que sus escalas de similitud difieren del umbral operativo fijo $\tau = 0,45$ del motor híbrido.
+
 ![Evaluación Estadística del Motor de Convalidación sobre Gold Standard](docs/img/fig_eval_convalidacion.png)
 
 * **Descomposición del Desempeño y Comparación con Alternativas Semánticas:** En consultas de catálogo compuestas únicamente por el título corto de la asignatura de origen (2 a 5 palabras), los modelos vectoriales densos sin supervisión (`LSA/SVD k=32`, $F_1=0,429$) sufren alta tasa de falsos positivos (especificidad $0,093$) al proyectar ramos distintos de una misma área (p. ej., *Cálculo I* vs. *Cálculo II* o *Física General* vs. *Física Moderna*) hacia el mismo subespacio latente, mientras que `Char n-gram TF-IDF` ($F_1=0,455$) captura raíces morfológicas pero falla ante sinónimos curriculares (*Intro. a la Programación* vs. *Fundamentos de Computación*). La ablación demuestra que el **núcleo léxico Dice-IDF con penalización explícita de nivel romano/arábigo aporta la mayor ganancia estructural** ($\Delta F_1 = +0,745$, llegando a **$F_1 = 0,774$** y **$\text{Top-3} = 0,986$** sin usar un solo concepto manual), mientras que el diccionario curado de 50 conceptos aporta el salto complementario ($\Delta F_1 = +0,183$, hasta **$0,957$**) al resolver equivalencias terminológicas propias del dominio.
@@ -256,6 +262,8 @@ Dado que el *Gold Standard* comprende **112 asignaturas** (69 positivos, 43 nega
 ### 5.2. Evaluación de *Curricular Analytics* (DAG) sobre las 10 Mallas Oficiales UNAB
 
 La Tabla 3 reporta las métricas estructurales reales obtenidas en **16,1 ms** sobre las 10 mallas de la Facultad de Ingeniería UNAB (`services/portal/shared/mallas/*.json`).
+
+**Tabla 3:** Métricas estructurales de Curricular Analytics (DAG) en las 10 mallas oficiales de Ingeniería UNAB.
 
 | Carrera (Facultad de Ingeniería UNAB) | $\|V\|$ Ramos | $\|E\|$ Aristas | Períodos | Ciclos | Complejidad $C(G)$ | $c_{\text{prom}}$ | Ramo más Crítico ($b / d / c$) |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
@@ -281,6 +289,8 @@ En el caso focal de **Ingeniería Civil Informática (Plan 12210)**, el análisi
 
 La Tabla 4 reporta el benchmark reproducible ejecutado mediante `scripts/evaluacion/evaluar_uctp.py` comparando la línea base aleatoria contra *Branch-and-Bound* y *Simulated Annealing* en cuatro instancias escaladas.
 
+**Tabla 4:** Benchmark del motor combinatorio UCTP en instancias representativas UNAB.
+
 | Instancia (Espacio Combinatorio) | Algoritmo | Factibles ($H_1=0$) | $f(x)$ | $\Delta f(x)$ vs. Base | Ventanas ($W$) | Días ($D$) | Exc. Carga | Nodos (Podados) | Tiempo (ms) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Pequeña** (4 ramos TEO · 256) | Aleatorio (base) | 5/5 | 37,0 | — | 6 | 5 | 0 | 25 (0) | 0,56 |
@@ -303,7 +313,9 @@ La Tabla 4 reporta el benchmark reproducible ejecutado mediante `scripts/evaluac
 
 #### 5.3.2. Validación Externa sobre Benchmarks Estándar ITC-2019
 
-Para verificar la capacidad de generalización más allá de instancias sintéticas propias, se evaluaron los tres algoritmos mediante `scripts/evaluacion/evaluar_itc2019.py` sobre **80 perfiles estudiantiles reales** (3 a 8 cursos) extraídos de tres datasets oficiales de la *International Timetabling Competition 2019* (`muni-fi-spr16`, `muni-fsps-spr17` y `yach-fal17`), mapeando los bloques de 5 minutos y hasta tres candidatos temporales de menor penalización por clase al dominio modular de SIGA-DSS.
+Para verificar la capacidad de generalización más allá de instancias sintéticas propias, la Tabla 5 reporta la evaluación de los tres algoritmos mediante `scripts/evaluacion/evaluar_itc2019.py` sobre **80 perfiles estudiantiles reales** (3 a 8 cursos) extraídos de tres datasets oficiales de la *International Timetabling Competition 2019* (Müller et al., 2025; `muni-fi-spr16`, `muni-fsps-spr17` y `yach-fal17`), mapeando los bloques de 5 minutos y hasta tres candidatos temporales de menor penalización por clase al dominio modular de SIGA-DSS.
+
+**Tabla 5:** Validación externa del motor UCTP sobre 80 perfiles estudiantiles reales de benchmarks ITC-2019.
 
 | Dataset ITC-2019 (Cursos · Clases · Perfiles) | Algoritmo | Factibles ($H_1=0$) | $f(x)$ Prom. | $\Delta f(x)$ vs. Base | Ventanas Prom. | $\Delta W$ vs. Base | Tiempo Prom. (ms) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -319,7 +331,7 @@ Para verificar la capacidad de generalización más allá de instancias sintéti
 
 ![Evaluación Externa UCTP sobre Benchmarks Estándar ITC-2019](docs/img/fig_benchmark_itc2019.png)
 
-Para interpretar con rigor metodológico la Tabla de ITC-2019, es indispensable distinguir **tres dimensiones ortogonales** del experimento:
+Para interpretar con rigor metodológico la Tabla 5, es indispensable distinguir **tres dimensiones ortogonales** del experimento:
 
 1. **Tasa de Factibilidad Estructural del Perfil (`% Factibles`, $H_1=0$) vs. Optimización de $f(x)$:** Una reducción en la penalización blanda $f(x)$ mide la mejora de calidad **dentro de los perfiles que admiten horario libre de topes**, pero no incrementa por sí misma la proporción de perfiles factibles. Las tasas de factibilidad observadas —**30,0%** en `muni-fi-spr16` (`9/30`), **35,0%** en `muni-fsps-spr17` (`7/20`) y **10,0%** en `yach-fal17` (`3/30`)— están determinadas por la rigidez intrínseca de las demandas reales de los estudiantes al discretizar bloques continuos de 5 minutos (con hasta tres candidatos temporales por clase) a la grilla fija de 20 módulos de SIGA-DSS. Por ello, la línea base aleatoria y *Recocido Simulado* hallan solución exactamente para los mismos perfiles factibles (`9/30`, `7/20` y `3/30`). En `muni-fi-spr16`, *Branch-and-Bound* resuelve **8/30 (26,7%)** debido al truncamiento preventivo en `max_nodos = 20.000` sobre un noveno perfil de alta ramificación.
 2. **Calidad de las Soluciones Factibles (Comparación Pareada Estricta vs. Subconjunto Completo):**
@@ -329,7 +341,9 @@ Para interpretar con rigor metodológico la Tabla de ITC-2019, es indispensable 
 
 #### 5.3.3. Extensión Experimental: Planificación Global de Campus (*Master Timetabling*) sobre ITC-2019
 
-Mientras que el solver de la Subsección 5.3.1–5.3.2 opera en **tiempo real (< 1 s)** para que un estudiante arme su horario sobre una oferta ya publicada, `services/core/horarios/campus.py` y los endpoints asíncronos `/core/api/v1/horarios/campus/planificar` + `trabajos/<uuid>` (`TrabajoPlanificacionCampus`) implementan un **planificador global experimental de unidad académica** con presupuesto configurable de hasta **300 segundos** y **notificación automática por correo** al término. La evaluación mediante `scripts/evaluacion/evaluar_campus_itc2019.py` sobre los tres campus ITC-2019 (garantizando $H_2=0$, capacidad física respetada y restricciones binarias duras `NotOverlap` / `SameAttendees`) muestra mejoras consistentes frente a la asignación constructiva aleatoria:
+Mientras que el solver de la Subsección 5.3.1–5.3.2 opera en **tiempo real (< 1 s)** para que un estudiante arme su horario sobre una oferta ya publicada, `services/core/horarios/campus.py` y los endpoints asíncronos `/core/api/v1/horarios/campus/planificar` + `trabajos/<uuid>` (`TrabajoPlanificacionCampus`) implementan un **planificador global experimental de unidad académica** con presupuesto configurable de hasta **300 segundos** y **notificación automática por correo** al término. La evaluación mediante `scripts/evaluacion/evaluar_campus_itc2019.py` sobre los tres campus ITC-2019 (garantizando $H_2=0$, capacidad física respetada y restricciones binarias duras `NotOverlap` / `SameAttendees`) muestra mejoras consistentes frente a la asignación constructiva aleatoria (Tabla 6):
+
+**Tabla 6:** Evaluación del planificador global experimental de campus sobre instancias ITC-2019.
 
 | Campus ITC-2019 (Clases · Salas · Estudiantes) | Algoritmo | Clases Asignadas | $H_2$ / Cap. / Dist. | Conflictos Est. ($\Delta$) | Objetivo Global ($\Delta$) | Tiempo (ms) |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -344,21 +358,25 @@ En los tres campus, la combinación de constructivo MRV con reubicación 1-a-1 (
 
 ### 5.4. Calidad de Software, Pruebas Automatizadas y Reproducibilidad
 
-La Tabla 5 detalla la cobertura de pruebas automatizadas verificada localmente y en CI (`pytest`).
+La Tabla 7 detalla la cobertura de pruebas automatizadas verificada localmente y en CI (`pytest`).
+
+**Tabla 7:** Cobertura de la suite de 69 pruebas automatizadas verificadas en CI (`pytest`).
 
 | Paquete / Servicio | Tests | Cobertura Funcional y de Seguridad Validada | Estado |
 | :--- | :---: | :--- | :---: |
-| `packages/suite-sso` | 6 | Firma JWT HS256, expiración, rechazo de otra audiencia, rechazo `alg=none`, longitud mínima secreto (≥32 chars). | ✅ 6/6 |
-| `services/core` (Identidad & Convalid.) | 24 | Login SSO `HttpOnly`, RBAC por rol, licencias parciales/vencidas, *Open Redirect*, validación RUT mod-11, recálculo server-side, precedentes, purga Ley 21.719. | ✅ 24/24 |
-| `services/core` (Motor IA & DAG) | 9 | Stemming/tokenización, conceptos, simetría Dice-IDF, umbral CI ($F_1 \ge 0,85$/$0,90$), aciclicidad y cascada en las 10 mallas UNAB. | ✅ 9/9 |
-| `services/core` (Motor UCTP, Campus & API) | 13 | Auditoría $H_2/H_3$, B&B vs. fuerza bruta, SA, vacantes sin tope, modo disjunto, API `/horarios/optimizar`, solver global de campus (`H2=0`, `H3=0`, capacidad, `NotOverlap`) y API asíncrona `/horarios/campus/planificar` con envío de correo. | ✅ 13/13 |
-| `services/mapa-calor` | 6 | Salud *stateless*, parseo Banner/Syaproa `.xlsx`, rechazo extensiones inválidas, exigencia SSO y licencia en modo suite. | ✅ 6/6 |
-| `services/estres-malla` | 11 | Multi-tenant isolation (404 cross-org), *Open Redirect*, catálogo JSON, sincronización dinámica de rol SSO, cálculo exacto $b(v), d(v), c(v)$ y detección de ciclos. | ✅ 11/11 |
-| **Total Suite Automatizada** | **69** | **Pruebas unitarias, integración, seguridad, DAG, IA y optimización UCTP/Campus + Ruff 0 errores** | **✅ 69/69** |
+| `packages/suite-sso` | 6 | Firma JWT HS256, expiración, rechazo de otra audiencia, rechazo `alg=none`, longitud mínima secreto (≥32 chars). | Aprobado (6/6) |
+| `services/core` (Identidad & Convalid.) | 24 | Login SSO `HttpOnly`, RBAC por rol, licencias parciales/vencidas, *Open Redirect*, validación RUT mod-11, recálculo server-side, precedentes, purga Ley 21.719. | Aprobado (24/24) |
+| `services/core` (Motor IA & DAG) | 9 | Stemming/tokenización, conceptos, simetría Dice-IDF, umbral CI ($F_1 \ge 0,85$/$0,90$), aciclicidad y cascada en las 10 mallas UNAB. | Aprobado (9/9) |
+| `services/core` (Motor UCTP, Campus & API) | 13 | Auditoría $H_2/H_3$, B&B vs. fuerza bruta, SA, vacantes sin tope, modo disjunto, API `/horarios/optimizar`, solver global de campus (`H2=0`, `H3=0`, capacidad, `NotOverlap`) y API asíncrona `/horarios/campus/planificar` con envío de correo. | Aprobado (13/13) |
+| `services/mapa-calor` | 6 | Salud *stateless*, parseo Banner/Syaproa `.xlsx`, rechazo extensiones inválidas, exigencia SSO y licencia en modo suite. | Aprobado (6/6) |
+| `services/estres-malla` | 11 | Multi-tenant isolation (404 cross-org), *Open Redirect*, catálogo JSON, sincronización dinámica de rol SSO, cálculo exacto $b(v), d(v), c(v)$ y detección de ciclos. | Aprobado (11/11) |
+| **Total Suite Automatizada** | **69** | **Pruebas unitarias, integración, seguridad, DAG, IA y optimización UCTP/Campus + Ruff 0 errores** | **Aprobado (69/69)** |
 
 ### 5.5. Evaluación de Ciberseguridad y Privacidad
 
-La Tabla 6 sintetiza los controles de seguridad implementados y verificados en código e infraestructura, junto con las brechas residuales identificadas con transparencia técnica.
+La Tabla 8 sintetiza los controles de seguridad implementados y verificados en código e infraestructura, junto con las brechas residuales identificadas con transparencia técnica.
+
+**Tabla 8:** Controles de ciberseguridad (OWASP Top 10) y cumplimiento de privacidad (Ley 21.719).
 
 | Dominio OWASP / Cumplimiento | Control Implementado y Verificado | Evidencia en Código / Test | Brecha Residual / Mitigación Futura |
 | :--- | :--- | :--- | :--- |
@@ -370,17 +388,21 @@ La Tabla 6 sintetiza los controles de seguridad implementados y verificados en c
 
 ### 5.6. Eficiencia Computacional y Cumplimiento de Criterios de Aceptación
 
+La Tabla 9 consolida los indicadores de eficiencia computacional medidos y el estado de cumplimiento frente a los criterios de aceptación establecidos.
+
+**Tabla 9:** Eficiencia computacional verificada y cumplimiento de criterios de aceptación.
+
 | Criterio Definido | Meta Establecida | Resultado Verificado | Estado |
 | :--- | :--- | :--- | :---: |
-| Calidad motor IA convalidación | $F_1 \ge 0,90$ (CI gate) | **$F_1 = 0,957$** ($P=0,944, R=0,971$, Top-3 $= 1,000$) | ✅ Cumplido |
-| Latencia convalidación (112 ramos) | $< 1.500\text{ ms}$ | **752,0 ms** solo mejorado (1.095,5 ms ambas variantes) | ✅ Cumplido |
-| Integridad DAG 10 mallas UNAB | $Cycle(G) = \emptyset$, $< 100\text{ ms}$ | **0 ciclos** en 10/10 mallas (**16,1 ms**) | ✅ Cumplido |
-| Optimización UCTP ($H_1, H_2, H_3$ + $f(x)$) | $H_1=0$, reducción estricta $f(x)$, $< 500\text{ ms}$ | **$H_1=0$ (100%)**, $f(x)$ **-42,4% a -60,0%**, ventanas **-66,7% a -100%**, **7,5–199,7 ms** | ✅ Cumplido |
-| Latencia SSO HS256 (emisión + verificación) | $< 1.000\;\mu\text{s}$ | **126,7 $\mu$s/ciclo** (~7.890 ops/s en 1 núcleo) | ✅ Cumplido |
-| Procesamiento Mapa de Calor / Estrés de Malla | $< 1.000\text{ ms}$ | **267,5 ms** (`mapa-calor`) / **20,7 ms** (`estres-malla`) | ✅ Cumplido |
-| Suite automatizada + Linter | 100% verde, 0 errores | **69/69 tests pasados**, **Ruff 0 errores**, E2E Chromium OK | ✅ Cumplido |
-| Despliegue productivo vivo en AWS | Staging activo en cuenta AWS | IaC Terraform completa + paridad local Docker Compose; cuenta AWS pendiente | ⚠️ Parcial |
-| Evaluación de usabilidad SUS (30 usuarios) | $\text{SUS} \ge 70$ en campo | Protocolo e instrumento diseñados (Anexo A); aplicación en campo pendiente | ⚠️ Pendiente |
+| Calidad motor IA convalidación | $F_1 \ge 0,90$ (CI gate) | **$F_1 = 0,957$** ($P=0,944, R=0,971$, Top-3 $= 1,000$) | Cumplido |
+| Latencia convalidación (112 ramos) | $< 1.500\text{ ms}$ | **752,0 ms** solo mejorado (1.095,5 ms ambas variantes) | Cumplido |
+| Integridad DAG 10 mallas UNAB | $Cycle(G) = \emptyset$, $< 100\text{ ms}$ | **0 ciclos** en 10/10 mallas (**16,1 ms**) | Cumplido |
+| Optimización UCTP ($H_1, H_2, H_3$ + $f(x)$) | $H_1=0$, reducción estricta $f(x)$, $< 500\text{ ms}$ | **$H_1=0$ (100%)**, $f(x)$ **-42,4% a -60,0%**, ventanas **-66,7% a -100%**, **7,5–199,7 ms** | Cumplido |
+| Latencia SSO HS256 (emisión + verificación) | $< 1.000\;\mu\text{s}$ | **126,7 $\mu$s/ciclo** (~7.890 ops/s en 1 núcleo) | Cumplido |
+| Procesamiento Mapa de Calor / Estrés de Malla | $< 1.000\text{ ms}$ | **267,5 ms** (`mapa-calor`) / **20,7 ms** (`estres-malla`) | Cumplido |
+| Suite automatizada + Linter | 100% verde, 0 errores | **69/69 tests pasados**, **Ruff 0 errores**, E2E Chromium OK | Cumplido |
+| Despliegue productivo vivo en AWS | Staging activo en cuenta AWS | IaC Terraform completa + paridad local Docker Compose; cuenta AWS pendiente | Parcial |
+| Evaluación de usabilidad SUS (30 usuarios) | $\text{SUS} \ge 70$ en campo | Protocolo e instrumento diseñados (Anexo A); aplicación en campo pendiente | Pendiente |
 
 ---
 
@@ -415,15 +437,19 @@ Con rigor metodológico, se declaran cinco limitaciones objetivas del estado act
 
 ### 7.1. Respuesta Trazable a los Objetivos
 
+La Tabla 10 resume el grado de cumplimiento y la evidencia verificable asociada a cada objetivo específico planteado.
+
+**Tabla 10:** Respuesta trazable a los objetivos específicos del proyecto.
+
 | Objetivo | Estado | Evidencia Verificable |
 | :--- | :---: | :--- |
-| **OE1 · Auditoría y formalización** | ✅ Cumplido | Formatos Banner/Syaproa formalizados (`docs/FORMATOS_DE_ARCHIVOS.md`) y catálogos estructurados (10 UNAB + 27 externos). |
-| **OE2 · Arquitectura Suite modular + SSO** | ✅ Cumplido | Monorepo con 3 microservicios Django, portal estático, `suite-sso` (JWT HS256), RBAC, multi-tenant y gateway unificado `:8080`. |
-| **OE3 · Grafos DAG y** ***Curricular Analytics*** | ✅ Cumplido | 0 ciclos en 10 mallas UNAB (`test_mallas_dag.py`); cálculo de $b(v), d(v), c(v)$ e índice de estrés integrado en `estres-malla/malla/engine.py`. |
-| **OE4 · Motor híbrido de convalidaciones** | ✅ Cumplido | $F_1 = 0,957$ ($\text{IC}_{95\%}: [0,919; 0,987]$, Top-3 $= 1,000$), validación LOPO CV ($F_1=0,964$; podado $0,925$), ablación y sensibilidad $\tau$ en 112 asignaturas. |
-| **OE5 · Motor combinatorio UCTP** | ✅ Cumplido | `motor.py` + `campus.py` + `uctp-solver.js`: $H_1=0$, auditoría $H_2/H_3$, B&B + SA estudiante (-42% a -60% UNAB; -17,2% a -32,8% ITC-2019), campus global asíncrono (13 tests + E2E). |
-| **OE6 · Contenerización e IaC AWS** | ⚠️ Parcial | Docker Compose 1-comando operativo, Terraform completo y CI/CD OIDC listos; aprovisionamiento vivo en cuenta AWS pendiente. |
-| **OE7 · Evaluación técnica y UX** | ⚠️ Parcial | Evaluación técnica integral verificada (69 tests, benchmarks, validación cruzada, seguridad, eficiencia); aplicación en campo del protocolo SUS pendiente. |
+| **OE1 · Auditoría y formalización** | Cumplido | Formatos Banner/Syaproa formalizados (`docs/FORMATOS_DE_ARCHIVOS.md`) y catálogos estructurados (10 UNAB + 27 externos). |
+| **OE2 · Arquitectura Suite modular + SSO** | Cumplido | Monorepo con 3 microservicios Django, portal estático, `suite-sso` (JWT HS256), RBAC, multi-tenant y gateway unificado `:8080`. |
+| **OE3 · Grafos DAG y** ***Curricular Analytics*** | Cumplido | 0 ciclos en 10 mallas UNAB (`test_mallas_dag.py`); cálculo de $b(v), d(v), c(v)$ e índice de estrés integrado en `estres-malla/malla/engine.py`. |
+| **OE4 · Motor híbrido de convalidaciones** | Cumplido | $F_1 = 0,957$ ($\text{IC}_{95\%}: [0,919; 0,987]$, Top-3 $= 1,000$), validación LOPO CV ($F_1=0,964$; podado $0,925$), ablación y sensibilidad $\tau$ en 112 asignaturas. |
+| **OE5 · Motor combinatorio UCTP** | Cumplido | `motor.py` + `campus.py` + `uctp-solver.js`: $H_1=0$, auditoría $H_2/H_3$, B&B + SA estudiante (-42% a -60% UNAB; -17,2% a -32,8% ITC-2019), campus global asíncrono (13 tests + E2E). |
+| **OE6 · Contenerización e IaC AWS** | Parcial | Docker Compose 1-comando operativo, Terraform completo y CI/CD OIDC listos; aprovisionamiento vivo en cuenta AWS pendiente. |
+| **OE7 · Evaluación técnica y UX** | Parcial | Evaluación técnica integral verificada (69 tests, benchmarks, validación cruzada, seguridad, eficiencia); aplicación en campo del protocolo SUS pendiente. |
 
 ### 7.2. Síntesis de Aportes
 
@@ -446,6 +472,10 @@ Los resultados presentados **acreditan desempeño algorítmico, corrección func
 ## 8. Autoría, Contribución Individual y Declaración de Uso de IA
 
 ### 8.1. Matriz de Contribución Individual
+
+La Tabla 11 desglosa la distribución de responsabilidades técnicas y los artefactos verificables asociados a cada integrante.
+
+**Tabla 11:** Matriz de contribución individual y artefactos verificables del equipo.
 
 | Integrante | Componentes y Decisiones Principales Asignadas | Evidencia / Artefactos Asociados |
 | :--- | :--- | :--- |
