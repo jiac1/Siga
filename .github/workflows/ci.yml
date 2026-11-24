@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -q ruff
-      - run: ruff check packages services/core scripts
+      - run: ruff check packages services/core scripts deploy
       - run: ruff format --check packages services/core scripts
 
   pruebas:

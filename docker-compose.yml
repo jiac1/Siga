@@ -28,7 +28,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U suite"]
+      test: ["CMD-SHELL", "pg_isready -U suite -d core"]
       interval: 5s
       retries: 10
 
