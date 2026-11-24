@@ -10,3 +10,11 @@ archive
 docs
 infra
 .pytest_cache
+.venv
+venv
+node_modules
+.env.local
+.agents
+.gemini
+.DS_Store
+Thumbs.db

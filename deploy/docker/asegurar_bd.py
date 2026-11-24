@@ -12,6 +12,7 @@ url = os.environ.get("DATABASE_URL", "")
 if not url.startswith(("postgres://", "postgresql://")):
     sys.exit(0)  # SQLite u otro motor: nada que hacer
 
+import psycopg  # noqa: E402
 from psycopg import errors, sql  # noqa: E402
 
 partes = urlparse(url)

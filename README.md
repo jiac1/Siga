@@ -15,7 +15,20 @@ python scripts/dev/suite.py preparar   # migraciones, datos demo y catálogo
 python scripts/dev/suite.py iniciar    # http://localhost:8080
 ```
 
-En Windows también: doble clic en `iniciar-suite.bat`. Con Docker: `docker compose up --build`. Usuarios de prueba en `.env.example`.
+En Windows también: doble clic en `iniciar-suite.bat`. Usuarios de prueba en `.env.example`.
+
+## 🐳 Ejecución con Docker
+
+Requiere únicamente Docker y Docker Compose (sin instalar Python ni PostgreSQL en el equipo):
+
+```bash
+git clone https://github.com/jiac1/Siga.git
+cd Siga
+cp .env.example .env
+docker compose up --build
+```
+
+El portal unificado y todos los módulos quedan disponibles en `http://localhost:8080`. Si se omite `cp .env.example .env`, `docker-compose.yml` usa claves de desarrollo local por defecto para levantar el entorno sin bloqueos.
 
 ---
 

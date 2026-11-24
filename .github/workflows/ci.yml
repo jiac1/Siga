@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -q ruff
-      - run: ruff check packages services/core scripts
+      - run: ruff check packages services/core scripts deploy
       - run: ruff format --check packages services/core scripts
 
   pruebas:
@@ -68,3 +68,62 @@ jobs:
         run: terraform init -backend=false
       - working-directory: infra/terraform
         run: terraform validate
+
+  docker:
+    name: Docker Compose (build + smoke test)
+    runs-on: ubuntu-latest
+    needs: calidad
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar compose sin .env
+        run: docker compose config -q
+      - name: Construir y levantar stack con Docker Compose
+        run: |
+          cp .env.example .env
+          docker compose up --build -d
+      - name: Smoke test de endpoints HTTP y catálogo
+        run: |
+          python3 - <<'PY'
+          import json
+          import time
+          import urllib.request
+
+          endpoints = [
+              "http://localhost:8080/",
+              "http://localhost:8080/core/salud/",
+              "http://localhost:8080/mapa-calor/salud/",
+              "http://localhost:8080/estres-malla/salud/",
+              "http://localhost:8080/core/api/v1/catalogo/unab",
+          ]
+          deadline = time.time() + 90
+          last_err = None
+          while time.time() < deadline:
+              try:
+                  results = {}
+                  for url in endpoints:
+                      with urllib.request.urlopen(url, timeout=5) as resp:
+                          if resp.status != 200:
+                              raise RuntimeError(f"{url} -> HTTP {resp.status}")
+                          results[url] = resp.read().decode("utf-8", errors="replace")
+                  catalogo = json.loads(results["http://localhost:8080/core/api/v1/catalogo/unab"])
+                  assert isinstance(catalogo, list) and any(
+                      u.get("sigla") == "UNAB" and len(u.get("carreras", [])) > 0 for u in catalogo
+                  ), f"Catálogo UNAB inesperado: {catalogo!r}"
+                  print("Todos los endpoints respondieron HTTP 200 y el catálogo UNAB fue cargado correctamente.")
+                  break
+              except Exception as exc:
+                  last_err = exc
+                  time.sleep(3)
+          else:
+              raise SystemExit(f"Smoke test Docker falló tras 90s: {last_err}")
+          PY
+      - name: Estado de contenedores
+        run: docker compose ps -a
+      - name: Logs de diagnóstico si falla
+        if: failure()
+        run: |
+          docker compose ps -a
+          docker compose logs --no-color --tail=100
+      - name: Detener stack Docker
+        if: always()
+        run: docker compose down -v
