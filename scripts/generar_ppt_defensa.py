@@ -24,6 +24,23 @@ SALIDA_DEFAULT = RAIZ / "docs" / "Presentacion_Defensa_SIGA_DSS.pptx"
 SLIDE_W = Inches(40 / 3)  # 13.333 in exactos (16:9)
 SLIDE_H = Inches(7.5)
 
+# Ancho útil del título: 12,15" de cuadro con ~10% de margen para diferencias de render (proyector, LibreOffice)
+TITULO_MAX_PULGADAS = 11.0
+FUENTE_TITULO_TTF = Path(r"C:\Windows\Fonts\segoeuib.ttf")
+
+
+def _ancho_titulo_pulgadas(texto: str, puntos: float = 23.0) -> float:
+    """Ancho real del título en Segoe UI Bold; si la fuente no existe (Linux/CI), estima por caracteres."""
+    try:
+        from PIL import ImageFont
+
+        dpi = 288
+        fuente = ImageFont.truetype(str(FUENTE_TITULO_TTF), round(puntos * dpi / 72))
+        return fuente.getlength(texto) / dpi
+    except OSError:
+        return len(texto) * 0.155  # promedio medido de Segoe UI Bold 23 pt en los títulos actuales
+
+
 FONT_SANS = "Segoe UI"
 FONT_MONO = "Consolas"
 
@@ -264,7 +281,15 @@ def _add_chrome(
         size=8.5,
     )
 
+    # El título debe caber en UNA línea: si se parte en dos, desborda el cuadro de 0,54" y choca con la
+    # etiqueta de bloque (observación E3, láminas 2, 6 y 10).
+    ancho = _ancho_titulo_pulgadas(title)
+    if ancho > TITULO_MAX_PULGADAS:
+        raise ValueError(
+            f"Título de lámina {slide_num} demasiado ancho ({ancho:.2f} > {TITULO_MAX_PULGADAS} in): {title!r}"
+        )
     tf_t = _add_textbox(slide, 0.58, 0.58, 12.15, 0.54, valign=MSO_ANCHOR.MIDDLE, margin_lr=0, margin_tb=0)
+    tf_t.word_wrap = False
     _set_paragraph(tf_t.paragraphs[0], [(title, True, INK, FONT_SANS)], size=23.0, line_spacing=1.08, space_after=0)
 
     _add_rect(slide, 0.60, 7.06, 12.13, 0.012, LINE)
@@ -427,7 +452,7 @@ def _build_slide_02_diagnostico(prs: Presentation) -> None:
     _add_chrome(
         slide,
         "01 · Diagnóstico del Problema",
-        "La sobreduración en ingeniería exige atacar cuellos de botella y fragmentación",
+        "La sobreduración exige atacar cuellos de botella y fragmentación",
         2,
         role_tag="José Ignacio · Bloque 1",
     )
@@ -446,9 +471,9 @@ def _build_slide_02_diagnostico(prs: Presentation) -> None:
             CRIT,
         ),
         (
-            ">US$1.100M",
-            "Impacto país quinquenal",
-            "US$128–141M anuales directos por deserción temprana en Chile.",
+            "US$128–141M",
+            "Costo anual de la deserción",
+            "Costo directo por año de la deserción de 1.er año en Chile (≈US$640–705M en 5 años).",
             CYAN,
         ),
         (
@@ -621,7 +646,7 @@ def _build_slide_04_suite_catalogo(prs: Presentation) -> None:
     _add_chrome(
         slide,
         "03 · Suite Modular y Catálogo",
-        "Cinco aplicaciones integradas tras un portal único y catálogo nacional curado",
+        "Cinco aplicaciones tras un portal único y un catálogo nacional curado",
         4,
         role_tag="José Ignacio · Bloque 1",
     )
@@ -781,7 +806,7 @@ def _build_slide_06_seguridad_privacidad(prs: Presentation) -> None:
     _add_chrome(
         slide,
         "05 · Seguridad, SSO y Cumplimiento",
-        "Autenticación federada sin estado (suite-sso), OWASP y Ley 21.719 por diseño",
+        "SSO sin estado (suite-sso), OWASP y Ley 21.719 por diseño",
         6,
         role_tag="Felipe · Bloque 2",
     )
@@ -995,7 +1020,7 @@ def _build_slide_08_curricular_analytics(prs: Presentation) -> None:
     _add_chrome(
         slide,
         "07 · Motores Analíticos · Curricular Analytics",
-        "Auditoría DAG en 10 mallas UNAB: 0 ciclos y cuellos de botella cuantificados",
+        "DAG en 10 mallas UNAB: 0 ciclos y cuellos de botella cuantificados",
         8,
         role_tag="Maximiliano · Bloque 3",
     )
@@ -1167,7 +1192,7 @@ def _build_slide_10_uctp(prs: Presentation) -> None:
     _add_chrome(
         slide,
         "09 · Optimización Combinatoria UCTP",
-        "Cero topes H1=0, auditoría H2/H3 y validación externa en benchmarks ITC-2019",
+        "Cero topes (H1=0), auditoría H2/H3 y validación externa ITC-2019",
         10,
         role_tag="Maximiliano · Bloque 3",
     )

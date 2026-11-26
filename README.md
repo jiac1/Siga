@@ -61,6 +61,9 @@ python scripts/evaluacion/evaluar_itc2019.py --max-perfiles 30 --json docs/img/m
 python scripts/evaluacion/evaluar_campus_itc2019.py --iteraciones 2500 --json docs/img/metricas_campus_itc2019.json
 python scripts/evaluacion/evaluar_suite.py
 
+# Usabilidad SUS con datos reales de terreno (protocolo en docs/evaluacion_sus/)
+python scripts/evaluacion/analizar_sus.py data/evaluacion_sus/respuestas.csv --markdown --json docs/img/metricas_sus.json
+
 # Generación de figuras, informe consolidado E1-E3, presentación y guión de defensa
 python scripts/render_diagrams.py
 python scripts/generar_gantt_matplotlib.py
@@ -68,4 +71,10 @@ python scripts/generar_graficos_e3.py
 python scripts/generar_docx_formal.py
 python scripts/generar_ppt_defensa.py
 python scripts/generar_guion_docx.py
+python scripts/generar_poster.py                     # póster A0 (requiere "qrcode[pil]")
+
+# Evidencia para la defensa (docs/defensa/)
+python scripts/evaluacion/acuerdo_gold.py planilla --salida docs/defensa/Anotacion_Ciega_Gold_Standard.xlsx
+python scripts/evaluacion/acuerdo_gold.py kappa <planilla_completada.xlsx>
+python scripts/catalogo/auditar_transcripciones.py --muestra 6 --semilla 2026 --cache <carpeta> --csv <salida.csv>
 ```

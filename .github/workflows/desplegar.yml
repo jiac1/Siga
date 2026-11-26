@@ -30,6 +30,10 @@ concurrency:
 
 jobs:
   desplegar:
+    # Mientras no exista una cuenta AWS aprovisionada, el push a main no intenta desplegar
+    # (el job queda "omitido" en vez de fallar). Para activarlo: crear la variable de repositorio
+    # DESPLIEGUE_AWS_HABILITADO=true. La ejecución manual (workflow_dispatch) siempre corre.
+    if: github.event_name == 'workflow_dispatch' || vars.DESPLIEGUE_AWS_HABILITADO == 'true'
     runs-on: ubuntu-latest
     environment: ${{ inputs.ambiente || 'staging' }}
     env:
