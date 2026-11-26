@@ -47,7 +47,7 @@
 #### Slide 2 · Diagnóstico: Sobreduración y Fragmentación (`1:00` · `00:30–01:30`)
 > **Cue visual:** Apuntar las 4 tarjetas superiores de izquierda a derecha, luego contrastar los dos bloques inferiores.
 
-"¿Por qué abordar este problema? Según cifras oficiales del SIES 2023, Ingeniería Civil Informática en Chile tarda en promedio **13,8 semestres** reales frente a 10 u 11 nominales: casi **3 semestres de sobreduración** (2,91). En programas afines como USACH, la deserción ronda el 22% a 28% el primer año, pero escala a **casi el 50% al tercer año**, generando un impacto país superior a **1.100 millones de dólares** por cohorte quinquenal.
+"¿Por qué abordar este problema? Según cifras oficiales del SIES 2023, Ingeniería Civil Informática en Chile tarda en promedio **13,8 semestres** reales frente a 10 u 11 nominales: casi **3 semestres de sobreduración** (2,91). En programas afines como USACH, la deserción ronda el 22% a 28% el primer año, pero escala a **casi el 50% al tercer año**, y solo la deserción de primer año le cuesta al país entre **128 y 141 millones de dólares al año**.
 
 La literatura demuestra que esto no es solo un problema socioeconómico, sino estructural: **el 76,2% de los desertores tardíos** abandona adeudando ramos cuello de botella, **6 de los 7 predictores críticos** de abandono aparecen ya en el primer semestre, y en traslados universitarios los estudiantes pierden entre **34% y 43%** de sus créditos por procesos manuales. En el contexto previo de Ingeniería UNAB existían scripts y planillas útiles, pero operaban aislados, sin SSO, sin contratos compartidos, con un motor base de convalidación de apenas **0,029 en F1** y sin optimización horaria."
 
