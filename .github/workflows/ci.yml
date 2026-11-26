@@ -56,6 +56,8 @@ jobs:
       - run: pip install -q -r requirements-dev.txt
       - run: python scripts/evaluacion/evaluar_motor.py
       - run: python scripts/evaluacion/evaluar_uctp.py
+      - name: Pruebas del análisis de usabilidad SUS
+        run: python -m pytest -q scripts/evaluacion/tests
 
   terraform:
     name: Validar Terraform
